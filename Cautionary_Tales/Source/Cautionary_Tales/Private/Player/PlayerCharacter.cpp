@@ -51,12 +51,14 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	Input = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	Input->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::HandleMovement);
 	Input->BindAction(MoveAction, ETriggerEvent::Completed, this, &APlayerCharacter::HandleMovement);
+	Input->BindAction(JumpAction, ETriggerEvent::Triggered, this, &APlayerCharacter::HandleJump);
 	UE_LOG(LogTemp, Warning, TEXT("Player Input set"));
 }
 
 void APlayerCharacter::Instantiate(void)
 {
 	MoveAction = FindObject<UInputAction>(MoveActionPath);
+	JumpAction = FindObject<UInputAction>(JumpActionPath);
 	ContextMapping = FindObject<UInputMappingContext>(ContextPath);
 }
 
@@ -66,11 +68,18 @@ void APlayerCharacter::MovePlayer(float DeltaTime)
 	location += FVector(Direction.X * Speed * DeltaTime, Direction.Y * Speed * DeltaTime, 0);
 	SetActorLocation(location);
 
-	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Orange, FString::Printf(TEXT("X: %f, Y: %f"), Direction.X, Direction.Y));
 }
 
 void APlayerCharacter::HandleMovement(const FInputActionValue& Value)
 {
 	Direction = Value.Get<FVector2D>();
+	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Orange, FString::Printf(TEXT("X: %f, Y: %f"), Direction.X, Direction.Y));
+}
+
+void APlayerCharacter::HandleJump(const FInputActionValue& Value)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString::Printf(TEXT("Jump")));
+	
+	Jump();
 }
 

@@ -34,22 +34,25 @@ private:
 	void Instantiate(void);
 	void MovePlayer(float DeltaTime);
 	void HandleMovement(const FInputActionValue& Value);
+	void HandleJump(const FInputActionValue& Value);
 
 private:
 	class UEnhancedInputComponent* Input = nullptr;
 	UInputAction* MoveAction = nullptr;
+	UInputAction* JumpAction = nullptr;
 	UInputAction* PauseAction = nullptr;
 	class UInputMappingContext* ContextMapping = nullptr;
 
 #pragma region Movement
 	FVector2D Direction = FVector2D::ZeroVector;
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Speed", Category = "CharacterMovement"))
-	float Speed = 20.f;
+	float Speed = 150.f;
 #pragma endregion
 
 #pragma region Constants
-	const FString MoveActionPath = FString(TEXT("/Script/EnhancedInput.InputAction'/Game/Assets/Blueprints/Input/IA_Movement.IA_Movement'"));
-	const FString ContextPath = FString(TEXT("/Script/EnhancedInput.InputMappingContext'/Game/Assets/Blueprints/Input/IMC_PlayerMapping.IMC_PlayerMapping'"));
+	const FString MoveActionPath = FString(TEXT("/Game/Assets/Blueprints/Input/IA_Movement"));
+	const FString JumpActionPath = FString(TEXT("/Game/Assets/Blueprints/Input/IA_Jump"));
+	const FString ContextPath = FString(TEXT("/Game/Assets/Blueprints/Input/IMC_PlayerMapping"));
 #pragma endregion
 
 };
