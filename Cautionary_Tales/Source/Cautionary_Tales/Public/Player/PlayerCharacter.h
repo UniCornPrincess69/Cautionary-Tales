@@ -25,7 +25,7 @@ protected:
 
 public:	
 	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	//virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -46,7 +46,7 @@ private:
 #pragma region Movement
 	FVector2D Direction = FVector2D::ZeroVector;
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Speed", Category = "CharacterMovement"))
-	float Speed = 150.f;
+	float Speed = 50.f;
 #pragma endregion
 
 #pragma region Constants

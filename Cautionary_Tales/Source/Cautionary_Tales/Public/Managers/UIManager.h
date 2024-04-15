@@ -13,5 +13,9 @@ UCLASS()
 class CAUTIONARY_TALES_API UUIManager : public UWorldSubsystem
 {
 	GENERATED_BODY()
+
+public:
+	void StartGame(const UObject* Target);
+	void QuitGame(const UObject* Target);
 	
 };

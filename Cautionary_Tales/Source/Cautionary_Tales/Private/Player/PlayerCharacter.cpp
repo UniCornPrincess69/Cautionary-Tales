@@ -13,7 +13,7 @@
 APlayerCharacter::APlayerCharacter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 	Instantiate();
 }
 
@@ -24,24 +24,15 @@ void APlayerCharacter::BeginPlay()
 	auto GM = UGameManager::Instantiate(*this);
 	if (GM) GM->SetPlayer(this);
 
-	UE_LOG(LogTemp, Warning, TEXT("Begin Play"));
-	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+	if (auto PlayerController = Cast<APlayerController>(GetController()))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Player Controller"));
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
 			Subsystem->AddMappingContext(ContextMapping, 0);
-			UE_LOG(LogTemp, Warning, TEXT("Enhanced input"));
 		}
 	}
 }
 
-// Called every frame
-void APlayerCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-	MovePlayer(DeltaTime);
-}
 
 // Called to bind functionality to input
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -64,21 +55,25 @@ void APlayerCharacter::Instantiate(void)
 
 void APlayerCharacter::MovePlayer(float DeltaTime)
 {
-	auto location = GetActorLocation();
-	location += FVector(Direction.X * Speed * DeltaTime, Direction.Y * Speed * DeltaTime, 0);
-	SetActorLocation(location);
+	//auto location = GetActorLocation();
+	//location += FVector(Direction.X * Speed * DeltaTime, Direction.Y * Speed * DeltaTime, 0);
+	//SetActorLocation(location);
+
+	AddMovementInput(FVector(Direction.X * Speed * DeltaTime, Direction.Y * Speed * DeltaTime, 0));
 
 }
 
 void APlayerCharacter::HandleMovement(const FInputActionValue& Value)
 {
 	Direction = Value.Get<FVector2D>();
-	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Orange, FString::Printf(TEXT("X: %f, Y: %f"), Direction.X, Direction.Y));
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Orange, FString::Printf(TEXT("X: %f, Y: %f"), Direction.X, Direction.Y));
+	//auto delta = GetWorld()->GetDeltaSeconds();
+	MovePlayer(GetWorld()->GetDeltaSeconds());
 }
 
 void APlayerCharacter::HandleJump(const FInputActionValue& Value)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString::Printf(TEXT("Jump")));
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString::Printf(TEXT("Jump")));
 	
 	Jump();
 }
