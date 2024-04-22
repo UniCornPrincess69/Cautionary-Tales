@@ -35,6 +35,7 @@ private:
 	void MovePlayer(float DeltaTime);
 	void HandleMovement(const FInputActionValue& Value);
 	void HandleJump(const FInputActionValue& Value);
+	void HandlePause(const FInputActionValue& Value);
 
 private:
 	class UEnhancedInputComponent* Input = nullptr;
@@ -42,6 +43,7 @@ private:
 	UInputAction* JumpAction = nullptr;
 	UInputAction* PauseAction = nullptr;
 	class UInputMappingContext* ContextMapping = nullptr;
+	class UGameManager* Manager = nullptr;
 
 #pragma region Movement
 	FVector2D Direction = FVector2D::ZeroVector;
@@ -52,6 +54,7 @@ private:
 #pragma region Constants
 	const FString MoveActionPath = FString(TEXT("/Game/Assets/Blueprints/Input/IA_Movement"));
 	const FString JumpActionPath = FString(TEXT("/Game/Assets/Blueprints/Input/IA_Jump"));
+	const FString PauseActionPath = FString(TEXT("/Game/Assets/Blueprints/Input/IA_Pause"));
 	const FString ContextPath = FString(TEXT("/Game/Assets/Blueprints/Input/IMC_PlayerMapping"));
 #pragma endregion
 

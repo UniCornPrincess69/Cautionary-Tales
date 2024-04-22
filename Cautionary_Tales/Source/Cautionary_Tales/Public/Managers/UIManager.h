@@ -17,5 +17,7 @@ class CAUTIONARY_TALES_API UUIManager : public UWorldSubsystem
 public:
 	void StartGame(const UObject* Target);
 	void QuitGame(const UObject* Target);
+	void PauseGame(const UObject* Target, bool isPaused);
+	void DeathScreen(const UObject* Target);
 	
 };

@@ -8,6 +8,7 @@
 #include "InputAction.h"
 #include <EnhancedInputSubsystems.h>
 #include "Utility/ActorUtility.h"
+#include "Managers/UIManager.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -21,8 +22,8 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	auto GM = UGameManager::Instantiate(*this);
-	if (GM) GM->SetPlayer(this);
+	Manager = UGameManager::Instantiate(*this);
+	if (Manager) Manager->SetPlayer(this);
 
 	if (auto PlayerController = Cast<APlayerController>(GetController()))
 	{
@@ -43,6 +44,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	Input->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::HandleMovement);
 	Input->BindAction(MoveAction, ETriggerEvent::Completed, this, &APlayerCharacter::HandleMovement);
 	Input->BindAction(JumpAction, ETriggerEvent::Triggered, this, &APlayerCharacter::HandleJump);
+	Input->BindAction(PauseAction, ETriggerEvent::Triggered, this, &APlayerCharacter::HandlePause);
 	UE_LOG(LogTemp, Warning, TEXT("Player Input set"));
 }
 
@@ -50,6 +52,7 @@ void APlayerCharacter::Instantiate(void)
 {
 	MoveAction = FindObject<UInputAction>(MoveActionPath);
 	JumpAction = FindObject<UInputAction>(JumpActionPath);
+	PauseAction = FindObject<UInputAction>(PauseActionPath);
 	ContextMapping = FindObject<UInputMappingContext>(ContextPath);
 }
 
@@ -66,15 +69,24 @@ void APlayerCharacter::MovePlayer(float DeltaTime)
 void APlayerCharacter::HandleMovement(const FInputActionValue& Value)
 {
 	Direction = Value.Get<FVector2D>();
-	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Orange, FString::Printf(TEXT("X: %f, Y: %f"), Direction.X, Direction.Y));
+	//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Orange, FString::Printf(TEXT("X: %f, Y: %f"), Direction.X, Direction.Y));
 	//auto delta = GetWorld()->GetDeltaSeconds();
 	MovePlayer(GetWorld()->GetDeltaSeconds());
 }
 
 void APlayerCharacter::HandleJump(const FInputActionValue& Value)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString::Printf(TEXT("Jump")));
-	
+
 	Jump();
+}
+
+void APlayerCharacter::HandlePause(const FInputActionValue& Value)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Blue, FString::Printf(TEXT("Paused")));
+	UE_LOG(LogTemp, Warning, TEXT("Pause"));
+	
+	//Manager->GetUIManager()->PauseGame(this, Value.Get<bool>());
+
+	GetWorld()->GetSubsystem<UUIManager>()->PauseGame(this, Value.Get<bool>());
 }
 

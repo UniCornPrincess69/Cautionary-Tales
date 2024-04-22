@@ -3,6 +3,7 @@
 
 #include "Managers/GameManager.h"
 #include <Runtime/Engine/Classes/Kismet/GameplayStatics.h>
+#include "Managers/UIManager.h"
 
 auto UGameManager::GetGameInstance(const UObject& target) -> UGameInstance* const
 {
@@ -22,6 +23,12 @@ auto UGameManager::Instantiate(const UObject& target) -> UGameManager* const
 	auto Instance = GetGameInstance(target);
 	if (Instance) return Instance->GetSubsystem<UGameManager>();
 	else return nullptr;
+}
+
+UUIManager* UGameManager::GetUIManager(void)
+{
+	auto ui = GetWorld()->GetSubsystem<UUIManager>();
+	return ui;
 }
 
 void UGameManager::Initialize(FSubsystemCollectionBase& collection)
