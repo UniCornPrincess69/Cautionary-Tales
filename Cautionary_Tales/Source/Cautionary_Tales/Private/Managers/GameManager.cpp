@@ -4,12 +4,13 @@
 #include "Managers/GameManager.h"
 #include <Runtime/Engine/Classes/Kismet/GameplayStatics.h>
 #include "Managers/UIManager.h"
+#include "Player/PlayerCharacter.h"
 
 auto UGameManager::GetGameInstance(const UObject& target) -> UGameInstance* const
 {
 	if (target.GetWorld() && target.GetWorld()->GetGameInstance())
 	{
-		UGameplayStatics::GetGameInstance(target.GetWorld());
+		return UGameplayStatics::GetGameInstance(target.GetWorld());
 	}
 	else if (target.IsA(AActor::StaticClass()))
 	{
@@ -20,9 +21,15 @@ auto UGameManager::GetGameInstance(const UObject& target) -> UGameInstance* cons
 
 auto UGameManager::Instantiate(const UObject& target) -> UGameManager* const
 {
-	auto Instance = GetGameInstance(target);
-	if (Instance) return Instance->GetSubsystem<UGameManager>();
+	auto instance = GetGameInstance(target);
+	if (instance) return instance->GetSubsystem<UGameManager>();
 	else return nullptr;
+}
+
+void UGameManager::SetPlayer(APlayerCharacter* player)
+{
+	Player = player;
+	OnPlayerReady.Broadcast(Player);
 }
 
 UUIManager* UGameManager::GetUIManager(void)

@@ -26,3 +26,13 @@ void UUIFunctionLibrary::QuitGame(const UObject* GameTarget)
 {
 	GetUIManager(GameTarget)->QuitGame(GameTarget);
 }
+
+void UUIFunctionLibrary::ToMainMenu(const UObject* GameTarget)
+{
+	GetUIManager(GameTarget)->ToMainMenu(GameTarget);
+}
+
+void UUIFunctionLibrary::RestartCheckpoint(const UObject* GameTarget)
+{
+	//TODO: Restart from a given Checkpoint, needs save system
+}

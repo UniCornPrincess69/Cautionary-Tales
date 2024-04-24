@@ -24,7 +24,6 @@ void APlayerCharacter::BeginPlay()
 	Super::BeginPlay();
 	Manager = UGameManager::Instantiate(*this);
 	if (Manager) Manager->SetPlayer(this);
-
 	if (auto PlayerController = Cast<APlayerController>(GetController()))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
@@ -45,7 +44,6 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	Input->BindAction(MoveAction, ETriggerEvent::Completed, this, &APlayerCharacter::HandleMovement);
 	Input->BindAction(JumpAction, ETriggerEvent::Triggered, this, &APlayerCharacter::HandleJump);
 	Input->BindAction(PauseAction, ETriggerEvent::Triggered, this, &APlayerCharacter::HandlePause);
-	UE_LOG(LogTemp, Warning, TEXT("Player Input set"));
 }
 
 void APlayerCharacter::Instantiate(void)
@@ -58,10 +56,6 @@ void APlayerCharacter::Instantiate(void)
 
 void APlayerCharacter::MovePlayer(float DeltaTime)
 {
-	//auto location = GetActorLocation();
-	//location += FVector(Direction.X * Speed * DeltaTime, Direction.Y * Speed * DeltaTime, 0);
-	//SetActorLocation(location);
-
 	AddMovementInput(FVector(Direction.X * Speed * DeltaTime, Direction.Y * Speed * DeltaTime, 0));
 
 }
@@ -69,24 +63,17 @@ void APlayerCharacter::MovePlayer(float DeltaTime)
 void APlayerCharacter::HandleMovement(const FInputActionValue& Value)
 {
 	Direction = Value.Get<FVector2D>();
-	//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Orange, FString::Printf(TEXT("X: %f, Y: %f"), Direction.X, Direction.Y));
-	//auto delta = GetWorld()->GetDeltaSeconds();
 	MovePlayer(GetWorld()->GetDeltaSeconds());
 }
 
 void APlayerCharacter::HandleJump(const FInputActionValue& Value)
 {
-
 	Jump();
 }
 
 void APlayerCharacter::HandlePause(const FInputActionValue& Value)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Blue, FString::Printf(TEXT("Paused")));
-	UE_LOG(LogTemp, Warning, TEXT("Pause"));
-	
-	//Manager->GetUIManager()->PauseGame(this, Value.Get<bool>());
-
-	GetWorld()->GetSubsystem<UUIManager>()->PauseGame(this, Value.Get<bool>());
+	OnPause.Broadcast();
+	Manager->GetUIManager()->PauseGame(this, Value.Get<bool>());
 }
 

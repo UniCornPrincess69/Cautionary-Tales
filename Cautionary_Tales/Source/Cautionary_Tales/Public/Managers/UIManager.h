@@ -15,9 +15,16 @@ class CAUTIONARY_TALES_API UUIManager : public UWorldSubsystem
 	GENERATED_BODY()
 
 public:
-	void StartGame(const UObject* Target);
-	void QuitGame(const UObject* Target);
-	void PauseGame(const UObject* Target, bool isPaused);
-	void DeathScreen(const UObject* Target);
+	void StartGame(const UObject* target);
+	void QuitGame(const UObject* target);
+	void PauseGame(const UObject* target, bool isPaused);
+	void DeathScreen(const UObject* target);
+	void ToMainMenu(const UObject* target);
+
+private:
+	const FName MAIN_MENU = FName(TEXT("MainMenu")); 
+	const FName LEVEL_ONE = FName(TEXT("Level_01")); 
+	const FName LEVEL_TWO = FName(TEXT("Level_02"));
+	const FName LEVEL_THREE = FName(TEXT("Level_03"));
 	
 };

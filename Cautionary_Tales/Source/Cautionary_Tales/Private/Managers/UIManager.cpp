@@ -7,19 +7,19 @@
 #include "UI/InGameUI.h"
 
 
-void UUIManager::StartGame(const UObject* Target)
+void UUIManager::StartGame(const UObject* target)
 {
-	auto world = Target->GetWorld();
-	if (world) UGameplayStatics::OpenLevel(world, "Level_01", true);
+	auto world = target->GetWorld();
+	if (world) UGameplayStatics::OpenLevel(world, LEVEL_ONE, true);
 	else GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("Level not found"));
 }
 
-void UUIManager::QuitGame(const UObject* Target)
+void UUIManager::QuitGame(const UObject* target)
 {
-	UKismetSystemLibrary::QuitGame(Target->GetWorld(), Target->GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, true);
+	UKismetSystemLibrary::QuitGame(target->GetWorld(), target->GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, true);
 }
 
-void UUIManager::PauseGame(const UObject* Target, bool isPaused)
+void UUIManager::PauseGame(const UObject* target, bool isPaused)
 {
 	auto player = GetWorld()->GetFirstPlayerController();
 	auto hud = Cast<AInGameUI>(player->GetHUD());
@@ -31,7 +31,6 @@ void UUIManager::PauseGame(const UObject* Target, bool isPaused)
 		{
 			hud->InitWidgets();
 			player->SetPause(!isPaused);
-			//isPaused = false;
 		}
 		else
 		{
@@ -41,6 +40,13 @@ void UUIManager::PauseGame(const UObject* Target, bool isPaused)
 	}
 }
 
-void UUIManager::DeathScreen(const UObject* Target)
+void UUIManager::DeathScreen(const UObject* target)
 {
+}
+
+void UUIManager::ToMainMenu(const UObject* target)
+{
+	auto world = GetWorld();
+
+	if (world) UGameplayStatics::OpenLevel(world, MAIN_MENU, true);
 }

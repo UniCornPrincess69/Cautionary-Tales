@@ -9,6 +9,8 @@
 /**
  * 
  */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerReady, APlayerCharacter*, Player);
+
 class APlayerCharacter;
 class AInGameUI;
 UCLASS()
@@ -21,12 +23,15 @@ class CAUTIONARY_TALES_API UGameManager : public UGameInstanceSubsystem
 public:
 	static auto Instantiate(const UObject& target) -> UGameManager* const;
 
-	FORCEINLINE void SetPlayer(APlayerCharacter* player) { Player = player; }
+	void SetPlayer(APlayerCharacter* player);
 	FORCEINLINE void SetInGameUI(AInGameUI* UI) { InGameUI = UI; }
 
 	FORCEINLINE AInGameUI* GetInGameUI(void) { return InGameUI; }
 	FORCEINLINE APlayerCharacter* GetPlayer(void) { return Player; }
 	class UUIManager* GetUIManager(void);
+
+	UPROPERTY(BlueprintAssignable)
+	FOnPlayerReady OnPlayerReady;
 
 private:
 	virtual void Initialize(FSubsystemCollectionBase& collection) override;

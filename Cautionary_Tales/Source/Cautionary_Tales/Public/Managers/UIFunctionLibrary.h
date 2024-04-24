@@ -23,4 +23,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Quit Game", Category = "UI Function"))
 		static void QuitGame(const UObject* GameTarget);
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "To Main Menu", Category = "UI Function"))
+		static void ToMainMenu(const UObject* GameTarget);
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Restart from Checkpoint", Category = "UI Function"))
+		static void RestartCheckpoint(const UObject* GameTarget);
 };

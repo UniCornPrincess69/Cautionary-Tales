@@ -9,6 +9,8 @@
 
 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPause);
+
 class UInputAction;
 UCLASS()
 class CAUTIONARY_TALES_API APlayerCharacter : public ACharacter
@@ -45,6 +47,10 @@ private:
 	class UInputMappingContext* ContextMapping = nullptr;
 	class UGameManager* Manager = nullptr;
 
+public:
+	UPROPERTY(BlueprintAssignable)
+	FOnPause OnPause;
+private:
 #pragma region Movement
 	FVector2D Direction = FVector2D::ZeroVector;
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Speed", Category = "CharacterMovement"))
