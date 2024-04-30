@@ -3,3 +3,10 @@
 
 #include "Managers/AudioManager.h"
 
+void UAudioManager::Initialize(FSubsystemCollectionBase& collection)
+{
+}
+
+void UAudioManager::Deinitialize()
+{
+}

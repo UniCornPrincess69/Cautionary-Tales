@@ -14,4 +14,8 @@ class CAUTIONARY_TALES_API UAudioManager : public UWorldSubsystem
 {
 	GENERATED_BODY()
 	
+
+private:
+	virtual void Initialize(FSubsystemCollectionBase& collection) override;
+	virtual void Deinitialize() override;
 };

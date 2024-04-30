@@ -22,9 +22,19 @@ void UUIFunctionLibrary::StartGame(const UObject* GameTarget)
 	GetUIManager(GameTarget)->StartGame(GameTarget);
 }
 
-void UUIFunctionLibrary::QuitGame(const UObject* GameTarget)
+void UUIFunctionLibrary::ContinueGame(const UObject* GameTarget)
+{
+	GetUIManager(GameTarget)->ContinueGame(GameTarget);
+}
+
+void UUIFunctionLibrary::QuitFromMenu(const UObject* GameTarget)
 {
 	GetUIManager(GameTarget)->QuitGame(GameTarget);
+}
+
+void UUIFunctionLibrary::QuitFromGame(const UObject* GameTarget)
+{
+	GetUIManager(GameTarget)->QuitAndSave(GameTarget);
 }
 
 void UUIFunctionLibrary::ToMainMenu(const UObject* GameTarget)
@@ -35,4 +45,9 @@ void UUIFunctionLibrary::ToMainMenu(const UObject* GameTarget)
 void UUIFunctionLibrary::RestartCheckpoint(const UObject* GameTarget)
 {
 	//TODO: Restart from a given Checkpoint, needs save system
+}
+
+void UUIFunctionLibrary::ResumeGame(const UObject* GameTarget, bool IsClicked)
+{
+	GetUIManager(GameTarget)->PauseGame(GameTarget, IsClicked);
 }
