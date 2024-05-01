@@ -19,10 +19,7 @@ class CAUTIONARY_TALES_API UUIFunctionLibrary : public UBlueprintFunctionLibrary
 public:
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Start Game", Category = "UI Function"))
-		static void StartGame(const UObject* GameTarget);
-
-	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Continue Game", Category = "UI Functions"))
-		static void ContinueGame(const UObject* GameTarget);
+		static void StartGame(const UObject* GameTarget, const bool& IsNewGame);
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Quit Game", Category = "UI Function"))
 		static void QuitFromMenu(const UObject* GameTarget);

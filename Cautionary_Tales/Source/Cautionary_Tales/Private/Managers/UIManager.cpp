@@ -9,17 +9,12 @@
 #include "Managers/LevelManager.h"
 
 
-void UUIManager::StartGame(const UObject* target)
+void UUIManager::StartGame(const UObject* target, const bool& IsNewGame)
 {
 	auto world = target->GetWorld();
-	if (world) world->GetSubsystem<ULevelManager>()->LoadLevel(LEVEL_ONE);
+	if (world) world->GetSubsystem<ULevelManager>()->LoadLevel(IsNewGame);
 }
 
-void UUIManager::ContinueGame(const UObject* Target)
-{
-
-
-}
 
 void UUIManager::QuitGame(const UObject* target)
 {
@@ -29,7 +24,7 @@ void UUIManager::QuitGame(const UObject* target)
 void UUIManager::QuitAndSave(const UObject* Target)
 {
 	auto save = GetWorld()->GetSubsystem<USaveManager>();
-	if(save) save->SaveGame(SAVE);
+	if(save) save->SaveGame();
 	QuitGame(Target);
 }
 
@@ -61,7 +56,7 @@ void UUIManager::DeathScreen(const UObject* target)
 void UUIManager::ToMainMenu(const UObject* target)
 {
 	auto save = GetWorld()->GetSubsystem<USaveManager>();
-	if (save) save->SaveGame(SAVE);
+	if (save) save->SaveGame();
 	
 	auto world = GetWorld();
 

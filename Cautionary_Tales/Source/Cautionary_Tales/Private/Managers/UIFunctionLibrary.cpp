@@ -17,14 +17,9 @@ UUIManager* UUIFunctionLibrary::GetUIManager(const UObject* Target)
 	return manager;
 }
 
-void UUIFunctionLibrary::StartGame(const UObject* GameTarget)
+void UUIFunctionLibrary::StartGame(const UObject* GameTarget, const bool& IsNewGame)
 {
-	GetUIManager(GameTarget)->StartGame(GameTarget);
-}
-
-void UUIFunctionLibrary::ContinueGame(const UObject* GameTarget)
-{
-	GetUIManager(GameTarget)->ContinueGame(GameTarget);
+	GetUIManager(GameTarget)->StartGame(GameTarget, IsNewGame);
 }
 
 void UUIFunctionLibrary::QuitFromMenu(const UObject* GameTarget)

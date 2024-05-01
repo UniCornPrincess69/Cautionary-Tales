@@ -18,15 +18,17 @@ class CAUTIONARY_TALES_API USaveManager : public UWorldSubsystem
 
 public:
 	FSaveData CreateSaveData(void);
-	void SaveGame(const FName& SaveName);
-	FSaveData* LoadGame(const FName& SaveName);
+	void SaveGame();
+	FSaveData* LoadGame();
 	
 private:
 	virtual void Initialize(FSubsystemCollectionBase& collection) override;
 	virtual void Deinitialize() override;
 	bool CheckSave(const UDataTable* Data, const FName& SaveName);
 
+	FSaveData* SaveData = nullptr;
 	UDataTable* DataTable = nullptr;
-	const FString SaveDataPath = FString(TEXT("/Game/Assets/Blueprints/DT_SaveData"));
+	const FString SAVEDATAPATH = FString(TEXT("/Game/Assets/Blueprints/DT_SaveData"));
+	const FName SAVENAME = FName(TEXT("SAVE"));
 
 };

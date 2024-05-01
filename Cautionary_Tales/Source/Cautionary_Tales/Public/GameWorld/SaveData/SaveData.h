@@ -9,6 +9,7 @@
 /**
  * 
  */
+
 USTRUCT(BlueprintType)
 struct CAUTIONARY_TALES_API FSaveData : public FTableRowBase
 {
@@ -19,4 +20,7 @@ struct CAUTIONARY_TALES_API FSaveData : public FTableRowBase
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FName LevelName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FVector EnemyPosition;
 };

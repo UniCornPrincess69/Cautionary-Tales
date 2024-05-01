@@ -9,11 +9,22 @@
 /**
  * 
  */
+
 UCLASS()
 class CAUTIONARY_TALES_API ULevelManager : public UWorldSubsystem
 {
 	GENERATED_BODY()
 	
 public:
-	void LoadLevel(const FName& LevelName);
+	void LoadLevel(const bool& IsNewGame);
+
+private:
+	TMap<int32, FName> Levels = 
+	{
+		{0, FName("MainMenu")},
+		{1, FName("Level_01")},
+		{2, FName("Level_02")},
+		{3, FName("Level_03")}
+	};
+	const int32 ONE = 1;
 };

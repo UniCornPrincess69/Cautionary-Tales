@@ -15,8 +15,7 @@ class CAUTIONARY_TALES_API UUIManager : public UWorldSubsystem
 	GENERATED_BODY()
 
 public:
-	void StartGame(const UObject* Target);
-	void ContinueGame(const UObject* Target);
+	void StartGame(const UObject* Target, const bool& IsNewGame);
 	void QuitGame(const UObject* Target);
 	void QuitAndSave(const UObject* Target);
 	void PauseGame(const UObject* Target, bool IsPaused);
