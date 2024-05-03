@@ -25,10 +25,13 @@ private:
 	virtual void Initialize(FSubsystemCollectionBase& collection) override;
 	virtual void Deinitialize() override;
 	bool CheckSave(const UDataTable* Data, const FName& SaveName);
+	bool DataExists(const FString& Path);
 
 	FSaveData* SaveData = nullptr;
 	UDataTable* DataTable = nullptr;
-	const FString SAVEDATAPATH = FString(TEXT("/Game/Assets/Blueprints/DT_SaveData"));
+
+	const FString SAVEPATH = FPaths::ProjectSavedDir() + TEXT("SavedData.json");
+	const FString DATATABLEPATH = FString(TEXT("/Game/Assets/Blueprints/DT_SaveData"));
 	const FName SAVENAME = FName(TEXT("SAVE"));
 
 };

@@ -12,7 +12,7 @@
 void UUIManager::StartGame(const UObject* target, const bool& IsNewGame)
 {
 	auto world = target->GetWorld();
-	if (world) world->GetSubsystem<ULevelManager>()->LoadLevel(IsNewGame);
+	if (world) world->GetSubsystem<ULevelManager>()->LoadGame(IsNewGame);
 }
 
 

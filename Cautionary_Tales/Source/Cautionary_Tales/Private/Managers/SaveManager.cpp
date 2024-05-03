@@ -46,12 +46,12 @@ void USaveManager::SaveGame()
 			//TODO: SaveData check needs to be reworked. Only one file with given name should exist. 
 			if (SaveData)
 			{
-				FString JsonString;
-				FJsonObjectConverter::UStructToJsonObjectString(saveData, JsonString);
+				FString jsonString;
+				FJsonObjectConverter::UStructToJsonObjectString(saveData, jsonString);
 
-				FString FilePath = FPaths::ProjectSavedDir() + TEXT("SavedData.json");
+				FString FilePath = SAVEPATH;
 
-				if (FFileHelper::SaveStringToFile(JsonString, *FilePath))
+				if (FFileHelper::SaveStringToFile(jsonString, *FilePath))
 				{
 					UE_LOG(LogTemp, Warning, TEXT("Success"));
 				}
@@ -78,8 +78,31 @@ FSaveData* USaveManager::LoadGame()
 void USaveManager::Initialize(FSubsystemCollectionBase& collection)
 {
 	Super::Initialize(collection);
-	DataTable = LoadObject<UDataTable>(nullptr, (TCHAR*)(*SAVEDATAPATH));
+	DataTable = LoadObject<UDataTable>(nullptr, (TCHAR*)(*DATATABLEPATH));
+
+	if (DataTable)
+	{
+		if (DataExists(SAVEPATH))
+		{
+			if (CheckSave(DataTable, SAVENAME)) DataTable->RemoveRow(SAVENAME);
+
+			FString dataString;
+			if (FFileHelper::LoadFileToString(dataString, *SAVEPATH))
+			{
+				FSaveData deserializedData;
+				FJsonObjectConverter::JsonObjectStringToUStruct(dataString, &deserializedData);
+				DataTable->AddRow(SAVENAME, deserializedData);
+			}
+		}
+		else UE_LOG(LogTemp, Warning, TEXT("File doesn't exist"));
+	}
+
 	if (DataTable && CheckSave(DataTable, SAVENAME)) SaveData = DataTable->FindRow<FSaveData>(SAVENAME, TEXT(""));
+	else
+	{
+		DataTable->AddRow(SAVENAME, FSaveData());
+	}
+
 }
 
 void USaveManager::Deinitialize()
@@ -90,4 +113,9 @@ void USaveManager::Deinitialize()
 bool USaveManager::CheckSave(const UDataTable* Data, const FName& SaveName)
 {
 	return Data->FindRow<FSaveData>(SaveName, TEXT("")) ? true : false;
+}
+
+bool USaveManager::DataExists(const FString& Path)
+{
+	return FPlatformFileManager::Get().GetPlatformFile().FileExists(*Path);
 }

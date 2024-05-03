@@ -5,6 +5,7 @@
 #include <Runtime/Engine/Classes/Kismet/GameplayStatics.h>
 #include "Managers/UIManager.h"
 #include "Player/PlayerCharacter.h"
+#include "Managers/LevelManager.h"
 
 auto UGameManager::GetGameInstance(const UObject& target) -> UGameInstance* const
 {
@@ -30,6 +31,7 @@ void UGameManager::SetPlayer(APlayerCharacter* player)
 {
 	Player = player;
 	OnPlayerReady.Broadcast(Player);
+	GetWorld()->GetSubsystem<ULevelManager>()->SetGameManager(this);
 }
 
 UUIManager* UGameManager::GetUIManager(void)

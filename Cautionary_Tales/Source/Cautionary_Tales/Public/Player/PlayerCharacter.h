@@ -10,6 +10,7 @@
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPause);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTriggerOverlap);
 
 class UInputAction;
 UCLASS()
@@ -59,6 +60,7 @@ private:
 public:
 	UPROPERTY(BlueprintAssignable)
 	FOnPause OnPause;
+	FOnTriggerOverlap OnTriggerOverlap;
 private:
 #pragma region Movement
 	FVector2D Direction = FVector2D::ZeroVector;

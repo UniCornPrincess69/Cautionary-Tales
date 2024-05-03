@@ -15,12 +15,17 @@ struct CAUTIONARY_TALES_API FSaveData : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FVector PlayerPosition;
+
+		/*FORCEINLINE FSaveData(const FVector& PlayerPosition = FVector{0.f, 0.f, 0.f}, 
+			const FName& LevelName = FName{TEXT("MainMenu")},
+			const FVector& EnemyPosition = FVector{0.f, 0.f, 0.f});*/
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FName LevelName;
+		FVector PlayerPosition = FVector(0.f, 0.f, 0.f);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FVector EnemyPosition;
+		FName LevelName = FName(TEXT("None"));
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FVector EnemyPosition = FVector(0.f, 0.f, 0.f);
 };

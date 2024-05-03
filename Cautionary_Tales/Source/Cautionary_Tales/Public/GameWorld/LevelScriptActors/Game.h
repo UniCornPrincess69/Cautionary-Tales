@@ -9,9 +9,14 @@
 /**
  * 
  */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLevelLoaded);
+
 UCLASS()
 class CAUTIONARY_TALES_API AGame : public ALevelScriptActor
 {
 	GENERATED_BODY()
+
+public:
+	FOnLevelLoaded OnLevelLoaded;
 	
 };

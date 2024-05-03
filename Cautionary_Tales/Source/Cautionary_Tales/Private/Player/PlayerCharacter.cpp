@@ -62,6 +62,10 @@ void APlayerCharacter::OverlapBegin(UPrimitiveComponent* Overlap, AActor* Other,
 	if (Other->IsA(ATriggerBox::StaticClass()))
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("Transition"));
+
+		OnTriggerOverlap.Broadcast();
+
+		UE_LOG(LogTemp, Warning, TEXT("%s"), (OnTriggerOverlap.IsBound() ? TEXT("true") : TEXT("false")));
 	}
 }
 
