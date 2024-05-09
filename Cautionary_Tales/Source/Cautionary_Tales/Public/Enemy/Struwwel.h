@@ -25,5 +25,6 @@ public:
 
 private:
 	class UAIComponent* EnemyAI = nullptr;
+	bool IsActive = false;
 
 };

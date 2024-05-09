@@ -2,7 +2,10 @@
 
 
 #include "Enemy/AIComponent.h"
+#include "Enemy/EnemyFSM.h"
 
+
+//TODO: Implementing logic and connecting of everything AI related
 // Sets default values for this component's properties
 UAIComponent::UAIComponent()
 {
@@ -18,7 +21,7 @@ UAIComponent::UAIComponent()
 void UAIComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
+	EnemyFSM = NewObject<UEnemyFSM>();
 	// ...
 	
 }
