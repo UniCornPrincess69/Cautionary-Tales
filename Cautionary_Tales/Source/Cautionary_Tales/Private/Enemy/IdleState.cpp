@@ -2,14 +2,16 @@
 
 
 #include "Enemy/IdleState.h"
+#include "Enemy/EnemyFSM.h"
 
 void UIdleState::EnterState()
 {
-	UE_LOG(LogTemp, Warning, TEXT("IdleState entered"));
+	GEngine->AddOnScreenDebugMessage(-1, .5f, FColor::Red, TEXT("IdleState"));
 }
 
 void UIdleState::UpdateState()
 {
+	GEngine->AddOnScreenDebugMessage(-1, .3f, FColor::Blue, TEXT("IdleUpdated"));
 }
 
 void UIdleState::ExitState()

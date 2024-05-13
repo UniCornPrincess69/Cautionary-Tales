@@ -19,6 +19,11 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason);
+
+private:
+	UFUNCTION()
+		void PlayerDetected();
 
 public:	
 	// Called every frame
@@ -26,4 +31,5 @@ public:
 
 private:
 	class UEnemyFSM* EnemyFSM = nullptr;
+	class AStruwwel* Struwwel = nullptr;
 };

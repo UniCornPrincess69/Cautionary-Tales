@@ -2,15 +2,16 @@
 
 
 #include "Enemy/ChaseState.h"
+#include "Enemy/EnemyFSM.h"
 
-void UChaseState::EnterState()
+void UChaseState::UpdateState(void)
 {
 }
 
-void UChaseState::UpdateState()
+void UChaseState::ExitState(void)
 {
 }
 
-void UChaseState::ExitState()
+void UChaseState::EnterState(void)
 {
 }

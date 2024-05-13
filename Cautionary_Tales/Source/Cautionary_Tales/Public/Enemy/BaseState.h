@@ -9,14 +9,14 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(abstract)
 class CAUTIONARY_TALES_API UBaseState : public UObject
 {
 	GENERATED_BODY()
 
 
 public:
-
+	virtual void SetFSM(class UEnemyFSM* fsm) {};
 	virtual void EnterState(void) {};
 	virtual void UpdateState(void) {};
 	virtual void ExitState(void) {};

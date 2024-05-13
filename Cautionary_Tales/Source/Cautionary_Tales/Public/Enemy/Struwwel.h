@@ -6,6 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "Struwwel.generated.h"
 
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerDetection);
+
 UCLASS()
 class CAUTIONARY_TALES_API AStruwwel : public AActor
 {
@@ -22,6 +25,8 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	FOnPlayerDetection OnPlayerDetection;
 
 private:
 	class UAIComponent* EnemyAI = nullptr;

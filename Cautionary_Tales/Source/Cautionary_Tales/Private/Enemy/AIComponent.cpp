@@ -1,8 +1,10 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ // Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "Enemy/AIComponent.h"
 #include "Enemy/EnemyFSM.h"
+#include "Enemy/Struwwel.h"
+#include "Player/PlayerCharacter.h"
 
 
 //TODO: Implementing logic and connecting of everything AI related
@@ -22,8 +24,21 @@ void UAIComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	EnemyFSM = NewObject<UEnemyFSM>();
+	Struwwel = Cast<AStruwwel>(GetOwner());
+	Struwwel->OnPlayerDetection.AddDynamic(this, &UAIComponent::PlayerDetected);
 	// ...
 	
+}
+
+void UAIComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+	EnemyFSM = nullptr;
+}
+
+void UAIComponent::PlayerDetected()
+{
+	EnemyFSM->ChangeState(EStates::ST_CHASE);
 }
 
 
@@ -32,6 +47,6 @@ void UAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
+	EnemyFSM->UpdateState();
 }
 
