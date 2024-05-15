@@ -8,7 +8,7 @@ public class Cautionary_Tales : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "MoviePlayer", "EnhancedInput", "UMG", "Json", "JsonUtilities" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "MoviePlayer", "EnhancedInput", "UMG", "Json", "JsonUtilities", "AIModule" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "GameFramework/Pawn.h"
 #include "Struwwel.generated.h"
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerDetection);
 
 UCLASS()
-class CAUTIONARY_TALES_API AStruwwel : public AActor
+class CAUTIONARY_TALES_API AStruwwel : public APawn
 {
 	GENERATED_BODY()
 	
@@ -28,8 +28,16 @@ public:
 
 	FOnPlayerDetection OnPlayerDetection;
 
+	UFUNCTION(BlueprintCallable)
+		void PlayerDetected(APawn* Other);
 private:
+	UFUNCTION(CallInEditor)
+	void Test();
+
+
 	class UAIComponent* EnemyAI = nullptr;
 	bool IsActive = false;
 
+
+	//class UPawnSensingComponent* Sense = nullptr;
 };

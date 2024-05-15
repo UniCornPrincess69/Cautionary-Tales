@@ -14,7 +14,11 @@ UEnemyFSM::UEnemyFSM()
 	Idle = NewObject<UIdleState>();
 	Idle->SetFSM(this);
 	Chase = NewObject<UChaseState>();
+	Chase->SetFSM(this);
 	Search = NewObject<USearchState>();
+	Search->SetFSM(this);
+
+
 
 	ChangeState(EStates::ST_IDLE);
 }

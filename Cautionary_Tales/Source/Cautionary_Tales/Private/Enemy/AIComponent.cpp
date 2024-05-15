@@ -26,6 +26,7 @@ void UAIComponent::BeginPlay()
 	EnemyFSM = NewObject<UEnemyFSM>();
 	Struwwel = Cast<AStruwwel>(GetOwner());
 	Struwwel->OnPlayerDetection.AddDynamic(this, &UAIComponent::PlayerDetected);
+	
 	// ...
 	
 }

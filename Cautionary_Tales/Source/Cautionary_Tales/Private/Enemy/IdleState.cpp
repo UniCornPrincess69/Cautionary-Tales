@@ -6,12 +6,12 @@
 
 void UIdleState::EnterState()
 {
-	GEngine->AddOnScreenDebugMessage(-1, .5f, FColor::Red, TEXT("IdleState"));
+	//GEngine->AddOnScreenDebugMessage(-1, .5f, FColor::Red, TEXT("IdleState"));
 }
 
 void UIdleState::UpdateState()
 {
-	GEngine->AddOnScreenDebugMessage(-1, .3f, FColor::Blue, TEXT("IdleUpdated"));
+	//GEngine->AddOnScreenDebugMessage(-1, .3f, FColor::Blue, TEXT("IdleUpdated"));
 }
 
 void UIdleState::ExitState()

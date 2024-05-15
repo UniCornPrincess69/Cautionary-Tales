@@ -74,7 +74,6 @@ FSaveData* USaveManager::LoadGame()
 }
 
 
-//TODO: Loading of saved file
 void USaveManager::Initialize(FSubsystemCollectionBase& collection)
 {
 	Super::Initialize(collection);
