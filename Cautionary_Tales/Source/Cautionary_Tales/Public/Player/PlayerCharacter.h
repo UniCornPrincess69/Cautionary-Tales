@@ -63,6 +63,8 @@ public:
 	FOnTriggerOverlap OnTriggerOverlap;
 private:
 #pragma region Movement
+	FVector2D MinThreshold = FVector2D(-.2f, -.2f);
+	FVector2D MaxThreshold = FVector2D(.2f, .2f);
 	FVector2D Direction = FVector2D::ZeroVector;
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Speed", Category = "CharacterMovement"))
 	float Speed = 50.f;

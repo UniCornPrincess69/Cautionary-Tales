@@ -29,15 +29,15 @@ public:
 	FOnPlayerDetection OnPlayerDetection;
 
 	UFUNCTION(BlueprintCallable)
-		void PlayerDetected(APawn* Other);
+		void PlayerDetected(AActor* Other, struct FAIStimulus Stimulus);
 private:
 	UFUNCTION(CallInEditor)
 	void Test();
 
 
 	class UAIComponent* EnemyAI = nullptr;
+	class UAIPerceptionComponent* PerceptionComponent = nullptr;
 	bool IsActive = false;
 
 
-	//class UPawnSensingComponent* Sense = nullptr;
 };

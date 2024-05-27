@@ -89,7 +89,9 @@ void APlayerCharacter::MovePlayer(float DeltaTime)
 
 void APlayerCharacter::HandleMovement(const FInputActionValue& Value)
 {
-	Direction = Value.Get<FVector2D>();
+	auto value = Value.Get<FVector2D>();
+	if (value >= MinThreshold && value <= MaxThreshold) Direction = FVector2D::ZeroVector;
+	else Direction = Value.Get<FVector2D>();
 	MovePlayer(GetWorld()->GetDeltaSeconds());
 }
 
