@@ -17,7 +17,7 @@ class CAUTIONARY_TALES_API UChaseState : public UBaseState
 
 public:
 	// Inherited via UBaseState
-	FORCEINLINE virtual void SetFSM(UEnemyFSM* fsm) override { FSM = fsm; };
+	inline virtual void SetFSM(UEnemyFSM* fsm) override { FSM = fsm; };
 
 	virtual void EnterState(void) override;
 
@@ -26,6 +26,11 @@ public:
 	virtual void ExitState(void) override;
 
 private:
+	bool PlayerInRange(void);
 
 	UEnemyFSM* FSM = nullptr;
+	class APlayerCharacter* Player = nullptr;
+	class AStruwwel* Struwwel = nullptr;
+	class AStruwwelController* Controller = nullptr;
+
 };

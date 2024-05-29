@@ -6,11 +6,14 @@
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "Player/PlayerCharacter.h"
+#include "Managers/GameManager.h"
 
 
 // Sets default values
 AStruwwel::AStruwwel()
 {
+
+	//TODO: Implement Target forgotten, change to idle/search!
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -26,7 +29,6 @@ AStruwwel::AStruwwel()
 	PerceptionComponent->ConfigureSense(*SightConfig);
 	PerceptionComponent->SetDominantSense(SightConfig->GetSenseImplementation());
 	PerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &AStruwwel::PlayerDetected);
-	
 }
 
 // Called when the game starts or when spawned
@@ -46,6 +48,8 @@ void AStruwwel::Tick(float DeltaTime)
 void AStruwwel::Test()
 {
 	OnPlayerDetection.Broadcast();
+
+	
 }
 
 void AStruwwel::PlayerDetected(AActor* Other, FAIStimulus Stimulus)

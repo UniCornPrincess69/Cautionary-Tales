@@ -18,15 +18,26 @@ enum class EStates
 };
 
 class UBaseState;
+class APlayerCharacter;
+class AStruwwel;
+class AStruwwelController;
 UCLASS()
 class CAUTIONARY_TALES_API UEnemyFSM : public UObject
 {
 	GENERATED_BODY()
+
 public:
 	UEnemyFSM();
 	void ChangeState(EStates state);
 	void UpdateState(void);
 
+	inline void SetPlayer(APlayerCharacter* player) { Player = player; }
+	inline void SetEnemy(AStruwwel* struwwel) { Struwwel = struwwel; }
+	inline void SetAIController(AStruwwelController* controller) { Controller = controller; }
+
+	APlayerCharacter* GetPlayer(void);
+	AStruwwel* GetEnemy(void);
+	AStruwwelController* GetAIController(void);
 
 private:
 	EStates CurrentState = EStates::ST_NONE;
@@ -35,5 +46,7 @@ private:
 	UBaseState* Chase = nullptr;
 	UBaseState* Search = nullptr;
 
-	
+	APlayerCharacter* Player = nullptr;
+	AStruwwel* Struwwel = nullptr;
+	AStruwwelController* Controller;
 };

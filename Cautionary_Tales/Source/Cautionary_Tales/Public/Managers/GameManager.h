@@ -24,10 +24,10 @@ public:
 	static auto Instantiate(const UObject& target) -> UGameManager* const;
 
 	void SetPlayer(APlayerCharacter* player);
-	FORCEINLINE void SetInGameUI(AInGameUI* UI) { InGameUI = UI; }
+	inline void SetInGameUI(AInGameUI* UI) { InGameUI = UI; }
 
-	FORCEINLINE AInGameUI* GetInGameUI(void) { return InGameUI; }
-	FORCEINLINE APlayerCharacter* GetPlayer(void) { return Player; }
+	inline AInGameUI* GetInGameUI(void) { return InGameUI; }
+	inline APlayerCharacter* GetPlayer(void) { return Player; }
 	class UUIManager* GetUIManager(void);
 
 	UPROPERTY(BlueprintAssignable)
@@ -36,6 +36,10 @@ public:
 private:
 	virtual void Initialize(FSubsystemCollectionBase& collection) override;
 	virtual void Deinitialize() override;
+
+	void DelayedPlayerReadyCallback(void);
+
+	FTimerHandle TimerHandle;
 
 	APlayerCharacter* Player = nullptr;
 	AInGameUI* InGameUI = nullptr;

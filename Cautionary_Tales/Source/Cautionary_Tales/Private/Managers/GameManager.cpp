@@ -29,9 +29,10 @@ auto UGameManager::Instantiate(const UObject& target) -> UGameManager* const
 
 void UGameManager::SetPlayer(APlayerCharacter* player)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Manager received Player"));
 	Player = player;
-	OnPlayerReady.Broadcast(Player);
-	GetWorld()->GetSubsystem<ULevelManager>()->SetGameManager(this);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, FTimerDelegate::CreateUObject(this, &UGameManager::DelayedPlayerReadyCallback), 3.f, false);
+	
 }
 
 UUIManager* UGameManager::GetUIManager(void)
@@ -49,5 +50,12 @@ void UGameManager::Initialize(FSubsystemCollectionBase& collection)
 void UGameManager::Deinitialize()
 {
 	Super::Deinitialize();
+	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 	UE_LOG(LogTemp, Warning, TEXT("GameManager deinstantiated"));
+}
+
+void UGameManager::DelayedPlayerReadyCallback(void)
+{
+	OnPlayerReady.Broadcast(Player);
+	GetWorld()->GetSubsystem<ULevelManager>()->SetGameManager(this);
 }

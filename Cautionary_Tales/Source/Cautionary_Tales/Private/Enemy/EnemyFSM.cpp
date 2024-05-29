@@ -6,6 +6,7 @@
 #include "Enemy/ChaseState.h"
 #include "Enemy/IdleState.h"
 #include "Enemy/SearchState.h"
+#include "Player/PlayerCharacter.h"
 
 
 
@@ -17,8 +18,6 @@ UEnemyFSM::UEnemyFSM()
 	Chase->SetFSM(this);
 	Search = NewObject<USearchState>();
 	Search->SetFSM(this);
-
-
 
 	ChangeState(EStates::ST_IDLE);
 }
@@ -51,4 +50,19 @@ void UEnemyFSM::ChangeState(EStates state)
 void UEnemyFSM::UpdateState(void)
 {
 	ActiveState->UpdateState();
+}
+
+APlayerCharacter* UEnemyFSM::GetPlayer(void)
+{
+	return Player;
+}
+
+AStruwwel* UEnemyFSM::GetEnemy(void)
+{
+	return Struwwel;
+}
+
+AStruwwelController* UEnemyFSM::GetAIController(void)
+{
+	return Controller;
 }
