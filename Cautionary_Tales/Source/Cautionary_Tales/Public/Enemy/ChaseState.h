@@ -9,7 +9,7 @@
 /**
  * 
  */
-class UEnemyFSM;
+class AStruwwelController;
 UCLASS()
 class CAUTIONARY_TALES_API UChaseState : public UBaseState
 {
@@ -17,7 +17,7 @@ class CAUTIONARY_TALES_API UChaseState : public UBaseState
 
 public:
 	// Inherited via UBaseState
-	inline virtual void SetFSM(UEnemyFSM* fsm) override { FSM = fsm; };
+	inline virtual void SetFSM(AStruwwelController* fsm) override { FSM = fsm; };
 
 	virtual void EnterState(void) override;
 
@@ -28,9 +28,8 @@ public:
 private:
 	bool PlayerInRange(void);
 
-	UEnemyFSM* FSM = nullptr;
+	AStruwwelController* FSM = nullptr;
 	class APlayerCharacter* Player = nullptr;
 	class AStruwwel* Struwwel = nullptr;
-	class AStruwwelController* Controller = nullptr;
 
 };

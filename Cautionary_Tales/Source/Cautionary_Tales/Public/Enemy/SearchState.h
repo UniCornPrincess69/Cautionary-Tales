@@ -9,20 +9,20 @@
 /**
  * 
  */
-class UEnemyFSM;
+class AStruwwelController;
 UCLASS()
 class CAUTIONARY_TALES_API USearchState : public UBaseState
 {
 	GENERATED_BODY()
 
 public:
-	FORCEINLINE virtual void SetFSM(class UEnemyFSM* fsm) override { FSM = fsm; };
+	inline virtual void SetFSM(class AStruwwelController* fsm) override { FSM = fsm; };
 	virtual void EnterState(void) override;
 	virtual void UpdateState(void) override;
 	virtual void ExitState(void) override;
 
 private:
 
-	UEnemyFSM* FSM = nullptr;
+	AStruwwelController* FSM = nullptr;
 
 };

@@ -18,6 +18,8 @@ public:
 	// Sets default values for this actor's properties
 	AStruwwel();
 
+	void Instantiate(void);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -34,9 +36,8 @@ private:
 	UFUNCTION(CallInEditor)
 	void Test();
 
-	UPROPERTY(VisibleAnywhere, Category = AI)
-	class UAIComponent* EnemyAI = nullptr;
 	class UAIPerceptionComponent* PerceptionComponent = nullptr;
+	class AStruwwelController* Controller = nullptr;
 	bool IsActive = false;
 
 

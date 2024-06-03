@@ -9,13 +9,13 @@
 /**
  * 
  */
-enum class EStates
-{
-	ST_NONE,
-	ST_IDLE,
-	ST_CHASE,
-	ST_SEARCH
-};
+//enum class EStates
+//{
+//	ST_NONE,
+//	ST_IDLE,
+//	ST_CHASE,
+//	ST_SEARCH
+//};
 
 class UBaseState;
 class APlayerCharacter;
@@ -28,19 +28,19 @@ class CAUTIONARY_TALES_API UEnemyFSM : public UObject
 
 public:
 	UEnemyFSM();
-	void ChangeState(EStates state);
+	//void ChangeState(EStates state);
 	void UpdateState(void);
 
-	inline void SetPlayer(APlayerCharacter* player) { Player = player; }
-	inline void SetEnemy(AStruwwel* struwwel) { Struwwel = struwwel; }
-	inline void SetAIController(AStruwwelController* controller) { Controller = controller; }
+	//inline void SetPlayer(APlayerCharacter* player) { Player = player; }
+	//inline void SetEnemy(AStruwwel* struwwel) { Struwwel = struwwel; }
+	//inline void SetAIController(AStruwwelController* controller) { Controller = controller; }
 
-	APlayerCharacter* GetPlayer(void);
+	/*APlayerCharacter* GetPlayer(void);
 	AStruwwel* GetEnemy(void);
-	AStruwwelController* GetAIController(void);
+	AStruwwelController* GetAIController(void);*/
 
 private:
-	EStates CurrentState = EStates::ST_NONE;
+	/*EStates CurrentState = EStates::ST_NONE;
 	UBaseState* ActiveState = nullptr;
 	UBaseState* Idle = nullptr;
 	UBaseState* Chase = nullptr;
@@ -48,5 +48,5 @@ private:
 
 	APlayerCharacter* Player = nullptr;
 	AStruwwel* Struwwel = nullptr;
-	AStruwwelController* Controller;
+	AStruwwelController* Controller;*/
 };

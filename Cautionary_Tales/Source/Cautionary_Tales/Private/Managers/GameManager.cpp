@@ -6,6 +6,7 @@
 #include "Managers/UIManager.h"
 #include "Player/PlayerCharacter.h"
 #include "Managers/LevelManager.h"
+#include "Enemy/Struwwel.h"
 
 auto UGameManager::GetGameInstance(const UObject& target) -> UGameInstance* const
 {
@@ -35,6 +36,12 @@ void UGameManager::SetPlayer(APlayerCharacter* player)
 	
 }
 
+void UGameManager::SetEnemy(AStruwwel* struwwel)
+{
+	Struwwel = struwwel;
+	Struwwel->Instantiate();
+}
+
 UUIManager* UGameManager::GetUIManager(void)
 {
 	auto ui = GetWorld()->GetSubsystem<UUIManager>();
@@ -44,14 +51,12 @@ UUIManager* UGameManager::GetUIManager(void)
 void UGameManager::Initialize(FSubsystemCollectionBase& collection)
 {
 	Super::Initialize(collection);
-	UE_LOG(LogTemp, Warning, TEXT("GameManager instantiated"));
 }
 
 void UGameManager::Deinitialize()
 {
 	Super::Deinitialize();
 	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
-	UE_LOG(LogTemp, Warning, TEXT("GameManager deinstantiated"));
 }
 
 void UGameManager::DelayedPlayerReadyCallback(void)

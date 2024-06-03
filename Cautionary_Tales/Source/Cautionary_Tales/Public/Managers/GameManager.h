@@ -11,6 +11,7 @@
  */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerReady, APlayerCharacter*, Player);
 
+class AStruwwel;
 class APlayerCharacter;
 class AInGameUI;
 UCLASS()
@@ -24,6 +25,7 @@ public:
 	static auto Instantiate(const UObject& target) -> UGameManager* const;
 
 	void SetPlayer(APlayerCharacter* player);
+	void SetEnemy(AStruwwel* struwwel);
 	inline void SetInGameUI(AInGameUI* UI) { InGameUI = UI; }
 
 	inline AInGameUI* GetInGameUI(void) { return InGameUI; }
@@ -42,5 +44,6 @@ private:
 	FTimerHandle TimerHandle;
 
 	APlayerCharacter* Player = nullptr;
+	AStruwwel* Struwwel = nullptr;
 	AInGameUI* InGameUI = nullptr;
 };

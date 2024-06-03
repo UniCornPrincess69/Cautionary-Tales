@@ -2,10 +2,12 @@
 
 
 #include "Enemy/SearchState.h"
-#include "Enemy/EnemyFSM.h"
+#include "Enemy/StruwwelController.h"
 
 void USearchState::EnterState(void)
 {
+	GEngine->AddOnScreenDebugMessage(-1, .5f, FColor::Black, TEXT("Searching..."));
+	FSM->StopMovement();
 }
 
 void USearchState::UpdateState(void)

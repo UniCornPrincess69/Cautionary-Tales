@@ -15,13 +15,13 @@ void UChaseState::UpdateState(void)
 	/*FVector Direction = Player->GetActorLocation() - Struwwel->GetActorLocation();
 	Direction.Normalize();
 	Struwwel->AddMovementInput(Direction, 1.f);*/
-	if (!PlayerInRange()) FSM->ChangeState(EStates::ST_SEARCH);
+	if (!PlayerInRange()) FSM->SetState(EStates::ST_SEARCH);
 
 }
 
 void UChaseState::ExitState(void)
 {
-	GEngine->AddOnScreenDebugMessage(-1, .5f, FColor::Blue, TEXT("Chase exited"));
+	//GEngine->AddOnScreenDebugMessage(-1, .5f, FColor::Blue, TEXT("Chase exited"));
 }
 
 bool UChaseState::PlayerInRange(void)
@@ -35,9 +35,12 @@ bool UChaseState::PlayerInRange(void)
 void UChaseState::EnterState(void)
 {
 	//GEngine->AddOnScreenDebugMessage(-1, .3f, FColor::Cyan, TEXT("Chase State entered"));
-
-	Player = FSM->GetPlayer();
-	Struwwel = FSM->GetEnemy();
-	
-	//FSM->GetAIController()->MoveToActor(Player);
+	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Blue, TEXT("Chase state entered!"));
+	FSM->MoveToPlayer();
+	if (!Struwwel && !Player)
+	{
+		Struwwel = FSM->GetEnemy();
+		Player = FSM->GetPlayer();
+	}
+	//FSM->MoveToActor(Player);
 }

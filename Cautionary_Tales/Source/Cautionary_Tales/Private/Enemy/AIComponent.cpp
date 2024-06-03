@@ -27,10 +27,10 @@ void UAIComponent::BeginPlay()
 	Super::BeginPlay();
 	Manager = UGameManager::Instantiate(*this);
 	Manager->OnPlayerReady.AddDynamic(this, &UAIComponent::PlayerReady);
-	EnemyFSM = NewObject<UEnemyFSM>();
+	//EnemyFSM = NewObject<UEnemyFSM>();
 	Struwwel = Cast<AStruwwel>(GetOwner());
 	Struwwel->OnPlayerDetection.AddDynamic(this, &UAIComponent::PlayerDetected);
-	Controller = Struwwel->GetController<AStruwwelController>();
+	//Controller = Struwwel->GetController<AStruwwelController>();
 }
 
 void UAIComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -43,16 +43,16 @@ void UAIComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void UAIComponent::PlayerDetected()
 {
-	EnemyFSM->ChangeState(EStates::ST_CHASE);
+	//EnemyFSM->ChangeState(EStates::ST_CHASE);
 }
 
 void UAIComponent::PlayerReady(APlayerCharacter* player)
 {
 	Player = player;
 	UE_LOG(LogTemp, Warning, TEXT("Player: %s"), *Player->GetName());
-	EnemyFSM->SetPlayer(Player);
+	/*EnemyFSM->SetPlayer(Player);
 	EnemyFSM->SetEnemy(Struwwel);
-	EnemyFSM->SetAIController(Controller);
+	EnemyFSM->SetAIController(Controller);*/
 }
 
 
@@ -61,6 +61,6 @@ void UAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	EnemyFSM->UpdateState();
+	//EnemyFSM->UpdateState();
 }
 
