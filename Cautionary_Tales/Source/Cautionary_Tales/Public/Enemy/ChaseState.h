@@ -21,15 +21,13 @@ public:
 
 	virtual void EnterState(void) override;
 
-	virtual void UpdateState(void) override;
+	virtual void UpdateState(float deltaTime) override;
 
 	virtual void ExitState(void) override;
 
 private:
-	bool PlayerInRange(void);
 
 	AStruwwelController* FSM = nullptr;
 	class APlayerCharacter* Player = nullptr;
-	class AStruwwel* Struwwel = nullptr;
 
 };

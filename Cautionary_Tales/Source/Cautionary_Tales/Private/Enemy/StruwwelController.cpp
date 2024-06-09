@@ -2,7 +2,6 @@
 
 
 #include "Enemy/StruwwelController.h"
-#include "Enemy/AIComponent.h"
 #include "Enemy/Struwwel.h"
 #include "Enemy/BaseState.h"
 #include "Enemy/ChaseState.h"
@@ -16,6 +15,18 @@
 //TODO: Forget player and enter Search state needs to be implemented
 AStruwwelController::AStruwwelController()
 {
+	//auto aiSystem = GetWorld()->GetSubsystem<UAISubsystem>();
+	//GET_AI_CONFIG_VAR(bForgetStaleActors = true);
+	//if (GetWorld())
+	//{
+	//	UAISystem* PerceptionSystem = UAISystem::GetCurrent(GetOwner()->GetWorld());
+
+	//	
+
+	//	
+	//	//GetWorld()->GetSubsystem<UAISystem>()->bForgetStaleActors = false;
+	//}
+
 	PerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AI Perception"));
 	UAISenseConfig_Sight* SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Sight"));
 	SightConfig->SightRadius = 1000.f;
@@ -30,6 +41,7 @@ AStruwwelController::AStruwwelController()
 	PerceptionComponent->SetDominantSense(SightConfig->GetSenseImplementation());
 	PerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &AStruwwelController::OnPlayerDetected);
 	PerceptionComponent->OnTargetPerceptionForgotten.AddDynamic(this, &AStruwwelController::OnPlayerLost);
+	NavSys = UNavigationSystemV1::GetCurrent(GetWorld());
 }
 
 void AStruwwelController::SetState(EStates state)
@@ -57,9 +69,9 @@ void AStruwwelController::SetState(EStates state)
 	ActiveState->EnterState();
 }
 
-void AStruwwelController::UpdateState(void)
+void AStruwwelController::UpdateState(float deltaTime)
 {
-	ActiveState->UpdateState();
+	ActiveState->UpdateState(deltaTime);
 }
 
 void AStruwwelController::MoveToPlayer(void)
@@ -80,7 +92,7 @@ void AStruwwelController::BeginPlay()
 void AStruwwelController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	UpdateState();
+	UpdateState(DeltaTime);
 }
 
 void AStruwwelController::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -106,13 +118,15 @@ void AStruwwelController::OnPlayerDetected(AActor* other, FAIStimulus stimulus)
 		GEngine->AddOnScreenDebugMessage(-1, .5f, FColor::Red, TEXT("Player detected"));
 		Player = Cast<APlayerCharacter>(other);
 		SetState(EStates::ST_CHASE);
+		
 	}
 }
 
 void AStruwwelController::OnPlayerLost(AActor* other)
 {
-		GEngine->AddOnScreenDebugMessage(-1, .5f, FColor::Blue, TEXT("Player lost"));
-		SetState(EStates::ST_SEARCH);
+	GEngine->AddOnScreenDebugMessage(-1, .5f, FColor::Blue, TEXT("Player lost"));
+	LastPlayerLocation = other->GetActorLocation();
+	SetState(EStates::ST_SEARCH);
 }
 
 void AStruwwelController::OnPossess(APawn* pawn)

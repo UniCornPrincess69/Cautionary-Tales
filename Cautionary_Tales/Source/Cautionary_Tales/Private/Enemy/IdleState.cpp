@@ -2,18 +2,18 @@
 
 
 #include "Enemy/IdleState.h"
-#include "Enemy/EnemyFSM.h"
+#include "Enemy/StruwwelController.h"
 
-void UIdleState::EnterState()
+void UIdleState::EnterState(void)
 {
 	GEngine->AddOnScreenDebugMessage(-1, .5f, FColor::Red, TEXT("IdleState"));
 }
 
-void UIdleState::UpdateState()
+void UIdleState::UpdateState(float deltaTime)
 {
 	//GEngine->AddOnScreenDebugMessage(-1, .3f, FColor::Blue, TEXT("IdleUpdated"));
 }
 
-void UIdleState::ExitState()
+void UIdleState::ExitState(void)
 {
 }

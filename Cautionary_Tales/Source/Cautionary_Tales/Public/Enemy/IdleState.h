@@ -19,9 +19,9 @@ class CAUTIONARY_TALES_API UIdleState : public UBaseState
 public:
 	inline virtual void SetFSM(AStruwwelController* fsm) override { FSM = fsm; }
 
-	virtual void EnterState() override;
-	virtual void UpdateState() override;
-	virtual void ExitState() override;
+	virtual void EnterState(void) override;
+	virtual void UpdateState(float deltaTime) override;
+	virtual void ExitState(void) override;
 
 private:
 	AStruwwelController* FSM = nullptr;

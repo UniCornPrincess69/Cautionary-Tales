@@ -20,6 +20,7 @@ enum class EStates
 
 class APlayerCharacter;
 class UBaseState;
+class UNavigationSystemV1;
 UCLASS()
 class CAUTIONARY_TALES_API AStruwwelController : public AAIController
 {
@@ -30,10 +31,12 @@ class CAUTIONARY_TALES_API AStruwwelController : public AAIController
 
 public:
 	void SetState(EStates state);
-	void UpdateState(void);
+	void UpdateState(float deltaTime);
 
 	inline APlayerCharacter* GetPlayer(void) { return Player; }
 	inline AStruwwel* GetEnemy(void) { return Struwwel; }
+	inline UNavigationSystemV1* GetNavSystem(void) { return NavSys; }
+	inline FVector GetLastKnownLocation(void) { return LastPlayerLocation; }
 
 	void MoveToPlayer(void);
 
@@ -65,6 +68,10 @@ private:
 
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Player", Category = "FSM"))
 		APlayerCharacter* Player = nullptr;
+
+	UNavigationSystemV1* NavSys = nullptr;
+
+	FVector LastPlayerLocation;
 
 	/*UPROPERTY(EditAnywhere, meta = (DisplayName = "Perception", Category = "FSM"))
 		UAIPerceptionComponent* PerceptionComponent = nullptr;*/

@@ -18,6 +18,6 @@ class CAUTIONARY_TALES_API UBaseState : public UObject
 public:
 	virtual void SetFSM(class AStruwwelController* fsm) {};
 	virtual void EnterState(void) {};
-	virtual void UpdateState(void) {};
+	virtual void UpdateState(float deltaTime) {};
 	virtual void ExitState(void) {};
 };
