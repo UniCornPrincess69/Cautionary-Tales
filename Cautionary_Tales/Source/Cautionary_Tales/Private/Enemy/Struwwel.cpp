@@ -36,7 +36,7 @@ void AStruwwel::Instantiate(void)
 	AIControllerClass = AStruwwelController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	Controller = Cast<AStruwwelController>(GetController());
-
+	bUseControllerRotationYaw = true;
 	if (Controller)
 	{
 		Controller->SetState(EStates::ST_IDLE);

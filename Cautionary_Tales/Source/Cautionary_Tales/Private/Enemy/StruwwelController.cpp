@@ -11,6 +11,7 @@
 #include "Perception/AISenseConfig_Sight.h"
 #include "Player/PlayerCharacter.h"
 #include "NavigationSystem.h"
+#include "Animation/AnimSequence.h"
 
 //TODO: Forget player and enter Search state needs to be implemented
 AStruwwelController::AStruwwelController()
@@ -26,6 +27,8 @@ AStruwwelController::AStruwwelController()
 	//	
 	//	//GetWorld()->GetSubsystem<UAISystem>()->bForgetStaleActors = false;
 	//}
+
+	Walk = ConstructorHelpers::FObjectFinder<UAnimSequence>(*WalkAnimPath).Object;
 
 	PerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AI Perception"));
 	UAISenseConfig_Sight* SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Sight"));
@@ -79,6 +82,11 @@ void AStruwwelController::MoveToPlayer(void)
 	EPathFollowingRequestResult::Type result = MoveToActor(Player);
 	if (result == 0) GEngine->AddOnScreenDebugMessage(-1, .5f, FColor::Red, TEXT("Request failed"));
 	else GEngine->AddOnScreenDebugMessage(-1, .5f, FColor::Green, TEXT("Request succeded"));
+}
+
+void AStruwwelController::PlayAnimation(void)
+{
+	Struwwel->GetMesh()->PlayAnimation(Walk, true);
 }
 
 void AStruwwelController::BeginPlay()

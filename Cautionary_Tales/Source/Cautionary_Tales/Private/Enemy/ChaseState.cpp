@@ -31,4 +31,6 @@ void UChaseState::EnterState(void)
 		Player = FSM->GetPlayer();
 	}
 	FSM->MoveToActor(Player);
+
+	FSM->PlayAnimation();
 }

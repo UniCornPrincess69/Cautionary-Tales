@@ -21,6 +21,7 @@ enum class EStates
 class APlayerCharacter;
 class UBaseState;
 class UNavigationSystemV1;
+class UAnimSequence;
 UCLASS()
 class CAUTIONARY_TALES_API AStruwwelController : public AAIController
 {
@@ -40,6 +41,8 @@ public:
 
 	void MoveToPlayer(void);
 
+	void PlayAnimation(void);
+
 private:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
@@ -55,7 +58,11 @@ private:
 
 	class AStruwwel* Struwwel = nullptr;
 
+	UAnimSequence* Walk = nullptr;
 
+	FString WalkAnimPath = FString(TEXT("/Game/Assets/Animation/Struwelpeter/Walk/Struwelpeter_walk_Anim"));
+
+#pragma region States
 	EStates CurrentState = EStates::ST_NONE;
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Current State", Category = "FSM"))
 		UBaseState* ActiveState = nullptr;
@@ -65,6 +72,7 @@ private:
 		UBaseState* Chase = nullptr;
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "SearchState", Category = "FSM"))
 		UBaseState* Search = nullptr;
+#pragma endregion
 
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Player", Category = "FSM"))
 		APlayerCharacter* Player = nullptr;

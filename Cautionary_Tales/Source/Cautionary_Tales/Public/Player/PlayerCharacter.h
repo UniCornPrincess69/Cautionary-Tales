@@ -13,6 +13,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPause);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTriggerOverlap);
 
 class UInputAction;
+class UAnimSequence;
 UCLASS()
 class CAUTIONARY_TALES_API APlayerCharacter : public ACharacter
 {
@@ -42,6 +43,9 @@ public:
 		void OverlapEnd(UPrimitiveComponent* Overlap, AActor* Other, UPrimitiveComponent* OtherComp,
 			int32 OtherBodyIndex);
 
+	UFUNCTION(CallInEditor)
+	void Test();
+
 private:
 	void Instantiate(void);
 	void MovePlayer(float DeltaTime);
@@ -62,6 +66,14 @@ public:
 	FOnPause OnPause;
 	FOnTriggerOverlap OnTriggerOverlap;
 private:
+
+	UAnimSequence* Walk = nullptr;
+	UAnimSequence* Idle = nullptr;
+	UAnimSequence* CurrentAnim = nullptr;
+
+	FString WalkAnimPath = FString(TEXT("/Game/Assets/Animation/Main_Character/Walk_Cycle/Main_Character_Walkcycle_Anim"));
+	FString IdleAnimPath = FString(TEXT("/Game/Assets/Animation/Main_Character/Idle/idle_Anim"));
+
 #pragma region Movement
 	FVector2D MinThreshold = FVector2D(-.2f, -.2f);
 	FVector2D MaxThreshold = FVector2D(.2f, .2f);
