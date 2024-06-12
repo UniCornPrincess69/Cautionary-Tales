@@ -7,6 +7,7 @@
 #include "Player/PlayerCharacter.h"
 #include "Managers/LevelManager.h"
 #include "Enemy/Struwwel.h"
+#include "Player/TestCharacter.h"
 
 auto UGameManager::GetGameInstance(const UObject& target) -> UGameInstance* const
 {
@@ -28,7 +29,7 @@ auto UGameManager::Instantiate(const UObject& target) -> UGameManager* const
 	else return nullptr;
 }
 
-void UGameManager::SetPlayer(APlayerCharacter* player)
+void UGameManager::SetPlayer(ATestCharacter* player)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Manager received Player"));
 	Player = player;

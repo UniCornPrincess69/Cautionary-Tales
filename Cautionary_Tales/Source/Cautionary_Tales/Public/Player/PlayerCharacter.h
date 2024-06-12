@@ -9,8 +9,8 @@
 
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPause);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTriggerOverlap);
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPause);
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTriggerOverlap);
 
 class UInputAction;
 class UAnimSequence;
@@ -61,10 +61,15 @@ private:
 	class UInputMappingContext* ContextMapping = nullptr;
 	class UGameManager* Manager = nullptr;
 
+#pragma region Character Setup
+	class UCameraComponent* Camera = nullptr;
+	class USpringArmComponent* CameraBoom = nullptr;
+#pragma endregion
+
 public:
-	UPROPERTY(BlueprintAssignable)
+	/*UPROPERTY(BlueprintAssignable)
 	FOnPause OnPause;
-	FOnTriggerOverlap OnTriggerOverlap;
+	FOnTriggerOverlap OnTriggerOverlap;*/
 private:
 
 	UAnimSequence* Walk = nullptr;

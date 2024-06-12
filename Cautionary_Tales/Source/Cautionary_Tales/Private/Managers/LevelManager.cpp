@@ -7,7 +7,7 @@
 #include "GameWorld/SaveData/SaveData.h"
 #include "Managers/GameManager.h"
 #include "Player/PlayerCharacter.h"
-
+#include "Player/TestCharacter.h"
 
 
 //TODO: Load level and character position via Save system

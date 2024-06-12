@@ -12,6 +12,7 @@
 #include "Player/PlayerCharacter.h"
 #include "NavigationSystem.h"
 #include "Animation/AnimSequence.h"
+#include "Player/TestCharacter.h"
 
 //TODO: Forget player and enter Search state needs to be implemented
 AStruwwelController::AStruwwelController()
@@ -121,7 +122,7 @@ void AStruwwelController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void AStruwwelController::OnPlayerDetected(AActor* other, FAIStimulus stimulus)
 {
-	if (other->IsA(APlayerCharacter::StaticClass()))
+	if (other->IsA( ATestCharacter::StaticClass()))
 	{
 		GEngine->AddOnScreenDebugMessage(-1, .5f, FColor::Red, TEXT("Player detected"));
 		Player = Cast<APlayerCharacter>(other);

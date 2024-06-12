@@ -9,11 +9,12 @@
 /**
  * 
  */
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerReady, APlayerCharacter*, Player);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerReady, ATestCharacter*, Player);
 
 class AStruwwel;
 class APlayerCharacter;
 class AInGameUI;
+class ATestCharacter;
 UCLASS()
 class CAUTIONARY_TALES_API UGameManager : public UGameInstanceSubsystem
 {
@@ -24,12 +25,12 @@ class CAUTIONARY_TALES_API UGameManager : public UGameInstanceSubsystem
 public:
 	static auto Instantiate(const UObject& target) -> UGameManager* const;
 
-	void SetPlayer(APlayerCharacter* player);
+	void SetPlayer(ATestCharacter* player);
 	void SetEnemy(AStruwwel* struwwel);
 	inline void SetInGameUI(AInGameUI* UI) { InGameUI = UI; }
 
 	inline AInGameUI* GetInGameUI(void) { return InGameUI; }
-	inline APlayerCharacter* GetPlayer(void) { return Player; }
+	inline ATestCharacter* GetPlayer(void) { return Player; }
 	class UUIManager* GetUIManager(void);
 
 	UPROPERTY(BlueprintAssignable)
@@ -43,7 +44,7 @@ private:
 
 	FTimerHandle TimerHandle;
 
-	APlayerCharacter* Player = nullptr;
+	ATestCharacter* Player = nullptr;
 	AStruwwel* Struwwel = nullptr;
 	AInGameUI* InGameUI = nullptr;
 };

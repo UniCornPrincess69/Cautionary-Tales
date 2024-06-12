@@ -9,7 +9,7 @@
 /**
  * 
  */
-class APlayerCharacter;
+class ATestCharacter;
 class UGameManager;
 class ABaseLevelScriptActor;
 UCLASS()
@@ -39,5 +39,5 @@ private:
 	const int32 ONE = 1;
 
 	UGameManager* GM = nullptr;
-	APlayerCharacter* PlayerCharacter = nullptr;
+	ATestCharacter* PlayerCharacter = nullptr;
 };

@@ -7,7 +7,7 @@
 
 ACautionary_Tales_GameMode::ACautionary_Tales_GameMode()
 {
-	static ConstructorHelpers::FClassFinder<APawn> PlayerCharacter(TEXT("/Game/Assets/Blueprints/Character/BP_PlayerCharacter"));
+	auto PlayerCharacter = ConstructorHelpers::FClassFinder<APawn> (TEXT("/Game/Assets/Blueprints/Character/testcharacter"));
 	//static auto charObj = ConstructorHelpers::FClassFinder<APawn>(TEXT("/Script/Engine.Blueprint'/Game/Assets/Blueprints/Character/BP_TestCharacter.BP_TestCharacter'"));
 
 	//DefaultPawnClass = APlayerCharacter::StaticClass();
