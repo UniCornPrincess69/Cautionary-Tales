@@ -126,20 +126,26 @@ void ATestCharacter::Move(const FInputActionValue& Value)
 	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
+	/*if (MovementVector >= MinThreshold && MovementVector <= MaxThreshold)
+	{
+		CurrentAnim = Idle;
+	}*/
 	if (MovementVector >= MinThreshold && MovementVector <= MaxThreshold)
 	{
-		/*CurrentAnim = Idle;
-		bIsWalking = false;*/
-	}
-	if (!bIsWalking)
-	{
-		CurrentAnim = Walk;
+		CurrentAnim = Idle;
 		GetMesh()->PlayAnimation(CurrentAnim, true);
-		bIsWalking = true;
+		bIsWalking = false;
 	}
-	if (Controller != nullptr)
+	else
 	{
 		// find out which way is forward
+		CurrentAnim = Walk;
+		if (!bIsWalking)
+		{
+			GetMesh()->PlayAnimation(CurrentAnim, true);
+			bIsWalking = true;
+		}
+
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
 
@@ -158,9 +164,9 @@ void ATestCharacter::Move(const FInputActionValue& Value)
 
 void ATestCharacter::StopMoving(const FInputActionValue& Value)
 {
-	CurrentAnim = Idle;
 	bIsWalking = false;
-	GetMesh()->PlayAnimation(Idle, true);
+	CurrentAnim = Idle;
+	GetMesh()->PlayAnimation(CurrentAnim, true);
 }
 
 void ATestCharacter::Look(const FInputActionValue& Value)
