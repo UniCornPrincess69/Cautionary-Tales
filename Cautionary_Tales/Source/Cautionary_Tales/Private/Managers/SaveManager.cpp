@@ -5,7 +5,8 @@
 #include "GameWorld/SaveData/SaveData.h"
 #include "Managers/GameManager.h"
 #include <Runtime/Engine/Classes/Kismet/GameplayStatics.h>
-#include "Player/PlayerCharacter.h"
+#include "Player/TestCharacter.h"
+#include "Enemy/Struwwel.h"
 #include "JsonObjectConverter.h"
 #include "Serialization/JsonSerializer.h"
 #include "FileHelpers.h"
@@ -23,6 +24,8 @@ FSaveData USaveManager::CreateSaveData(void)
 	{
 		data.PlayerPosition = GM->GetPlayer()->GetActorLocation();
 		data.LevelName = StaticCast<FName>(UGameplayStatics::GetCurrentLevelName(world));
+		data.EnemyPosition = GM->GetEnemy()->GetActorLocation();
+		data.EnemyState = GM->GetEnemy()->GetCurrentState();
 		//TODO: Get Enemy location, probably some more info. Adjust SaveData accordingly
 	}
 

@@ -12,10 +12,7 @@
 // Sets default values
 AStruwwel::AStruwwel()
 {
-
-	//TODO: Implement Target forgotten, change to idle/search!
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	//EnemyAI = CreateDefaultSubobject<UAIComponent>(TEXT("EnemyAI"));
 	/*PerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AI Perception"));
@@ -37,6 +34,8 @@ void AStruwwel::Instantiate(void)
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	Controller = Cast<AStruwwelController>(GetController());
 	bUseControllerRotationYaw = true;
+
+
 	if (Controller)
 	{
 		Controller->SetState(EStates::ST_IDLE);
@@ -50,8 +49,6 @@ void AStruwwel::BeginPlay()
 
 	auto GM = UGameManager::Instantiate(*this);
 	GM->SetEnemy(this);
-	
-	UE_LOG(LogTemp, Warning, TEXT("Controller: %s"), *GetController()->GetName());
 }
 
 
@@ -62,19 +59,16 @@ void AStruwwel::Tick(float DeltaTime)
 
 }
 
-void AStruwwel::Test()
+void AStruwwel::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-
-	
+	Super::EndPlay(EndPlayReason);
 }
 
-void AStruwwel::PlayerDetected(AActor* Other, FAIStimulus Stimulus)
+void AStruwwel::StateChanged(EStates newState)
 {
-	//GEngine->AddOnScreenDebugMessage(-1, .5f, FColor::Purple, TEXT("Stimulus"));
-	/*if (Other->IsA(APlayerCharacter::StaticClass()))
-	{
-		OnPlayerDetection.Broadcast();
-	}*/
+	CurrentState = newState;
 }
+
+
 
 

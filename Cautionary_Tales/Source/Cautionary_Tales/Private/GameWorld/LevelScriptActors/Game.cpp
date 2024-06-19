@@ -2,4 +2,11 @@
 
 
 #include "GameWorld/LevelScriptActors/Game.h"
+#include "Kismet/GameplayStatics.h"
 
+void AGame::BeginPlay()
+{
+	UGameplayStatics::LoadStreamLevel(this, "Level_01", true, true, FLatentActionInfo());
+
+
+}

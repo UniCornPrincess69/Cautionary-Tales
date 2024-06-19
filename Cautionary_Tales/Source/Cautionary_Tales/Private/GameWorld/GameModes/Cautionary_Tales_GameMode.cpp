@@ -4,6 +4,7 @@
 #include "GameWorld/GameModes/Cautionary_Tales_GameMode.h"
 #include "Player/PlayerCharacter.h"
 #include "UI/InGameUI.h"
+#include "GameWorld/States/CautionaryTalesGameState.h"
 
 ACautionary_Tales_GameMode::ACautionary_Tales_GameMode()
 {
@@ -18,6 +19,8 @@ ACautionary_Tales_GameMode::ACautionary_Tales_GameMode()
 	{
 		DefaultPawnClass = PlayerCharacter.Class;
 		HUDClass = AInGameUI::StaticClass();
+		GameStateClass = ACautionaryTalesGameState::StaticClass();
+
 	}
 	else
 	{

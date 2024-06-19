@@ -18,5 +18,8 @@ class CAUTIONARY_TALES_API AGame : public ALevelScriptActor
 
 public:
 	FOnLevelLoaded OnLevelLoaded;
+
+protected:
+	virtual void BeginPlay() override;
 	
 };

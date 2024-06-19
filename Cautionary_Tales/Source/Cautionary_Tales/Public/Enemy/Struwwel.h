@@ -20,6 +20,9 @@ public:
 
 	void Instantiate(void);
 
+	inline void SetCurrentState(EStates state) { CurrentState = state; }
+	inline EStates GetCurrentState(void) { return CurrentState; }
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -30,15 +33,16 @@ public:
 
 	FOnPlayerDetection OnPlayerDetection;
 
-	UFUNCTION(BlueprintCallable)
-		void PlayerDetected(AActor* other, struct FAIStimulus stimulus);
 private:
-	UFUNCTION(CallInEditor)
-	void Test();
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
+	UFUNCTION()
+	void StateChanged(EStates newState);
+
 
 	class UAIPerceptionComponent* PerceptionComponent = nullptr;
 	class AStruwwelController* Controller = nullptr;
 	bool IsActive = false;
-
+	EStates CurrentState = EStates::ST_NONE;
 
 };

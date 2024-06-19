@@ -6,10 +6,9 @@
 #include "Managers/SaveManager.h"
 #include "GameWorld/SaveData/SaveData.h"
 #include "Managers/GameManager.h"
-#include "Player/PlayerCharacter.h"
 #include "Player/TestCharacter.h"
 
-
+//TODO: Look at level streaming
 //TODO: Load level and character position via Save system
 void ULevelManager::LoadGame(const bool& IsNewGame)
 {
@@ -17,7 +16,10 @@ void ULevelManager::LoadGame(const bool& IsNewGame)
 
 	if (world)
 	{
-		if (IsNewGame) UGameplayStatics::OpenLevel(world, *Levels.Find(ONE));
+		if (IsNewGame)
+		{
+			UGameplayStatics::OpenLevel(world, *Levels.Find(ONE));
+		}
 		else
 		{
 			auto data = world->GetSubsystem<USaveManager>()->LoadGame();
@@ -70,8 +72,9 @@ void ULevelManager::LoadLevel(void)
 		if (levelNumber)
 		{
 			auto nextLevel = *levelNumber + ONE;
-			UE_LOG(LogTemp, Warning, TEXT("%d"), nextLevel);
-			UGameplayStatics::OpenLevel(world, *Levels.Find(nextLevel));
+			//UGameplayStatics::OpenLevel(world, *Levels.Find(nextLevel));
+			UGameplayStatics::LoadStreamLevel(this, *Levels.Find(nextLevel), true, false, FLatentActionInfo());
+			UGameplayStatics::UnloadStreamLevel(this, "Level_01", FLatentActionInfo(), true);
 		}
 
 	}

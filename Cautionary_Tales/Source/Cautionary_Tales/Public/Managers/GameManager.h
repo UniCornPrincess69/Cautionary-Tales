@@ -31,6 +31,7 @@ public:
 
 	inline AInGameUI* GetInGameUI(void) { return InGameUI; }
 	inline ATestCharacter* GetPlayer(void) { return Player; }
+	inline AStruwwel* GetEnemy(void) { return Struwwel; }
 	class UUIManager* GetUIManager(void);
 
 	UPROPERTY(BlueprintAssignable)

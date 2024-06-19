@@ -28,6 +28,6 @@ public:
 private:
 
 	AStruwwelController* FSM = nullptr;
-	class APlayerCharacter* Player = nullptr;
+	class ATestCharacter* Player = nullptr;
 
 };

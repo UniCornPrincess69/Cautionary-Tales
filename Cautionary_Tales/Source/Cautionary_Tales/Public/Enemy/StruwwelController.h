@@ -10,6 +10,7 @@
  *
  */
 
+UENUM()
 enum class EStates
 {
 	ST_NONE,
@@ -18,7 +19,7 @@ enum class EStates
 	ST_SEARCH
 };
 
-class APlayerCharacter;
+class ATestCharacter;
 class UBaseState;
 class UNavigationSystemV1;
 class UAnimSequence;
@@ -34,7 +35,7 @@ public:
 	void SetState(EStates state);
 	void UpdateState(float deltaTime);
 
-	inline APlayerCharacter* GetPlayer(void) { return Player; }
+	inline ATestCharacter* GetPlayer(void) { return Player; }
 	inline AStruwwel* GetEnemy(void) { return Struwwel; }
 	inline UNavigationSystemV1* GetNavSystem(void) { return NavSys; }
 	inline FVector GetLastKnownLocation(void) { return LastPlayerLocation; }
@@ -63,6 +64,8 @@ private:
 	FString WalkAnimPath = FString(TEXT("/Game/Assets/Animation/Struwelpeter/Walk/Struwelpeter_walk_Anim"));
 
 #pragma region States
+private:
+
 	EStates CurrentState = EStates::ST_NONE;
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Current State", Category = "FSM"))
 		UBaseState* ActiveState = nullptr;
@@ -75,7 +78,7 @@ private:
 #pragma endregion
 
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Player", Category = "FSM"))
-		APlayerCharacter* Player = nullptr;
+		ATestCharacter* Player = nullptr;
 
 	UNavigationSystemV1* NavSys = nullptr;
 

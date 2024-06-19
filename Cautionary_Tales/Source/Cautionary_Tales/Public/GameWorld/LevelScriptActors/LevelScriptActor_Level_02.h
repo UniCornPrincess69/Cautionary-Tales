@@ -13,5 +13,8 @@ UCLASS()
 class CAUTIONARY_TALES_API ALevelScriptActor_Level_02 : public ABaseLevelScriptActor
 {
 	GENERATED_BODY()
+
+protected:
+	virtual void BeginPlay() override;
 	
 };

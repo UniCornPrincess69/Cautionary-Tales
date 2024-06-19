@@ -11,10 +11,12 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "Engine/TriggerBox.h"
 #include "Utility/ActorUtility.h"
 #include "Managers/GameManager.h"
 #include "Managers/UIManager.h"
 #include "Animation/AnimSequence.h"
+#include "GameWorld/States/CautionaryTalesGameState.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -76,12 +78,38 @@ void ATestCharacter::BeginPlay()
 		}
 	}
 	if (!CurrentAnim) CurrentAnim = Idle;
+
+	auto gameState = GetWorld()->GetGameState();
+	GameState = Cast<ACautionaryTalesGameState>(gameState);
+
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ATestCharacter::OverlapBegin);
+	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &ATestCharacter::OverlapEnd);
 	GetMesh()->PlayAnimation(CurrentAnim, true);
+
+	SetActorLocation(FVector(-3000.f, 90.f, 340.f));
 }
 
 void ATestCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	GetCapsuleComponent()->OnComponentBeginOverlap.RemoveDynamic(this, &ATestCharacter::OverlapBegin);
+	GetCapsuleComponent()->OnComponentEndOverlap.RemoveDynamic(this, &ATestCharacter::OverlapEnd);
 	GetMesh()->Stop();
+}
+
+void ATestCharacter::OverlapBegin(UPrimitiveComponent* Overlap, AActor* Other, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+		GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::Emerald, TEXT("Overlap"));
+	
+	
+	if (Other->IsA(ATriggerBox::StaticClass()))
+	{
+		OnTriggerOverlap.Broadcast();
+		GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::Emerald, TEXT("Transition"));
+	}
+}
+
+void ATestCharacter::OverlapEnd(UPrimitiveComponent* Overlap, AActor* Other, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
 }
 
 void ATestCharacter::Instantiate(void)
@@ -185,6 +213,7 @@ void ATestCharacter::Look(const FInputActionValue& Value)
 void ATestCharacter::Pause(const FInputActionValue& Value)
 {
 	OnPause.Broadcast();
+	GameState->SetState(EGameState::GS_PAUSED);
 	Manager->GetUIManager()->PauseGame(this, Value.Get<bool>());
 }
 

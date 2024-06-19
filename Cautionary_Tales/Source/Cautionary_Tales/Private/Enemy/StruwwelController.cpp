@@ -14,20 +14,8 @@
 #include "Animation/AnimSequence.h"
 #include "Player/TestCharacter.h"
 
-//TODO: Forget player and enter Search state needs to be implemented
 AStruwwelController::AStruwwelController()
 {
-	//auto aiSystem = GetWorld()->GetSubsystem<UAISubsystem>();
-	//GET_AI_CONFIG_VAR(bForgetStaleActors = true);
-	//if (GetWorld())
-	//{
-	//	UAISystem* PerceptionSystem = UAISystem::GetCurrent(GetOwner()->GetWorld());
-
-	//	
-
-	//	
-	//	//GetWorld()->GetSubsystem<UAISystem>()->bForgetStaleActors = false;
-	//}
 
 	Walk = ConstructorHelpers::FObjectFinder<UAnimSequence>(*WalkAnimPath).Object;
 
@@ -35,8 +23,7 @@ AStruwwelController::AStruwwelController()
 	UAISenseConfig_Sight* SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Sight"));
 	SightConfig->SightRadius = 1000.f;
 	SightConfig->LoseSightRadius = 500.f;
-	SightConfig->PeripheralVisionAngleDegrees = 30.f;
-	SightConfig->AutoSuccessRangeFromLastSeenLocation = -1;
+	SightConfig->PeripheralVisionAngleDegrees = 35.f;
 	SightConfig->DetectionByAffiliation.bDetectEnemies = true;
 	SightConfig->DetectionByAffiliation.bDetectFriendlies = true;
 	SightConfig->DetectionByAffiliation.bDetectNeutrals = true;
@@ -69,7 +56,7 @@ void AStruwwelController::SetState(EStates state)
 	default:
 		break;
 	}
-
+	Struwwel->SetCurrentState(CurrentState);
 	ActiveState->EnterState();
 }
 
@@ -93,8 +80,8 @@ void AStruwwelController::PlayAnimation(void)
 void AStruwwelController::BeginPlay()
 {
 	Super::BeginPlay();
-	auto controlledActor = GetPawn();
-	Struwwel = Cast<AStruwwel>(controlledActor);
+	/*auto controlledActor = GetPawn();
+	Struwwel = Cast<AStruwwel>(controlledActor);*/
 	//if (controlledActor) UE_LOG(LogTemp, Warning, TEXT("Controller is possessing: %s"), *controlledActor->GetName());
 }
 
@@ -124,10 +111,8 @@ void AStruwwelController::OnPlayerDetected(AActor* other, FAIStimulus stimulus)
 {
 	if (other->IsA( ATestCharacter::StaticClass()))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, .5f, FColor::Red, TEXT("Player detected"));
-		Player = Cast<APlayerCharacter>(other);
+		Player = Cast<ATestCharacter>(other);
 		SetState(EStates::ST_CHASE);
-		
 	}
 }
 
@@ -141,6 +126,9 @@ void AStruwwelController::OnPlayerLost(AActor* other)
 void AStruwwelController::OnPossess(APawn* pawn)
 {
 	Super::OnPossess(pawn);
+
+	auto controlledActor = GetPawn();
+	Struwwel = Cast<AStruwwel>(controlledActor);
 
 	Idle = NewObject<UIdleState>();
 	Idle->SetFSM(this);

@@ -33,8 +33,8 @@ void UGameManager::SetPlayer(ATestCharacter* player)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Manager received Player"));
 	Player = player;
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, FTimerDelegate::CreateUObject(this, &UGameManager::DelayedPlayerReadyCallback), 3.f, false);
-	
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, FTimerDelegate::CreateUObject(this, &UGameManager::DelayedPlayerReadyCallback), 1.f, false);
+	//OnPlayerReady.Broadcast(Player);
 }
 
 void UGameManager::SetEnemy(AStruwwel* struwwel)
