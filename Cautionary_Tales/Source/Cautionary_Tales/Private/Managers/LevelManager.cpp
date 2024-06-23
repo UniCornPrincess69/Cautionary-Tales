@@ -73,8 +73,9 @@ void ULevelManager::LoadLevel(void)
 		{
 			auto nextLevel = *levelNumber + ONE;
 			//UGameplayStatics::OpenLevel(world, *Levels.Find(nextLevel));
-			UGameplayStatics::LoadStreamLevel(this, *Levels.Find(nextLevel), true, false, FLatentActionInfo());
-			UGameplayStatics::UnloadStreamLevel(this, "Level_01", FLatentActionInfo(), true);
+			UGameplayStatics::LoadStreamLevel(GetWorld(), "Test", true, true, FLatentActionInfo());
+			GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Orange, TEXT("TEST"));
+			//UGameplayStatics::UnloadStreamLevel(this, "Level_01", FLatentActionInfo(), true);
 		}
 
 	}

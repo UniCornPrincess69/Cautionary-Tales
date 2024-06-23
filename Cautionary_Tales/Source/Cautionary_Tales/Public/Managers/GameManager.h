@@ -15,6 +15,7 @@ class AStruwwel;
 class APlayerCharacter;
 class AInGameUI;
 class ATestCharacter;
+class AStruwwelController;
 UCLASS()
 class CAUTIONARY_TALES_API UGameManager : public UGameInstanceSubsystem
 {
@@ -48,4 +49,5 @@ private:
 	ATestCharacter* Player = nullptr;
 	AStruwwel* Struwwel = nullptr;
 	AInGameUI* InGameUI = nullptr;
+	AStruwwelController* AIController = nullptr;
 };

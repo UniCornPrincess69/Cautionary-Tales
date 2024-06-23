@@ -6,7 +6,7 @@
 
 void AGame::BeginPlay()
 {
-	UGameplayStatics::LoadStreamLevel(this, "Level_01", true, true, FLatentActionInfo());
+	UGameplayStatics::LoadStreamLevel(this, "Level_01", true, false, FLatentActionInfo());
 
 
 }

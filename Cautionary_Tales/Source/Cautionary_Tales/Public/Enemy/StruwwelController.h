@@ -35,6 +35,8 @@ public:
 	void SetState(EStates state);
 	void UpdateState(float deltaTime);
 
+	inline void SetNavSystem(UNavigationSystemV1* navSys) { NavSys = navSys; }
+
 	inline ATestCharacter* GetPlayer(void) { return Player; }
 	inline AStruwwel* GetEnemy(void) { return Struwwel; }
 	inline UNavigationSystemV1* GetNavSystem(void) { return NavSys; }

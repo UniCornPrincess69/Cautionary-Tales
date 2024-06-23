@@ -31,11 +31,11 @@ private:
 	TMap<int32, FName> Levels = 
 	{
 		{0, FName("MainMenu")},
-		{1, FName("PersistentLevel")},
-		{2, FName("Level_01")},
-		{3, FName("Level_02")},
-		{4, FName("Level_03")},
-		{5, FName("End")}
+		//{1, FName("PersistentLevel")},
+		{1, FName("Level_01")},
+		{2, FName("Level_02")},
+		{3, FName("Level_03")},
+		{4, FName("End")}
 	};
 	const int32 ONE = 1;
 
