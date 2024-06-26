@@ -16,7 +16,6 @@
 
 AStruwwelController::AStruwwelController()
 {
-
 	Walk = ConstructorHelpers::FObjectFinder<UAnimSequence>(*WalkAnimPath).Object;
 
 	PerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AI Perception"));
@@ -33,6 +32,7 @@ AStruwwelController::AStruwwelController()
 	PerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &AStruwwelController::OnPlayerDetected);
 	PerceptionComponent->OnTargetPerceptionForgotten.AddDynamic(this, &AStruwwelController::OnPlayerLost);
 	NavSys = UNavigationSystemV1::GetCurrent(GetWorld());
+	
 }
 
 void AStruwwelController::SetState(EStates state)
@@ -68,8 +68,8 @@ void AStruwwelController::UpdateState(float deltaTime)
 void AStruwwelController::MoveToPlayer(void)
 {
 	EPathFollowingRequestResult::Type result = MoveToActor(Player);
-	if (result == 0) GEngine->AddOnScreenDebugMessage(-1, .5f, FColor::Red, TEXT("Request failed"));
-	else GEngine->AddOnScreenDebugMessage(-1, .5f, FColor::Green, TEXT("Request succeded"));
+	if (result == 0) UE_LOG(LogTemp, Warning, TEXT("Request failed"))
+	else UE_LOG(LogTemp, Warning, TEXT("Request succeded"));
 }
 
 void AStruwwelController::PlayAnimation(void)
@@ -101,7 +101,6 @@ void AStruwwelController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	Idle = nullptr;
 	Chase = nullptr;
 	Search = nullptr;
-
 
 	PerceptionComponent->OnTargetPerceptionForgotten.RemoveDynamic(this, &AStruwwelController::OnPlayerLost);
 	PerceptionComponent->OnTargetPerceptionUpdated.RemoveDynamic(this, &AStruwwelController::OnPlayerDetected);

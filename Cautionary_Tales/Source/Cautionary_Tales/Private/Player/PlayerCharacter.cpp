@@ -15,6 +15,7 @@
 #include "Engine/TriggerBox.h"
 #include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -82,12 +83,9 @@ void APlayerCharacter::OverlapEnd(UPrimitiveComponent* Overlap, AActor* Other, U
 
 void APlayerCharacter::Test()
 {
-	auto old = GetActorRotation();
-	UE_LOG(LogTemp, Warning, TEXT("X: %f, Y: %f, Z: %f"), old.Roll, old.Pitch, old.Yaw);
-	SetActorRelativeRotation(FRotator(.0f, 90.f, .0f));
-	//SetActorRotation(FRotator(.0f, 90.f, .0f));
-	auto orient = GetActorRotation();
-	UE_LOG(LogTemp, Warning, TEXT("X: %f, Y: %f, Z: %f"), orient.Roll, orient.Pitch, orient.Yaw);
+	auto level = UGameplayStatics::GetCurrentLevelName(GetWorld());
+
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Blue, level);
 }
 
 void APlayerCharacter::Instantiate(void)

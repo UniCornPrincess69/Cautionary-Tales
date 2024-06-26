@@ -14,7 +14,11 @@ class CAUTIONARY_TALES_API ALevelScriptActor_Level_01 : public ABaseLevelScriptA
 {
 	GENERATED_BODY()
 
+	ALevelScriptActor_Level_01();
+
 protected:
 	virtual void BeginPlay() override;
+
+	virtual void EndPlay(const EEndPlayReason::Type endPlayReason) override;
 	
 };

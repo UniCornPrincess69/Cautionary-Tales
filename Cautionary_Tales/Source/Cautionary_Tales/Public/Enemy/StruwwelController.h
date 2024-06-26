@@ -81,7 +81,7 @@ private:
 
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Player", Category = "FSM"))
 		ATestCharacter* Player = nullptr;
-
+		UPROPERTY(EditAnywhere, meta = (DisplayName = "NavSys", Category = "FSM"))
 	UNavigationSystemV1* NavSys = nullptr;
 
 	FVector LastPlayerLocation;

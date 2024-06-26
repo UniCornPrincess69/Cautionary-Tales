@@ -43,7 +43,7 @@ public:
 		void OverlapEnd(UPrimitiveComponent* Overlap, AActor* Other, UPrimitiveComponent* OtherComp,
 			int32 OtherBodyIndex);
 
-	UFUNCTION(CallInEditor)
+	UFUNCTION(Category = "Test Function", CallInEditor)
 	void Test();
 
 private:

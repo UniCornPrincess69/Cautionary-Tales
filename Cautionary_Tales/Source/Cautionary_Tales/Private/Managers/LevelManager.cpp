@@ -7,6 +7,7 @@
 #include "GameWorld/SaveData/SaveData.h"
 #include "Managers/GameManager.h"
 #include "Player/TestCharacter.h"
+#include "GameWorld/LevelScriptActors/BaseLevelScriptActor.h"
 
 //TODO: Look at level streaming
 //TODO: Load level and character position via Save system
@@ -32,8 +33,12 @@ void ULevelManager::SetGameManager(UGameManager* GameManager)
 {
 	GM = GameManager;
 	PlayerCharacter = GM->GetPlayer();
+	PlayerCharacter->OnTriggerOverlap.AddUniqueDynamic(this, &ULevelManager::LoadLevel);
+}
 
-	PlayerCharacter->OnTriggerOverlap.AddDynamic(this, &ULevelManager::LoadLevel);
+void ULevelManager::DelayUnload()
+{
+	UGameplayStatics::UnloadStreamLevel(GetWorld(), "Level_01", FLatentActionInfo(), true);
 }
 
 void ULevelManager::Initialize(FSubsystemCollectionBase& collection)
@@ -43,10 +48,8 @@ void ULevelManager::Initialize(FSubsystemCollectionBase& collection)
 
 void ULevelManager::Deinitialize()
 {
-	if (PlayerCharacter)
-	{
-		PlayerCharacter->OnTriggerOverlap.RemoveDynamic(this, &ULevelManager::LoadLevel);
-	}
+	if (PlayerCharacter) PlayerCharacter->OnTriggerOverlap.RemoveDynamic(this, &ULevelManager::LoadLevel);
+	GetWorld()->GetTimerManager().ClearTimer(Handle);
 }
 
 
@@ -68,14 +71,13 @@ void ULevelManager::LoadLevel(void)
 			}
 		}
 
-
 		if (levelNumber)
 		{
 			auto nextLevel = *levelNumber + ONE;
-			//UGameplayStatics::OpenLevel(world, *Levels.Find(nextLevel));
-			UGameplayStatics::LoadStreamLevel(GetWorld(), "Test", true, true, FLatentActionInfo());
+			UGameplayStatics::LoadStreamLevel(world, "Level_02", true, true, FLatentActionInfo());
+			world->GetTimerManager().SetTimer(Handle, FTimerDelegate::CreateUObject(this, &ULevelManager::DelayUnload), 1.f, false);
 			GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Orange, TEXT("TEST"));
-			//UGameplayStatics::UnloadStreamLevel(this, "Level_01", FLatentActionInfo(), true);
+			
 		}
 
 	}

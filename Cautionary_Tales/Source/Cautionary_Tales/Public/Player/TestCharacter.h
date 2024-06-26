@@ -57,6 +57,7 @@ public:
 	void OverlapEnd(UPrimitiveComponent* Overlap, AActor* Other, UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex);
 
+
 private:
 	void StopMoving(const FInputActionValue& Value);
 	void Instantiate(void);

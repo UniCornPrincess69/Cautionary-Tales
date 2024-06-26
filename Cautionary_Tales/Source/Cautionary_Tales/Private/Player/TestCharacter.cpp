@@ -17,6 +17,7 @@
 #include "Managers/UIManager.h"
 #include "Animation/AnimSequence.h"
 #include "GameWorld/States/CautionaryTalesGameState.h"
+#include "Kismet/GameplayStatics.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -111,6 +112,7 @@ void ATestCharacter::OverlapBegin(UPrimitiveComponent* Overlap, AActor* Other, U
 void ATestCharacter::OverlapEnd(UPrimitiveComponent* Overlap, AActor* Other, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 }
+
 
 void ATestCharacter::Instantiate(void)
 {
