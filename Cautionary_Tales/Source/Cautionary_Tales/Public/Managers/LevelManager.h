@@ -24,9 +24,10 @@ public:
 	inline void SetLevelOne(ABaseLevelScriptActor* levelOne) { LevelOne = levelOne; }
 	inline void SetLevelTwo(ABaseLevelScriptActor* levelTwo) { LevelTwo = levelTwo; }
 
+	inline void SetCurrentLevel(FName currentLevel) { CurrentLevel = currentLevel; }
 private:
 	UFUNCTION()
-	void DelayUnload();
+	void DelayUnload(FName currentLevel);
 
 	virtual void Initialize(FSubsystemCollectionBase& collection) override;
 	virtual void Deinitialize() override;
@@ -44,6 +45,8 @@ private:
 		{4, FName("End")}
 	};
 	const int32 ONE = 1;
+
+	FName CurrentLevel = FName("");
 
 	ABaseLevelScriptActor* LevelOne = nullptr;
 	ABaseLevelScriptActor* LevelTwo = nullptr;

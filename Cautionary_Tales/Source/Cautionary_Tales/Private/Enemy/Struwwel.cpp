@@ -7,6 +7,7 @@
 #include "Player/PlayerCharacter.h"
 #include "Managers/GameManager.h"
 #include "Enemy/StruwwelController.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 
 // Sets default values
@@ -14,18 +15,6 @@ AStruwwel::AStruwwel()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	//EnemyAI = CreateDefaultSubobject<UAIComponent>(TEXT("EnemyAI"));
-	/*PerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AI Perception"));
-	UAISenseConfig_Sight* SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Sight"));
-	SightConfig->SightRadius = 1500.f;
-	SightConfig->LoseSightRadius = 1600.f;
-	SightConfig->PeripheralVisionAngleDegrees = 30.f;
-	SightConfig->DetectionByAffiliation.bDetectEnemies = true;
-	SightConfig->DetectionByAffiliation.bDetectFriendlies = true;
-	SightConfig->DetectionByAffiliation.bDetectNeutrals = true;
-	PerceptionComponent->ConfigureSense(*SightConfig);
-	PerceptionComponent->SetDominantSense(SightConfig->GetSenseImplementation());
-	PerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &AStruwwel::PlayerDetected);*/
 }
 
 void AStruwwel::Instantiate(void)
@@ -34,11 +23,11 @@ void AStruwwel::Instantiate(void)
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	Controller = Cast<AStruwwelController>(GetController());
 	bUseControllerRotationYaw = true;
-
+	GetCharacterMovement()->MaxWalkSpeed = 300.f;
 
 	if (Controller)
 	{
-		Controller->SetState(EStates::ST_IDLE);
+		Controller->SetState(EStates::ST_SEARCH);
 	}
 }
 

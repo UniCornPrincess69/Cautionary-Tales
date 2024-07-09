@@ -10,6 +10,7 @@
 void AGame::BeginPlay()
 {
 	UGameplayStatics::LoadStreamLevel(this, "Level_01", true, false, FLatentActionInfo());
+	
 
 	auto teleport = UGameplayStatics::GetActorOfClass(GetWorld(), ATeleporterZone::StaticClass());
 	TeleportZone = Cast<ATeleporterZone>(teleport);

@@ -11,25 +11,36 @@
 void USearchState::EnterState(void)
 {
 	GEngine->AddOnScreenDebugMessage(-1, .5f, FColor::Black, TEXT("Searching..."));
-
 	if (!NavSys)
 	{
 		NavSys = FSM->GetNavSystem();
 		Struwwel = FSM->GetEnemy();
+		CurrentLocation = Struwwel->GetActorLocation();
 	}
-	FSM->MoveToLocation(FSM->GetLastKnownLocation());
+	auto loc = FSM->GetLastKnownLocation();
+	if (loc == FVector::ZeroVector)
+	{
+		NextLocation = GetRandomPointInRadius(SearchRadius);
+		FSM->MoveToLocation(NextLocation);
+	}
+	else
+	{
+		NextLocation = FSM->GetLastKnownLocation();
+		FSM->MoveToLocation(NextLocation);
+	}
+	FSM->PlayAnimation();
+
 }
 
 void USearchState::UpdateState(float deltaTime)
 {
-	SearchCooldown += deltaTime;
-
-	if (SearchCooldown >= SearchTime)
+	CurrentLocation = Struwwel->GetActorLocation();
+	if (FVector::Dist(CurrentLocation, NextLocation) <= Tolerance)
 	{
-		auto location = GetRandomPointInRadius(500.f);
-		SearchCooldown = 0.f;
-
-		FSM->MoveToLocation(location);
+		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Blue, TEXT("Search updated"));
+		CurrentLocation = Struwwel->GetActorLocation();
+		NextLocation = GetRandomPointInRadius(SearchRadius);
+		FSM->MoveToLocation(NextLocation);
 	}
 }
 
@@ -44,8 +55,14 @@ FVector USearchState::GetRandomPointInRadius(float radius)
 		GEngine->AddOnScreenDebugMessage(-1, .5f, FColor::Purple, TEXT("NavSys is nullptr"));
 		return FVector::ZeroVector;
 	}
-	
+
 	FNavLocation navLocation;
 	bool bSuccess = NavSys->GetRandomPointInNavigableRadius(Struwwel->GetActorLocation(), radius, navLocation);
 	return bSuccess ? navLocation.Location : FVector::ZeroVector;
+}
+
+bool USearchState::IsAtLocation(FVector TargetLocation)
+{
+	if (FVector::Dist(CurrentLocation, TargetLocation) <= Tolerance) return true;
+	else return false;
 }

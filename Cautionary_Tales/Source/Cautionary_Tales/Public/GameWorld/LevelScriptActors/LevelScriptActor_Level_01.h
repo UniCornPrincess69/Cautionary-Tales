@@ -21,4 +21,7 @@ protected:
 
 	virtual void EndPlay(const EEndPlayReason::Type endPlayReason) override;
 	
+private:
+	class ULevelManager* LevelManager = nullptr;
+	FName LevelName = FName(TEXT("Level_01"));
 };

@@ -23,11 +23,15 @@ public:
 
 private:
 	FVector GetRandomPointInRadius(float radius);
+	bool IsAtLocation(FVector TargetLocation);
 
 	AStruwwelController* FSM = nullptr;
 	class AStruwwel* Struwwel = nullptr;
 	class UNavigationSystemV1* NavSys = nullptr;
 
-	float SearchTime = 5.f;
-	float SearchCooldown = 0.f;
+	FVector CurrentLocation = FVector::ZeroVector;
+	FVector NextLocation = FVector::ZeroVector;
+	const float SearchRadius = 300.f;
+	const float Tolerance = 100.f;
+
 };

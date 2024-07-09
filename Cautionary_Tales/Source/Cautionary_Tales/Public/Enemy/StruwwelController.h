@@ -14,7 +14,7 @@ UENUM()
 enum class EStates
 {
 	ST_NONE,
-	ST_IDLE,
+	ST_ATTACK,
 	ST_CHASE,
 	ST_SEARCH
 };
@@ -61,9 +61,13 @@ private:
 
 	class AStruwwel* Struwwel = nullptr;
 
-	UAnimSequence* Walk = nullptr;
+	UAnimSequence* WalkAnim = nullptr;
+	UAnimSequence* ChaseAnim = nullptr;
+	UAnimSequence* AttackAnim = nullptr;
 
 	FString WalkAnimPath = FString(TEXT("/Game/Assets/Animation/Struwelpeter/Walk/Struwelpeter_walk_Anim"));
+	FString ChaseAnimPath = FString(TEXT("/Game/Assets/Animation/Struwelpeter/Chase/Struwelpeter_chase_Anim"));
+	FString AttackAnimPath = FString(TEXT("/Game/Assets/Animation/Struwelpeter/Attack/Struwelpeter_attack_Anim"));
 
 #pragma region States
 private:
@@ -71,8 +75,8 @@ private:
 	EStates CurrentState = EStates::ST_NONE;
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Current State", Category = "FSM"))
 		UBaseState* ActiveState = nullptr;
-	UPROPERTY(EditAnywhere, meta = (DisplayName = "IdleState", Category = "FSM"))
-		UBaseState* Idle = nullptr;
+	UPROPERTY(EditAnywhere, meta = (DisplayName = "AttackState", Category = "FSM"))
+		UBaseState* Attack = nullptr;
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "ChaseState", Category = "FSM"))
 		UBaseState* Chase = nullptr;
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "SearchState", Category = "FSM"))

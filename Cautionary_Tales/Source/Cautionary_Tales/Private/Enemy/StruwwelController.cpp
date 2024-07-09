@@ -5,7 +5,7 @@
 #include "Enemy/Struwwel.h"
 #include "Enemy/BaseState.h"
 #include "Enemy/ChaseState.h"
-#include "Enemy/IdleState.h"
+#include "Enemy/AttackState.h"
 #include "Enemy/SearchState.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
@@ -13,10 +13,13 @@
 #include "NavigationSystem.h"
 #include "Animation/AnimSequence.h"
 #include "Player/TestCharacter.h"
+#include "Utility/ActorUtility.h"
 
 AStruwwelController::AStruwwelController()
 {
-	Walk = ConstructorHelpers::FObjectFinder<UAnimSequence>(*WalkAnimPath).Object;
+	WalkAnim = FindObject<UAnimSequence>(*WalkAnimPath);
+	ChaseAnim = FindObject<UAnimSequence>(*ChaseAnimPath);
+	AttackAnim = FindObject<UAnimSequence>(*AttackAnimPath);
 
 	PerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AI Perception"));
 	UAISenseConfig_Sight* SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Sight"));
@@ -41,9 +44,9 @@ void AStruwwelController::SetState(EStates state)
 	if (ActiveState) ActiveState->ExitState();
 	switch (state)
 	{
-	case EStates::ST_IDLE:
-		CurrentState = EStates::ST_IDLE;
-		ActiveState = Idle;
+	case EStates::ST_ATTACK:
+		CurrentState = EStates::ST_ATTACK;
+		ActiveState = Attack;
 		break;
 	case EStates::ST_CHASE:
 		CurrentState = EStates::ST_CHASE;
@@ -74,7 +77,22 @@ void AStruwwelController::MoveToPlayer(void)
 
 void AStruwwelController::PlayAnimation(void)
 {
-	Struwwel->GetMesh()->PlayAnimation(Walk, true);
+	switch (CurrentState)
+	{
+	case EStates::ST_NONE:
+		break;
+	case EStates::ST_ATTACK:
+		Struwwel->GetMesh()->PlayAnimation(AttackAnim, false);
+		break;
+	case EStates::ST_CHASE:
+		Struwwel->GetMesh()->PlayAnimation(ChaseAnim, true);
+		break;
+	case EStates::ST_SEARCH:
+		Struwwel->GetMesh()->PlayAnimation(WalkAnim, true);
+		break;
+	default:
+		break;
+	}
 }
 
 void AStruwwelController::BeginPlay()
@@ -94,11 +112,11 @@ void AStruwwelController::Tick(float DeltaTime)
 void AStruwwelController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
-	Idle->ConditionalBeginDestroy();
+	Attack->ConditionalBeginDestroy();
 	Chase->ConditionalBeginDestroy();
 	Search->ConditionalBeginDestroy();
 
-	Idle = nullptr;
+	Attack = nullptr;
 	Chase = nullptr;
 	Search = nullptr;
 
@@ -129,8 +147,8 @@ void AStruwwelController::OnPossess(APawn* pawn)
 	auto controlledActor = GetPawn();
 	Struwwel = Cast<AStruwwel>(controlledActor);
 
-	Idle = NewObject<UIdleState>();
-	Idle->SetFSM(this);
+	Attack = NewObject<UAttackState>();
+	Attack->SetFSM(this);
 	Chase = NewObject<UChaseState>();
 	Chase->SetFSM(this);
 	Search = NewObject<USearchState>();

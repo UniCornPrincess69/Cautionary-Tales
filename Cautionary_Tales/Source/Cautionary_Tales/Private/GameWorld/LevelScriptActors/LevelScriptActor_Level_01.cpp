@@ -11,13 +11,14 @@ ALevelScriptActor_Level_01::ALevelScriptActor_Level_01()
 	auto world = GetWorld();
 	if (world)
 	{
-		auto LM = GetWorld()->GetSubsystem<ULevelManager>();
-		if (LM) LM->SetLevelOne(this);
+		LevelManager = GetWorld()->GetSubsystem<ULevelManager>();
+		if (LevelManager) LevelManager->SetLevelOne(this);
 	}
 }
 
 void ALevelScriptActor_Level_01::BeginPlay()
 {
+	LevelManager->SetCurrentLevel(LevelName);
 }
 
 void ALevelScriptActor_Level_01::EndPlay(const EEndPlayReason::Type endPlayReason)

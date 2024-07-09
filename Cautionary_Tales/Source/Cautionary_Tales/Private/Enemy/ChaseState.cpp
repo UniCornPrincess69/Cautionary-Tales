@@ -2,7 +2,7 @@
 
 
 #include "Enemy/ChaseState.h"
-#include "Player/PlayerCharacter.h"
+#include "Player/TestCharacter.h"
 #include "Enemy/StruwwelController.h"
 
 

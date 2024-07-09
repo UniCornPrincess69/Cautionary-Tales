@@ -2,7 +2,7 @@
 
 
 #include "GameWorld/GameModes/Cautionary_Tales_GameMode.h"
-#include "Player/PlayerCharacter.h"
+#include "Player/TestCharacter.h"
 #include "UI/InGameUI.h"
 #include "GameWorld/States/CautionaryTalesGameState.h"
 

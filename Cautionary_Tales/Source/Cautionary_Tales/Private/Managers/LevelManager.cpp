@@ -19,11 +19,13 @@ void ULevelManager::LoadGame(const bool& IsNewGame)
 	{
 		if (IsNewGame)
 		{
-			UGameplayStatics::OpenLevel(world, *Levels.Find(ONE));
+			auto levelOne = *Levels.Find(ONE);
+			UGameplayStatics::OpenLevel(world, levelOne);
 		}
 		else
 		{
 			auto data = world->GetSubsystem<USaveManager>()->LoadGame();
+			//TODO: Persistent Level needs to be always opened, streaming level needs adjustment
 			UGameplayStatics::OpenLevel(world, data->LevelName);
 		}
 	}
@@ -36,9 +38,11 @@ void ULevelManager::SetGameManager(UGameManager* GameManager)
 	PlayerCharacter->OnTriggerOverlap.AddUniqueDynamic(this, &ULevelManager::LoadLevel);
 }
 
-void ULevelManager::DelayUnload()
+void ULevelManager::DelayUnload(FName currentLevel)
 {
-	UGameplayStatics::UnloadStreamLevel(GetWorld(), "Level_01", FLatentActionInfo(), true);
+	UGameplayStatics::UnloadStreamLevel(GetWorld(), currentLevel, FLatentActionInfo(), true);
+	UE_LOG(LogTemp, Warning, TEXT("Current level was %s"), currentLevel);
+	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, TEXT("Level unloaded"));
 }
 
 void ULevelManager::Initialize(FSubsystemCollectionBase& collection)
@@ -74,13 +78,12 @@ void ULevelManager::LoadLevel(void)
 		if (levelNumber)
 		{
 			auto nextLevel = *levelNumber + ONE;
-			UGameplayStatics::LoadStreamLevel(world, "Level_02", true, true, FLatentActionInfo());
-			world->GetTimerManager().SetTimer(Handle, FTimerDelegate::CreateUObject(this, &ULevelManager::DelayUnload), 1.f, false);
-			GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Orange, TEXT("TEST"));
-			
+			UGameplayStatics::LoadStreamLevel(world, *Levels.Find(nextLevel), true, true, FLatentActionInfo());
+			world->GetTimerManager().SetTimer(Handle, [&]() { this->DelayUnload(CurrentLevel); }, 1.f, false);
 		}
 
 	}
 }
+
 
 
