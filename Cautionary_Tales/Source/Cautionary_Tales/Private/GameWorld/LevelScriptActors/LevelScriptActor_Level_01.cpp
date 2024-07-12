@@ -18,7 +18,7 @@ ALevelScriptActor_Level_01::ALevelScriptActor_Level_01()
 
 void ALevelScriptActor_Level_01::BeginPlay()
 {
-	LevelManager->SetCurrentLevel(LevelName);
+	//LevelManager->SetCurrentLevel(LevelName);
 }
 
 void ALevelScriptActor_Level_01::EndPlay(const EEndPlayReason::Type endPlayReason)

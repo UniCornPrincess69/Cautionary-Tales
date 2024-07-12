@@ -24,7 +24,7 @@ public:
 	inline void SetLevelOne(ABaseLevelScriptActor* levelOne) { LevelOne = levelOne; }
 	inline void SetLevelTwo(ABaseLevelScriptActor* levelTwo) { LevelTwo = levelTwo; }
 
-	inline void SetCurrentLevel(FName currentLevel) { CurrentLevel = currentLevel; }
+	//inline void SetCurrentLevel(FName currentLevel) { CurrentLevel = currentLevel; }
 private:
 	UFUNCTION()
 	void DelayUnload(FName currentLevel);
@@ -40,13 +40,14 @@ private:
 	{
 		{0, FName("MainMenu")},
 		{1, FName("PersistentLevel")},
-		{2, FName("Level_02")},
-		{3, FName("Level_03")},
-		{4, FName("End")}
+		{2, FName("Level_01")},
+		{3, FName("Level_02")},
+		{4, FName("Level_03")},
+		{5, FName("End")}
 	};
 	const int32 ONE = 1;
 
-	FName CurrentLevel = FName("");
+	FString CurrentLevel = FString("");
 
 	ABaseLevelScriptActor* LevelOne = nullptr;
 	ABaseLevelScriptActor* LevelTwo = nullptr;

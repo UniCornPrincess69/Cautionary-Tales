@@ -63,7 +63,25 @@ void ULevelManager::LoadLevel(void)
 
 	if (world)
 	{
-		auto level = UGameplayStatics::GetCurrentLevelName(world);
+		const TArray<ULevelStreaming*>& streamingLevels = world->GetStreamingLevels();
+
+		for (auto& streamingLevel : streamingLevels)
+		{
+			if (streamingLevel && streamingLevel->IsLevelLoaded())
+			{
+				CurrentLevel = streamingLevel->GetWorldAssetPackageName();
+				auto idx = streamingLevels.IndexOfByKey(streamingLevel);
+				auto nextLevelName = streamingLevels[idx + 1];
+				UGameplayStatics::LoadStreamLevel(world, nextLevelName->GetWorldAssetPackageFName(), true, true, FLatentActionInfo());
+				world->GetTimerManager().SetTimer(Handle, [&]() { this->DelayUnload(FName(CurrentLevel)); }, 1.f, false);
+			}
+		}
+		
+		
+		
+		
+		
+		/*auto level = UGameplayStatics::GetCurrentLevelName(world);
 		const int32* levelNumber = nullptr;
 
 		for (const auto& pair : Levels)
@@ -80,7 +98,7 @@ void ULevelManager::LoadLevel(void)
 			auto nextLevel = *levelNumber + ONE;
 			UGameplayStatics::LoadStreamLevel(world, *Levels.Find(nextLevel), true, true, FLatentActionInfo());
 			world->GetTimerManager().SetTimer(Handle, [&]() { this->DelayUnload(CurrentLevel); }, 1.f, false);
-		}
+		}*/
 
 	}
 }
