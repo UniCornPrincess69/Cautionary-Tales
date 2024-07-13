@@ -24,4 +24,5 @@ protected:
 private:
 	class ULevelManager* LevelManager = nullptr;
 	FName LevelName = FName(TEXT("Level_01"));
+	class ATeleporterZone* TPZone = nullptr;
 };

@@ -9,6 +9,7 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLevelLoaded);
 
 class ATestCharacter;
+class ATeleporterZone;
 UCLASS()
 class CAUTIONARY_TALES_API AGame : public ALevelScriptActor
 {
@@ -16,6 +17,8 @@ class CAUTIONARY_TALES_API AGame : public ALevelScriptActor
 
 public:
 	FOnLevelLoaded OnLevelLoaded;
+
+	void UpdateTeleporter(ATeleporterZone* newZone);
 
 protected:
 	virtual void BeginPlay() override;
@@ -29,7 +32,7 @@ private:
 	UFUNCTION()
 	void PlayerReady(ATestCharacter* player);
 
-	class ATeleporterZone* TeleportZone = nullptr;
+	ATeleporterZone* TeleportZone = nullptr;
 	class UGameManager* Manager = nullptr;
 	class ATestCharacter* Player = nullptr;
 	

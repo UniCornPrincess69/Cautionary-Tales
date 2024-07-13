@@ -31,9 +31,10 @@ void ULevelManager::LoadGame(const bool& IsNewGame)
 	}
 }
 
-void ULevelManager::SetGameManager(UGameManager* GameManager)
+
+void ULevelManager::Instantiate(UGameManager* manager)
 {
-	GM = GameManager;
+	GM = manager;
 	PlayerCharacter = GM->GetPlayer();
 	PlayerCharacter->OnTriggerOverlap.AddUniqueDynamic(this, &ULevelManager::LoadLevel);
 }
@@ -76,11 +77,11 @@ void ULevelManager::LoadLevel(void)
 				world->GetTimerManager().SetTimer(Handle, [&]() { this->DelayUnload(FName(CurrentLevel)); }, 1.f, false);
 			}
 		}
-		
-		
-		
-		
-		
+
+
+
+
+
 		/*auto level = UGameplayStatics::GetCurrentLevelName(world);
 		const int32* levelNumber = nullptr;
 
@@ -102,6 +103,7 @@ void ULevelManager::LoadLevel(void)
 
 	}
 }
+
 
 
 

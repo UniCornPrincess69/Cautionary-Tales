@@ -19,11 +19,11 @@ class CAUTIONARY_TALES_API ULevelManager : public UWorldSubsystem
 
 public:
 	void LoadGame(const bool& IsNewGame);
-	void SetGameManager(UGameManager* GameManager);
 
 	inline void SetLevelOne(ABaseLevelScriptActor* levelOne) { LevelOne = levelOne; }
 	inline void SetLevelTwo(ABaseLevelScriptActor* levelTwo) { LevelTwo = levelTwo; }
 
+	void Instantiate(UGameManager* manager);
 	//inline void SetCurrentLevel(FName currentLevel) { CurrentLevel = currentLevel; }
 private:
 	UFUNCTION()
@@ -31,8 +31,10 @@ private:
 
 	virtual void Initialize(FSubsystemCollectionBase& collection) override;
 	virtual void Deinitialize() override;
+
 	UFUNCTION()
 	void LoadLevel();
+
 
 	FTimerHandle Handle;
 
