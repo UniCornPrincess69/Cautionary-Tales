@@ -1,13 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "GameWorld/LevelScriptActors/LevelScriptActor_Level_02.h"
+#include "GameWorld/LevelScriptActors/LevelScriptActor_Level_03.h"
 #include "GameWorld/TeleporterZone.h"
-#include "GameWorld/LevelScriptActors/Game.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameWorld/LevelScriptActors/Game.h"
 
-
-void ALevelScriptActor_Level_02::BeginPlay()
+void ALevelScriptActor_Level_03::BeginPlay()
 {
 	auto world = GetWorld();
 	auto actor = UGameplayStatics::GetActorOfClass(world, ATeleporterZone::StaticClass());
@@ -16,5 +15,4 @@ void ALevelScriptActor_Level_02::BeginPlay()
 	auto level = world->GetLevelScriptActor();
 	Game = Cast<AGame>(level);
 	if (Game) Game->UpdateTeleporter(TPZone);
-	
 }

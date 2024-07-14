@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameWorld/LevelScriptActors/BaseLevelScriptActor.h"
-#include "LevelScriptActor_Level_02.generated.h"
+#include "LevelScriptActor_Level_03.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class CAUTIONARY_TALES_API ALevelScriptActor_Level_02 : public ABaseLevelScriptActor
+class CAUTIONARY_TALES_API ALevelScriptActor_Level_03 : public ABaseLevelScriptActor
 {
 	GENERATED_BODY()
-
+	
 protected:
 	virtual void BeginPlay() override;
 

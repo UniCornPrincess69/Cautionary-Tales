@@ -33,6 +33,7 @@ void AGame::EndPlay(const EEndPlayReason::Type endPlayReason)
 void AGame::TeleportPlayer(void)
 {
 	Player->SetActorLocation(TeleportZone->GetActorLocation());
+	TeleportZone->Destroy();
 }
 
 void AGame::PlayerReady(ATestCharacter* player)
