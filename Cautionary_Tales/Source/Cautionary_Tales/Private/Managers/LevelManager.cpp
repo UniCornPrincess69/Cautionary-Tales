@@ -9,41 +9,31 @@
 #include "Player/TestCharacter.h"
 #include "GameWorld/LevelScriptActors/BaseLevelScriptActor.h"
 
-//TODO: Look at level streaming
-//TODO: Load level and character position via Save system
 void ULevelManager::LoadGame(const bool& IsNewGame)
 {
 	auto world = GetWorld();
-
+	if(world) Instantiate();
+	if (GM) GM->SetNewGameBool(IsNewGame);
 	if (world)
 	{
-		if (IsNewGame)
-		{
-			auto levelOne = *Levels.Find(ONE);
-			UGameplayStatics::OpenLevel(world, levelOne);
-		}
-		else
+		UGameplayStatics::OpenLevel(world, FIRSTLEVEL);
+		/*if(!IsNewGame)
 		{
 			auto data = world->GetSubsystem<USaveManager>()->LoadGame();
-			//TODO: Persistent Level needs to be always opened, streaming level needs adjustment
-			UGameplayStatics::OpenLevel(world, data->LevelName);
-		}
+			UGameplayStatics::LoadStreamLevel(world, FName(data->StreamingLevelName), true, true, FLatentActionInfo());
+		}*/
 	}
 }
 
 
-void ULevelManager::Instantiate(UGameManager* manager)
+void ULevelManager::Instantiate()
 {
-	GM = manager;
-	PlayerCharacter = GM->GetPlayer();
-	PlayerCharacter->OnTriggerOverlap.AddUniqueDynamic(this, &ULevelManager::LoadLevel);
+	GM = UGameManager::Instantiate(*this);
 }
 
 void ULevelManager::DelayUnload(FName currentLevel)
 {
 	UGameplayStatics::UnloadStreamLevel(GetWorld(), currentLevel, FLatentActionInfo(), true);
-	UE_LOG(LogTemp, Warning, TEXT("Current level was %s"), currentLevel);
-	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, TEXT("Level unloaded"));
 }
 
 void ULevelManager::Initialize(FSubsystemCollectionBase& collection)
@@ -78,30 +68,13 @@ void ULevelManager::LoadLevel(void)
 			}
 		}
 
-
-
-
-
-		/*auto level = UGameplayStatics::GetCurrentLevelName(world);
-		const int32* levelNumber = nullptr;
-
-		for (const auto& pair : Levels)
-		{
-			if (pair.Value == FName(level))
-			{
-				levelNumber = &pair.Key;
-				break;
-			}
-		}
-
-		if (levelNumber)
-		{
-			auto nextLevel = *levelNumber + ONE;
-			UGameplayStatics::LoadStreamLevel(world, *Levels.Find(nextLevel), true, true, FLatentActionInfo());
-			world->GetTimerManager().SetTimer(Handle, [&]() { this->DelayUnload(CurrentLevel); }, 1.f, false);
-		}*/
-
 	}
+}
+
+void ULevelManager::PlayerReady(ATestCharacter* player)
+{
+	PlayerCharacter = player;
+	PlayerCharacter->OnTriggerOverlap.AddUniqueDynamic(this, &ULevelManager::LoadLevel);
 }
 
 

@@ -38,7 +38,7 @@ public:
 	inline void SetNavSystem(UNavigationSystemV1* navSys) { NavSys = navSys; }
 
 	inline ATestCharacter* GetPlayer(void) { return Player; }
-	inline AStruwwel* GetEnemy(void) { return Struwwel; }
+	inline class AStruwwel* GetEnemy(void) { return Struwwel; }
 	inline UNavigationSystemV1* GetNavSystem(void) { return NavSys; }
 	inline FVector GetLastKnownLocation(void) { return LastPlayerLocation; }
 

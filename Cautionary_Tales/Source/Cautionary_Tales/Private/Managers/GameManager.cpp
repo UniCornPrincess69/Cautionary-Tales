@@ -42,6 +42,7 @@ void UGameManager::SetEnemy(AStruwwel* struwwel)
 	Struwwel->Instantiate();
 }
 
+
 UUIManager* UGameManager::GetUIManager(void)
 {
 	auto ui = GetWorld()->GetSubsystem<UUIManager>();
@@ -63,5 +64,5 @@ void UGameManager::DelayedPlayerReadyCallback(void)
 {
 	OnPlayerReady.Broadcast(Player);
 	LevelManager = GetWorld()->GetSubsystem<ULevelManager>();
-	LevelManager->Instantiate(this);
+	LevelManager->PlayerReady(Player);
 }

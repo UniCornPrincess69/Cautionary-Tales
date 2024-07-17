@@ -6,6 +6,8 @@
 #include "GameWorld/TeleporterZone.h"
 #include "Player/TestCharacter.h"
 #include "Managers/GameManager.h"
+#include "Managers/SaveManager.h"
+#include "GameWorld/SaveData/SaveData.h"
 
 void AGame::UpdateTeleporter(ATeleporterZone* newZone)
 {
@@ -15,12 +17,19 @@ void AGame::UpdateTeleporter(ATeleporterZone* newZone)
 
 void AGame::BeginPlay()
 {
-	UGameplayStatics::LoadStreamLevel(this, "Level_01", true, true, FLatentActionInfo());
-	
 	Manager = UGameManager::Instantiate(*this);
 	if (Manager) Manager->OnPlayerReady.AddUniqueDynamic(this, &AGame::PlayerReady);
 
-	//UE_LOG(LogTemp, Warning, TEXT("Teleporter: %s"), *TeleportZone->GetName());
+	if (Manager->GetNewGameBool())
+	{
+		UGameplayStatics::LoadStreamLevel(this, FIRSTLEVEL, true, true, FLatentActionInfo());
+	}
+	else
+	{
+		SaveManager = Manager->GetSaveManager();
+		auto saveData = *SaveManager->LoadGame();
+		UGameplayStatics::LoadStreamLevel(this, FName(saveData.StreamingLevelName), true, true, FLatentActionInfo());
+	}
 }
 
 void AGame::EndPlay(const EEndPlayReason::Type endPlayReason)
@@ -32,8 +41,13 @@ void AGame::EndPlay(const EEndPlayReason::Type endPlayReason)
 
 void AGame::TeleportPlayer(void)
 {
-	Player->SetActorLocation(TeleportZone->GetActorLocation());
-	TeleportZone->Destroy();
+	if(Player) Player->SetActorLocation(TeleportZone->GetActorLocation());
+	else
+	{
+		Player = Manager->GetPlayer();
+		Player->SetActorLocation(TeleportZone->GetActorLocation());
+	}
+	//TeleportZone->Destroy();
 }
 
 void AGame::PlayerReady(ATestCharacter* player)

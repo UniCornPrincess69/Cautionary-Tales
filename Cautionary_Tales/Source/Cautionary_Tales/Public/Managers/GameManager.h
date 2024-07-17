@@ -17,6 +17,7 @@ class AInGameUI;
 class ATestCharacter;
 class AStruwwelController;
 class ULevelManager;
+class USaveManager;
 UCLASS()
 class CAUTIONARY_TALES_API UGameManager : public UGameInstanceSubsystem
 {
@@ -31,11 +32,15 @@ public:
 	void SetEnemy(AStruwwel* struwwel);
 	inline void SetInGameUI(AInGameUI* UI) { InGameUI = UI; }
 	inline void SetLevelManager(ULevelManager* levelManager) { LevelManager = levelManager; }
+	inline void SetNewGameBool(bool isNewGame) { IsNewGame = isNewGame; }
+	inline void SetSaveManager(USaveManager* saveManager) { SaveManager = saveManager; }
 
 	inline AInGameUI* GetInGameUI(void) { return InGameUI; }
 	inline ATestCharacter* GetPlayer(void) { return Player; }
 	inline AStruwwel* GetEnemy(void) { return Struwwel; }
 	inline ULevelManager* GetLevelManager(void) { return LevelManager; }
+	inline bool GetNewGameBool(void) { return IsNewGame; }
+	inline USaveManager* GetSaveManager(void) { return SaveManager; }
 	class UUIManager* GetUIManager(void);
 
 	UPROPERTY(BlueprintAssignable)
@@ -55,4 +60,7 @@ private:
 	AInGameUI* InGameUI = nullptr;
 	AStruwwelController* AIController = nullptr;
 	ULevelManager* LevelManager = nullptr;
+	USaveManager* SaveManager = nullptr;
+
+	bool IsNewGame = false;
 };

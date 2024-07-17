@@ -25,11 +25,14 @@ struct CAUTIONARY_TALES_API FSaveData : public FTableRowBase
 	FVector PlayerPosition = FVector(0.f, 0.f, 0.f);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName LevelName = FName(TEXT("None"));
+	FString StreamingLevelName = FString(TEXT("None"));
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector EnemyPosition = FVector(0.f, 0.f, 0.f);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EStates EnemyState = EStates::ST_NONE;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsEnemyActive = false;
 };

@@ -17,13 +17,12 @@ FSaveData USaveManager::CreateSaveData(void)
 {
 	FSaveData data;
 
-	auto GM = UGameManager::Instantiate(*this);
 	auto world = GetWorld();
 
 	if (GM && world)
 	{
 		data.PlayerPosition = GM->GetPlayer()->GetActorLocation();
-		data.LevelName = StaticCast<FName>(UGameplayStatics::GetCurrentLevelName(world));
+		data.StreamingLevelName = GetStreamLevelName();
 		data.EnemyPosition = GM->GetEnemy()->GetActorLocation();
 		data.EnemyState = GM->GetEnemy()->GetCurrentState();
 		//TODO: Get Enemy location, probably some more info. Adjust SaveData accordingly
@@ -98,13 +97,17 @@ void USaveManager::Initialize(FSubsystemCollectionBase& collection)
 		}
 		else UE_LOG(LogTemp, Warning, TEXT("File doesn't exist"));
 	}
-
-	if (DataTable && CheckSave(DataTable, SAVENAME)) SaveData = DataTable->FindRow<FSaveData>(SAVENAME, TEXT(""));
+	if (DataTable && CheckSave(DataTable, SAVENAME))
+	{
+		SaveData = DataTable->FindRow<FSaveData>(SAVENAME, TEXT(""));
+	}
 	else
 	{
 		DataTable->AddRow(SAVENAME, FSaveData());
 	}
 
+	GM = UGameManager::Instantiate(*this);
+	if (GM) GM->SetSaveManager(this);
 }
 
 void USaveManager::Deinitialize()
@@ -120,4 +123,19 @@ bool USaveManager::CheckSave(const UDataTable* Data, const FName& SaveName)
 bool USaveManager::DataExists(const FString& Path)
 {
 	return FPlatformFileManager::Get().GetPlatformFile().FileExists(*Path);
+}
+
+FString USaveManager::GetStreamLevelName(void)
+{
+	FString levelName = FString(TEXT(""));
+	auto streamLevels = GetWorld()->GetStreamingLevels();
+	
+	for (auto& streamingLevel : streamLevels)
+	{
+		if (streamingLevel && streamingLevel->IsLevelLoaded())
+		{
+			levelName = streamingLevel->GetWorldAssetPackageName();
+		}
+	}
+	return levelName;
 }

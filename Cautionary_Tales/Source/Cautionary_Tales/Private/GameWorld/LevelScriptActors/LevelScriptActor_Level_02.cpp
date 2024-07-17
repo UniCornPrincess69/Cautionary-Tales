@@ -9,6 +9,8 @@
 
 void ALevelScriptActor_Level_02::BeginPlay()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, TEXT("Level 2 loaded"));
+	
 	auto world = GetWorld();
 	auto actor = UGameplayStatics::GetActorOfClass(world, ATeleporterZone::StaticClass());
 	TPZone = Cast<ATeleporterZone>(actor);

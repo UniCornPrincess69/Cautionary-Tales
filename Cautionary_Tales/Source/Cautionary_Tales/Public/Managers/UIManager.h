@@ -9,6 +9,7 @@
 /**
  * 
  */
+class UGameManager;
 UCLASS()
 class CAUTIONARY_TALES_API UUIManager : public UWorldSubsystem
 {
@@ -22,6 +23,8 @@ public:
 	void DeathScreen(const UObject* Target);
 	void ToMainMenu(const UObject* Target);
 
+	
+
 private:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
@@ -31,5 +34,4 @@ private:
 	const FName LEVEL_ONE = FName(TEXT("Level_01")); 
 	const FName LEVEL_TWO = FName(TEXT("Level_02"));
 	const FName LEVEL_THREE = FName(TEXT("Level_03"));
-	
 };

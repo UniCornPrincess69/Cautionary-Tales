@@ -20,12 +20,11 @@ class CAUTIONARY_TALES_API ULevelManager : public UWorldSubsystem
 public:
 	void LoadGame(const bool& IsNewGame);
 
-	inline void SetLevelOne(ABaseLevelScriptActor* levelOne) { LevelOne = levelOne; }
-	inline void SetLevelTwo(ABaseLevelScriptActor* levelTwo) { LevelTwo = levelTwo; }
 
-	void Instantiate(UGameManager* manager);
 	//inline void SetCurrentLevel(FName currentLevel) { CurrentLevel = currentLevel; }
+	void PlayerReady(ATestCharacter* player);
 private:
+	void Instantiate();
 	UFUNCTION()
 	void DelayUnload(FName currentLevel);
 
@@ -36,23 +35,14 @@ private:
 	void LoadLevel();
 
 
+
 	FTimerHandle Handle;
 
-	TMap<int32, FName> Levels = 
-	{
-		{0, FName("MainMenu")},
-		{1, FName("PersistentLevel")},
-		{2, FName("Level_01")},
-		{3, FName("Level_02")},
-		{4, FName("Level_03")},
-		{5, FName("End")}
-	};
 	const int32 ONE = 1;
+	const FName FIRSTLEVEL = FName(TEXT("PersistentLevel"));
 
 	FString CurrentLevel = FString("");
 
-	ABaseLevelScriptActor* LevelOne = nullptr;
-	ABaseLevelScriptActor* LevelTwo = nullptr;
 
 	UGameManager* GM = nullptr;
 	ATestCharacter* PlayerCharacter = nullptr;

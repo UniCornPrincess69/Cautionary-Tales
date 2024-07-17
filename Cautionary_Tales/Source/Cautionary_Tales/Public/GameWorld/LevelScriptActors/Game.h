@@ -35,5 +35,7 @@ private:
 	ATeleporterZone* TeleportZone = nullptr;
 	class UGameManager* Manager = nullptr;
 	class ATestCharacter* Player = nullptr;
-	
+	class USaveManager* SaveManager = nullptr;
+
+	const FName FIRSTLEVEL = FName(TEXT("Level_01"));
 };
