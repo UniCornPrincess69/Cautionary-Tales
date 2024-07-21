@@ -26,13 +26,15 @@ private:
 	virtual void Deinitialize() override;
 	bool CheckSave(const UDataTable* Data, const FName& SaveName);
 	bool DataExists(const FString& Path);
+	FString GetSaveFilePath(void);
+	void CheckDirectory(void);
 	FString GetStreamLevelName(void);
 
 	FSaveData* SaveData = nullptr;
 	UDataTable* DataTable = nullptr;
 	UGameManager* GM = nullptr;
 
-	const FString SAVEPATH = FPaths::ProjectSavedDir() + TEXT("SavedData.json");
+	FString SAVEPATH = FString(TEXT(""));
 	const FString DATATABLEPATH = FString(TEXT("/Game/Assets/Blueprints/DT_SaveData"));
 	const FName SAVENAME = FName(TEXT("SAVE"));
 

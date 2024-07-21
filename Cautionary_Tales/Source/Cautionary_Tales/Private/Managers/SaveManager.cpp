@@ -9,7 +9,8 @@
 #include "Enemy/Struwwel.h"
 #include "JsonObjectConverter.h"
 #include "Serialization/JsonSerializer.h"
-#include "FileHelpers.h"
+#include "Misc/FileHelper.h"
+#include "Misc/Paths.h"
 
 
 
@@ -80,7 +81,8 @@ void USaveManager::Initialize(FSubsystemCollectionBase& collection)
 {
 	Super::Initialize(collection);
 	DataTable = LoadObject<UDataTable>(nullptr, (TCHAR*)(*DATATABLEPATH));
-
+	CheckDirectory();
+	SAVEPATH = GetSaveFilePath();
 	if (DataTable)
 	{
 		if (DataExists(SAVEPATH))
@@ -123,6 +125,22 @@ bool USaveManager::CheckSave(const UDataTable* Data, const FName& SaveName)
 bool USaveManager::DataExists(const FString& Path)
 {
 	return FPlatformFileManager::Get().GetPlatformFile().FileExists(*Path);
+}
+
+FString USaveManager::GetSaveFilePath(void)
+{
+	FString saveDir = FPaths::ProjectSavedDir();
+	FString fileName = TEXT("SaveGame.json");
+	return saveDir / fileName;
+}
+
+void USaveManager::CheckDirectory(void)
+{
+	FString saveDir = FPaths::ProjectSavedDir();
+	if (!FPlatformFileManager::Get().GetPlatformFile().DirectoryExists(*saveDir))
+	{
+		FPlatformFileManager::Get().GetPlatformFile().CreateDirectory(*saveDir);
+	}
 }
 
 FString USaveManager::GetStreamLevelName(void)
