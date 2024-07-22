@@ -36,7 +36,7 @@ void AStruwwel::BeginPlay()
 {
 	Super::BeginPlay();
 
-	auto GM = UGameManager::Instantiate(*this);
+	GM = UGameManager::Instantiate(*this);
 	GM->SetEnemy(this);
 }
 
@@ -51,6 +51,7 @@ void AStruwwel::Tick(float DeltaTime)
 void AStruwwel::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
+	GM->SetEnemyActive(false);
 }
 
 void AStruwwel::StateChanged(EStates newState)

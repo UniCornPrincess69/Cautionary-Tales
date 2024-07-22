@@ -17,7 +17,7 @@ class CAUTIONARY_TALES_API USaveManager : public UWorldSubsystem
 
 
 public:
-	FSaveData CreateSaveData(void);
+	void CreateSaveData(void);
 	void SaveGame();
 	FSaveData* LoadGame();
 	
@@ -33,6 +33,8 @@ private:
 	FSaveData* SaveData = nullptr;
 	UDataTable* DataTable = nullptr;
 	UGameManager* GM = nullptr;
+
+	FSaveData CurrentSaveData;
 
 	FString SAVEPATH = FString(TEXT(""));
 	const FString DATATABLEPATH = FString(TEXT("/Game/Assets/Blueprints/DT_SaveData"));

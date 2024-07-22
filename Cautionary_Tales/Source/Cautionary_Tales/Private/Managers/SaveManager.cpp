@@ -14,43 +14,56 @@
 
 
 
-FSaveData USaveManager::CreateSaveData(void)
+void USaveManager::CreateSaveData(void)
 {
-	FSaveData data;
-
-	auto world = GetWorld();
-
-	if (GM && world)
+	if (GM && GetWorld())
 	{
-		data.PlayerPosition = GM->GetPlayer()->GetActorLocation();
-		data.StreamingLevelName = GetStreamLevelName();
-		data.EnemyPosition = GM->GetEnemy()->GetActorLocation();
-		data.EnemyState = GM->GetEnemy()->GetCurrentState();
+		CurrentSaveData.PlayerPosition = GM->GetPlayer()->GetActorLocation();
+		CurrentSaveData.StreamingLevelName = GetStreamLevelName();
+		if (GM->GetEnemyActive())
+		{
+			CurrentSaveData.EnemyPosition = GM->GetEnemy()->GetActorLocation();
+			CurrentSaveData.EnemyState = GM->GetEnemy()->GetCurrentState();
+			CurrentSaveData.IsEnemyActive = true;
+		}
+		else
+		{
+			CurrentSaveData.EnemyPosition = FVector(0.f, 0.f, 0.f);
+			CurrentSaveData.EnemyState = EStates::ST_NONE;
+			CurrentSaveData.IsEnemyActive = false;
+		}
 		//TODO: Get Enemy location, probably some more info. Adjust SaveData accordingly
 	}
 
-	return data;
 }
 
 void USaveManager::SaveGame()
 {
+	if (!DataTable) UE_LOG(LogTemp, Error, TEXT("DataTable is not initialized"));
+	
 	if (DataTable)
 	{
-		auto saveData = CreateSaveData();
+		CreateSaveData();
 
-		if (!CheckSave(DataTable, SAVENAME)) DataTable->AddRow(SAVENAME, saveData);
+		if (!CheckSave(DataTable, SAVENAME))
+		{
+			DataTable->AddRow(SAVENAME, CurrentSaveData);
+			UE_LOG(LogTemp, Log, TEXT("Adding new save data row"));
+		}
 		else
 		{
+			UE_LOG(LogTemp, Log, TEXT("Updating save data row"));
 			DataTable->RemoveRow(SAVENAME);
-			DataTable->AddRow(SAVENAME, saveData);
+			DataTable->AddRow(SAVENAME, CurrentSaveData);
 			DataTable->Modify();
-			DataTable->MarkPackageDirty();
+			//DataTable->MarkPackageDirty();
 
-			//TODO: SaveData check needs to be reworked. Only one file with given name should exist. 
+			if (!SaveData) UE_LOG(LogTemp, Log, TEXT("SaveData not initialized"));
+
 			if (SaveData)
 			{
 				FString jsonString;
-				FJsonObjectConverter::UStructToJsonObjectString(saveData, jsonString);
+				FJsonObjectConverter::UStructToJsonObjectString(CurrentSaveData, jsonString);
 
 				FString FilePath = SAVEPATH;
 
@@ -147,7 +160,7 @@ FString USaveManager::GetStreamLevelName(void)
 {
 	FString levelName = FString(TEXT(""));
 	auto streamLevels = GetWorld()->GetStreamingLevels();
-	
+
 	for (auto& streamingLevel : streamLevels)
 	{
 		if (streamingLevel && streamingLevel->IsLevelLoaded())

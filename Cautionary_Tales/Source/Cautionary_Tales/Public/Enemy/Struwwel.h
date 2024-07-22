@@ -42,7 +42,9 @@ private:
 
 	class UAIPerceptionComponent* PerceptionComponent = nullptr;
 	class AStruwwelController* Controller = nullptr;
+	class UGameManager* GM = nullptr;
 	bool IsActive = false;
 	EStates CurrentState = EStates::ST_NONE;
+
 
 };

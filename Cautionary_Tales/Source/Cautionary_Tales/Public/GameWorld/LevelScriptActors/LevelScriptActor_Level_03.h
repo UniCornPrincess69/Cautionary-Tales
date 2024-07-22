@@ -16,6 +16,7 @@ class CAUTIONARY_TALES_API ALevelScriptActor_Level_03 : public ABaseLevelScriptA
 	
 protected:
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type endPlayReason) override;
 
 private:
 	class ULevelManager* LevelManager = nullptr;

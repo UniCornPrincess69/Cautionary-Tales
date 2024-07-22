@@ -19,4 +19,10 @@ void ALevelScriptActor_Level_02::BeginPlay()
 	Game = Cast<AGame>(level);
 	if (Game) Game->UpdateTeleporter(TPZone);
 	
+	TPZone->Destroy();
+}
+
+void ALevelScriptActor_Level_02::EndPlay(const EEndPlayReason::Type endPlayReason)
+{
+	Super::EndPlay(endPlayReason);
 }

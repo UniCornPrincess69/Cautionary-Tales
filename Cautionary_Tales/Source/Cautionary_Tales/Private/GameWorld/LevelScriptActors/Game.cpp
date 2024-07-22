@@ -26,8 +26,8 @@ void AGame::BeginPlay()
 	}
 	else
 	{
-		SaveManager = Manager->GetSaveManager();
-		auto saveData = *SaveManager->LoadGame();
+		//SaveManager = Manager->GetSaveManager();
+		auto saveData = *GetWorld()->GetSubsystem<USaveManager>()->LoadGame();
 		UGameplayStatics::LoadStreamLevel(this, FName(saveData.StreamingLevelName), true, true, FLatentActionInfo());
 	}
 }

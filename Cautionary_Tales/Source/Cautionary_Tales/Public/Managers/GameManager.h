@@ -34,6 +34,7 @@ public:
 	inline void SetLevelManager(ULevelManager* levelManager) { LevelManager = levelManager; }
 	inline void SetNewGameBool(bool isNewGame) { IsNewGame = isNewGame; }
 	inline void SetSaveManager(USaveManager* saveManager) { SaveManager = saveManager; }
+	inline void SetEnemyActive(bool isEnemyActive) { IsEnemyActive = isEnemyActive; }
 
 	inline AInGameUI* GetInGameUI(void) { return InGameUI; }
 	inline ATestCharacter* GetPlayer(void) { return Player; }
@@ -42,6 +43,7 @@ public:
 	inline bool GetNewGameBool(void) { return IsNewGame; }
 	inline USaveManager* GetSaveManager(void) { return SaveManager; }
 	class UUIManager* GetUIManager(void);
+	inline bool GetEnemyActive(void) { return IsEnemyActive; }
 
 	UPROPERTY(BlueprintAssignable)
 	FOnPlayerReady OnPlayerReady;
@@ -63,4 +65,5 @@ private:
 	USaveManager* SaveManager = nullptr;
 
 	bool IsNewGame = false;
+	bool IsEnemyActive = false;
 };

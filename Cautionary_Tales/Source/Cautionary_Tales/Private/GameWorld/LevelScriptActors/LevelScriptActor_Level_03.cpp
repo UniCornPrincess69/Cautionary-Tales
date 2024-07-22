@@ -16,3 +16,8 @@ void ALevelScriptActor_Level_03::BeginPlay()
 	Game = Cast<AGame>(level);
 	if (Game) Game->UpdateTeleporter(TPZone);
 }
+
+void ALevelScriptActor_Level_03::EndPlay(const EEndPlayReason::Type endPlayReason)
+{
+	Super::EndPlay(endPlayReason);
+}
