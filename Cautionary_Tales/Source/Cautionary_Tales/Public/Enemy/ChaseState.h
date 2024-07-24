@@ -29,5 +29,5 @@ private:
 
 	AStruwwelController* FSM = nullptr;
 	class ATestCharacter* Player = nullptr;
-
+	class AStruwwel* Struwwel = nullptr;
 };

@@ -64,7 +64,7 @@ void UUIManager::ToMainMenu(const UObject* target)
 
 void UUIManager::Initialize(FSubsystemCollectionBase& collection)
 {
-	Super::Initialize(collection);
+	Super::Initialize(collection); 
 }
 
 void UUIManager::Deinitialize()

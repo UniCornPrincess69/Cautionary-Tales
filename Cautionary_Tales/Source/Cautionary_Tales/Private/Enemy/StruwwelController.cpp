@@ -29,7 +29,6 @@ AStruwwelController::AStruwwelController()
 	SightConfig->DetectionByAffiliation.bDetectEnemies = true;
 	SightConfig->DetectionByAffiliation.bDetectFriendlies = true;
 	SightConfig->DetectionByAffiliation.bDetectNeutrals = true;
-	SightConfig->SetMaxAge(3.f);
 	PerceptionComponent->ConfigureSense(*SightConfig);
 	PerceptionComponent->SetDominantSense(SightConfig->GetSenseImplementation());
 	PerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &AStruwwelController::OnPlayerDetected);

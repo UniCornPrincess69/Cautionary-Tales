@@ -21,11 +21,22 @@ public:
 	void SetPauseWidget(void);
 	void SetEndWidget(void);
 
+	UFUNCTION()
+	void SetDeathScreen();
+
+	UFUNCTION()
+	void SetupCallback(class ATestCharacter* character);
+
+protected:
+	virtual void EndPlay(const EEndPlayReason::Type endPlayReason) override;
 
 private:
 	APlayerController* Player = nullptr;
+	class UGameManager* GM = nullptr;
+	class ATestCharacter* Character = nullptr;
 	UUserWidget* PauseWidget = nullptr;
 	UUserWidget* EndWidget = nullptr;
+	UUserWidget* DeathWidget = nullptr;
 
 	FInputModeGameOnly Game;
 	FInputModeGameAndUI Both;
@@ -33,6 +44,7 @@ private:
 #pragma region Constants
 	const FString PauseHUDPath = FString(TEXT("/Game/Assets/Blueprints/UI/BP_PauseMenuUI"));
 	const FString EndHUDPath = FString(TEXT("/Game/Assets/Blueprints/UI/BP_EndScreen"));
+	const FString DeathHUDPath = FString(TEXT("/Game/Assets/Blueprints/UI/BP_DeathScreenUI"));
 #pragma endregion
 	
 };

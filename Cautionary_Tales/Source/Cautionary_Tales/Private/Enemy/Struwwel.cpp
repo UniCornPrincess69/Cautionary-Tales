@@ -31,6 +31,11 @@ void AStruwwel::Instantiate(void)
 	}
 }
 
+void AStruwwel::PlayerCaught(void)
+{
+	OnPlayerCaught.Broadcast();
+}
+
 // Called when the game starts or when spawned
 void AStruwwel::BeginPlay()
 {

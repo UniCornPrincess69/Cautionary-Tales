@@ -8,6 +8,7 @@
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerDetection);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerCaught);
 
 UCLASS()
 class CAUTIONARY_TALES_API AStruwwel : public ACharacter
@@ -23,6 +24,8 @@ public:
 	inline void SetCurrentState(EStates state) { CurrentState = state; }
 	inline EStates GetCurrentState(void) { return CurrentState; }
 
+	void PlayerCaught(void);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -32,6 +35,7 @@ public:
 	virtual void Tick(float deltaTime) override;
 
 	FOnPlayerDetection OnPlayerDetection;
+	FOnPlayerCaught OnPlayerCaught;
 
 private:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;

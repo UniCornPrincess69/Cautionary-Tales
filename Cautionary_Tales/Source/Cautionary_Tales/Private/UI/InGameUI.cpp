@@ -4,38 +4,48 @@
 #include "UI/InGameUI.h"
 #include "Blueprint/UserWidget.h"
 #include "Managers/GameManager.h"
+#include "Player/TestCharacter.h"
 
 
 AInGameUI::AInGameUI()
 {
 	auto pauseUI = ConstructorHelpers::FClassFinder<UUserWidget>((TCHAR*)(*PauseHUDPath)).Class;
 	auto endUI = ConstructorHelpers::FClassFinder<UUserWidget>((TCHAR*)(*EndHUDPath)).Class;
+	auto deathUI = ConstructorHelpers::FClassFinder<UUserWidget>((TCHAR*)(*DeathHUDPath)).Class;
 
 	if (GetWorld())
 	{
 		Player = GetWorld()->GetFirstPlayerController();
+
 	}
 	else return;
 
 	PauseWidget = CreateWidget(Player, pauseUI, TEXT("Pause Menu"));
-	EndWidget = CreateWidget(Player, endUI, TEXT("Death screen"));
+	EndWidget = CreateWidget(Player, endUI, TEXT("End screen"));
+	DeathWidget = CreateWidget(Player, deathUI, TEXT("Death screen"));
 
-	auto GM = UGameManager::Instantiate(*this);
-	if (GM) GM->SetInGameUI(this);
+	GM = UGameManager::Instantiate(*this);
+	if (GM)
+	{
+		GM->SetInGameUI(this);
+		GM->OnPlayerReady.AddUniqueDynamic(this, &AInGameUI::SetupCallback);
+	}
+
 
 	if (PauseWidget && EndWidget)
 	{
 		PauseWidget->AddToViewport();
 		EndWidget->AddToViewport();
+		DeathWidget->AddToViewport();
 		InitWidgets();
 	}
-
 }
 
 void AInGameUI::InitWidgets(void)
 {
 	PauseWidget->SetVisibility(ESlateVisibility::Hidden);
 	EndWidget->SetVisibility(ESlateVisibility::Hidden);
+	DeathWidget->SetVisibility(ESlateVisibility::Hidden);
 
 	if (Player)
 	{
@@ -57,11 +67,33 @@ void AInGameUI::SetPauseWidget(void)
 
 void AInGameUI::SetEndWidget(void)
 {
-	PauseWidget->SetVisibility(ESlateVisibility::Visible);
+	EndWidget->SetVisibility(ESlateVisibility::Visible);
 
 	if (Player)
 	{
 		Player->SetShowMouseCursor(true);
 		Player->SetInputMode(Both);
 	}
+}
+
+void AInGameUI::SetDeathScreen()
+{
+	DeathWidget->SetVisibility(ESlateVisibility::Visible);
+	if (Player)
+	{
+		Player->SetShowMouseCursor(true);
+		Player->SetInputMode(Both);
+	}
+}
+
+void AInGameUI::SetupCallback(ATestCharacter* character)
+{
+	Character = character;
+	Character->OnGotCaught.AddUniqueDynamic(this, &AInGameUI::SetDeathScreen);
+}
+
+void AInGameUI::EndPlay(const EEndPlayReason::Type endPlayReason)
+{
+	if (GM) GM->OnPlayerReady.RemoveDynamic(this, &AInGameUI::SetupCallback);
+	if (Character) Character->OnGotCaught.RemoveDynamic(this, &AInGameUI::SetDeathScreen);
 }

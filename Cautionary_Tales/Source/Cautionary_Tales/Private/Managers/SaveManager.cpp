@@ -41,6 +41,8 @@ void USaveManager::SaveGame()
 {
 	if (!DataTable) UE_LOG(LogTemp, Error, TEXT("DataTable is not initialized"));
 	
+	DataTable = LoadObject<UDataTable>(nullptr, (TCHAR*)(*DATATABLEPATH));
+
 	if (DataTable)
 	{
 		CreateSaveData();
@@ -56,7 +58,7 @@ void USaveManager::SaveGame()
 			DataTable->RemoveRow(SAVENAME);
 			DataTable->AddRow(SAVENAME, CurrentSaveData);
 			DataTable->Modify();
-			//DataTable->MarkPackageDirty();
+			DataTable->MarkPackageDirty();
 
 			if (!SaveData) UE_LOG(LogTemp, Log, TEXT("SaveData not initialized"));
 
@@ -132,6 +134,7 @@ void USaveManager::Deinitialize()
 
 bool USaveManager::CheckSave(const UDataTable* Data, const FName& SaveName)
 {
+	if (!Data) return false;
 	return Data->FindRow<FSaveData>(SaveName, TEXT("")) ? true : false;
 }
 

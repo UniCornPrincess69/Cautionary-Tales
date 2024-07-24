@@ -18,6 +18,7 @@
 #include "Animation/AnimSequence.h"
 #include "GameWorld/States/CautionaryTalesGameState.h"
 #include "Kismet/GameplayStatics.h"
+#include "Enemy/Struwwel.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -53,7 +54,7 @@ ATestCharacter::ATestCharacter()
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->TargetArmLength = 500.0f; // The camera follows at this distance behind the character	
 	CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
-	
+
 
 	// Create a follow camera
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
@@ -95,14 +96,15 @@ void ATestCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	GetCapsuleComponent()->OnComponentBeginOverlap.RemoveDynamic(this, &ATestCharacter::OverlapBegin);
 	GetCapsuleComponent()->OnComponentEndOverlap.RemoveDynamic(this, &ATestCharacter::OverlapEnd);
+	if (Struwwel) Struwwel->OnPlayerCaught.RemoveDynamic(this, &ATestCharacter::Caught);
 	GetMesh()->Stop();
 }
 
 void ATestCharacter::OverlapBegin(UPrimitiveComponent* Overlap, AActor* Other, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-		GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::Emerald, TEXT("Overlap"));
-	
-	
+	GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::Emerald, TEXT("Overlap"));
+
+
 	if (Other->IsA(ATriggerBox::StaticClass()))
 	{
 		OnTriggerOverlap.Broadcast();
@@ -114,6 +116,13 @@ void ATestCharacter::OverlapEnd(UPrimitiveComponent* Overlap, AActor* Other, UPr
 {
 }
 
+void ATestCharacter::SetEnemy(AStruwwel* struwwel)
+{
+	Struwwel = struwwel;
+
+	Struwwel->OnPlayerCaught.AddUniqueDynamic(this, &ATestCharacter::Caught);
+}
+
 
 void ATestCharacter::Instantiate(void)
 {
@@ -121,13 +130,19 @@ void ATestCharacter::Instantiate(void)
 	JumpAction = FindObject<UInputAction>(JumpActionPath);
 	PauseAction = FindObject<UInputAction>(PauseActionPath);
 	DefaultMappingContext = FindObject<UInputMappingContext>(ContextPath);
-
+	Crouch = FindObject<UAnimSequence>(CrouchAnimPath);
 	Idle = FindObject<UAnimSequence>(IdleAnimPath);
 	Walk = FindObject<UAnimSequence>(WalkAnimPath);
 }
 
-//////////////////////////////////////////////////////////////////////////
-// Input
+void ATestCharacter::Caught()
+{
+	bIsWalking = false;
+	CurrentAnim = Crouch;
+	GetMesh()->PlayAnimation(CurrentAnim, false);
+	bCanMove = false;
+	OnGotCaught.Broadcast();
+}
 
 void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -154,41 +169,45 @@ void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void ATestCharacter::Move(const FInputActionValue& Value)
 {
-	// input is a Vector2D
-	FVector2D MovementVector = Value.Get<FVector2D>();
+	if (bCanMove)
+	{
 
-	/*if (MovementVector >= MinThreshold && MovementVector <= MaxThreshold)
-	{
-		CurrentAnim = Idle;
-	}*/
-	if (MovementVector >= MinThreshold && MovementVector <= MaxThreshold)
-	{
-		CurrentAnim = Idle;
-		GetMesh()->PlayAnimation(CurrentAnim, true);
-		bIsWalking = false;
-	}
-	else
-	{
-		// find out which way is forward
-		CurrentAnim = Walk;
-		if (!bIsWalking)
+		// input is a Vector2D
+		FVector2D MovementVector = Value.Get<FVector2D>();
+
+		/*if (MovementVector >= MinThreshold && MovementVector <= MaxThreshold)
 		{
+			CurrentAnim = Idle;
+		}*/
+		if (MovementVector >= MinThreshold && MovementVector <= MaxThreshold)
+		{
+			CurrentAnim = Idle;
 			GetMesh()->PlayAnimation(CurrentAnim, true);
-			bIsWalking = true;
+			bIsWalking = false;
 		}
+		else
+		{
+			// find out which way is forward
+			CurrentAnim = Walk;
+			if (!bIsWalking)
+			{
+				GetMesh()->PlayAnimation(CurrentAnim, true);
+				bIsWalking = true;
+			}
 
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator YawRotation(0, Rotation.Yaw, 0);
+			const FRotator Rotation = Controller->GetControlRotation();
+			const FRotator YawRotation(0, Rotation.Yaw, 0);
 
-		// get forward vector
-		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+			// get forward vector
+			const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
-		// get right vector 
-		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+			// get right vector 
+			const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 
-		// add movement 
-		AddMovementInput(ForwardDirection, MovementVector.Y);
-		AddMovementInput(RightDirection, MovementVector.X);
+			// add movement 
+			AddMovementInput(ForwardDirection, MovementVector.Y);
+			AddMovementInput(RightDirection, MovementVector.X);
+		}
 	}
 
 }
