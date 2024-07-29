@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{E32D7A6E-1F25-427B-AFDB-1DD4FED0756B}" SchemaVersion="119">
+	<AudioObjects>
+		<WorkUnit Name="Default Work Unit" ID="{E32D7A6E-1F25-427B-AFDB-1DD4FED0756B}" PersistMode="Standalone">
+			<ChildrenList>
+				<Sound Name="SFX_WhaterDrops" ID="{9B3F981C-01DD-4E69-B4EC-D59F4AB9CDA9}" ShortID="323789440">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{8F8A5CE1-B615-4250-B21D-8CA0A8583372}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{3025CAA7-7B74-4841-89D7-41477166112D}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="SFX_WhaterDrops" ID="{554DD507-2790-4D96-A0E3-EAFB4EA9F0E1}">
+							<PropertyList>
+								<Property Name="FadeOutDuration" Type="Real64" Value="0.0696207849640684"/>
+								<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+								<Property Name="TrimEnd" Type="Real64" Value="4.26924599226092"/>
+							</PropertyList>
+							<Language>SFX</Language>
+							<AudioFile>SFX_WhaterDrops.wav</AudioFile>
+							<MediaIDList>
+								<MediaID ID="684756691"/>
+							</MediaIDList>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="SFX_WhaterDrops" ID="{554DD507-2790-4D96-A0E3-EAFB4EA9F0E1}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+			</ChildrenList>
+		</WorkUnit>
+	</AudioObjects>
+</WwiseDocument>

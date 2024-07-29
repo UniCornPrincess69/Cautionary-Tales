@@ -1,0 +1,6 @@
+Event	ID	Name			Wwise Object Path	Notes
+	608253384	WhaterDrops			\Default Work Unit\WhaterDrops	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	684756691	SFX_WhaterDrops	J:\SAE\Cautionary Tales\Cautionary Tales Repo\Cautionary-Tales\Cautionary_Tales\Cautionary_Tales_WwiseProject\.cache\Windows\SFX\SFX_WhaterDrops_F09834BB.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_WhaterDrops		819792
+

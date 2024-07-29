@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SoundBanksInfo Platform="Windows" BasePlatform="Windows" SchemaVersion="16" SoundBankVersion="150">
+	<RootPaths>
+		<ProjectRoot>../..</ProjectRoot>
+		<SourceFilesRoot>../../.cache/Windows</SourceFilesRoot>
+		<SoundBanksRoot>.</SoundBanksRoot>
+		<ExternalSourcesInputFile></ExternalSourcesInputFile>
+		<ExternalSourcesOutputRoot>.</ExternalSourcesOutputRoot>
+	</RootPaths>
+	<DialogueEvents/>
+	<SoundBanks>
+		<SoundBank Id="393239870" Type="User" GUID="{160D9F5A-003F-48AC-BCC3-345BFF3AF2F0}" Language="SFX" Hash="{8FA0710D-3E1E-1C59-5C91-D0899D2B1EE6}">
+			<ObjectPath>\SoundBanks\Default Work Unit\SFX</ObjectPath>
+			<ShortName>SFX</ShortName>
+			<Path>SFX.bnk</Path>
+			<Media>
+				<File Id="684756691" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>SFX_WhaterDrops.wav</ShortName>
+					<CachePath>SFX/SFX_WhaterDrops_F09834BB.wem</CachePath>
+				</File>
+			</Media>
+			<Events>
+				<Event Id="608253384" Name="WhaterDrops" ObjectPath="\Events\Default Work Unit\WhaterDrops" GUID="{46CD8B70-4469-4160-9985-48E084BCCB2D}" DurationType="OneShot" DurationMin="4.269246" DurationMax="4.269246">
+					<MediaRefs>
+						<MediaRef Id="684756691"/>
+					</MediaRefs>
+				</Event>
+			</Events>
+		</SoundBank>
+		<SoundBank Id="1355168291" Type="User" GUID="{701ECBBD-9C7B-4030-8CDB-749EE5D1C7B9}" Language="SFX" Hash="{B6CBD692-12EC-CDBA-0932-48F63C40C91F}">
+			<ObjectPath>Init</ObjectPath>
+			<ShortName>Init</ShortName>
+			<Path>Init.bnk</Path>
+			<Plugins>
+				<AudioDevices>
+					<Plugin Id="2317455096" Name="No_Output" ObjectPath="\Audio Devices\Default Work Unit\No_Output" GUID="{95FA3AD5-5595-4D1B-A913-FF975F4F430A}" LibName="No Output" LibId="11862023"/>
+					<Plugin Id="3859886410" Name="System" ObjectPath="\Audio Devices\Default Work Unit\System" GUID="{5C4A9CCA-8867-4471-8439-9B90E13A8338}" LibName="System" LibId="11403271"/>
+				</AudioDevices>
+			</Plugins>
+			<Busses>
+				<Bus Id="3803692087" Name="Master Audio Bus" ObjectPath="\Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus" GUID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}"/>
+			</Busses>
+		</SoundBank>
+		<SoundBank Id="3083130986" Type="User" GUID="{1DEDC3CB-FA9B-45C8-83EA-E3C227F4BF43}" Language="SFX" Hash="{9AED9C78-D3EE-08D0-D442-67E31D06AB13}">
+			<ObjectPath>\SoundBanks\Default Work Unit\Atmo</ObjectPath>
+			<ShortName>Atmo</ShortName>
+			<Path>Atmo.bnk</Path>
+		</SoundBank>
+		<SoundBank Id="3991942870" Type="User" GUID="{1B6B1709-3EB7-4EF7-8197-9661A0D0D154}" Language="SFX" Hash="{8075EEFB-2136-8445-22D7-93138A5F3A36}">
+			<ObjectPath>\SoundBanks\Default Work Unit\Music</ObjectPath>
+			<ShortName>Music</ShortName>
+			<Path>Music.bnk</Path>
+		</SoundBank>
+	</SoundBanks>
+	<FileHash>{DC35A1C1-D1A0-70E8-F527-2AF5CD916CBC}</FileHash>
+</SoundBanksInfo>

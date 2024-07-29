@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SoundBanksInfo Platform="Windows" BasePlatform="Windows" SchemaVersion="16" SoundBankVersion="150">
+	<SoundBanks>
+		<SoundBank Id="3083130986" Type="User" GUID="{1DEDC3CB-FA9B-45C8-83EA-E3C227F4BF43}" Language="SFX" Hash="{9AED9C78-D3EE-08D0-D442-67E31D06AB13}">
+			<ObjectPath>\SoundBanks\Default Work Unit\Atmo</ObjectPath>
+			<ShortName>Atmo</ShortName>
+			<Path>Atmo.bnk</Path>
+		</SoundBank>
+	</SoundBanks>
+	<FileHash>{B26A19E6-CC05-C56A-5ED3-9FE6E07E1938}</FileHash>
+</SoundBanksInfo>
