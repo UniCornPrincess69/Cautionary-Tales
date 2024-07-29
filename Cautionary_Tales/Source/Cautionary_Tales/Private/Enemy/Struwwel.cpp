@@ -4,10 +4,11 @@
 #include "Enemy/Struwwel.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
-#include "Player/PlayerCharacter.h"
+#include "Player/TestCharacter.h"
 #include "Managers/GameManager.h"
 #include "Enemy/StruwwelController.h"
 #include "GameFramework/CharacterMovementComponent.h"
+
 
 
 // Sets default values
@@ -27,13 +28,14 @@ void AStruwwel::Instantiate(void)
 
 	if (Controller)
 	{
-		Controller->SetState(EStates::ST_SEARCH);
+		Controller->SetState(EStates::ST_CHASE);
+		Controller->SetActive(true);
 	}
 }
 
 void AStruwwel::PlayerCaught(void)
 {
-	OnPlayerCaught.Broadcast();
+	Player->Caught();
 }
 
 // Called when the game starts or when spawned

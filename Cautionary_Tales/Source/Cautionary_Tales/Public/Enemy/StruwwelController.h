@@ -36,6 +36,7 @@ public:
 	void UpdateState(float deltaTime);
 
 	inline void SetNavSystem(UNavigationSystemV1* navSys) { NavSys = navSys; }
+	inline void SetActive(bool isActive) { IsActive = isActive; }
 
 	inline ATestCharacter* GetPlayer(void) { return Player; }
 	inline class AStruwwel* GetEnemy(void) { return Struwwel; }
@@ -68,6 +69,8 @@ private:
 	FString WalkAnimPath = FString(TEXT("/Game/Assets/Animation/Struwelpeter/Walk/Struwelpeter_walk_Anim"));
 	FString ChaseAnimPath = FString(TEXT("/Game/Assets/Animation/Struwelpeter/Chase/Struwelpeter_chase_Anim"));
 	FString AttackAnimPath = FString(TEXT("/Game/Assets/Animation/Struwelpeter/Attack/Struwelpeter_attack_Anim"));
+
+	bool IsActive = false;
 
 #pragma region States
 private:

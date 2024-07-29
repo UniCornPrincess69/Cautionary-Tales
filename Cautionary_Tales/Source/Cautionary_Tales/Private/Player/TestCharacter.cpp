@@ -24,12 +24,12 @@
 //////////////////////////////////////////////////////////////////////////
 // AMyProjectCharacter
 
+/// <summary>
+/// Player constructor mostly according to Unreal Character of the Third Person Template
+/// </summary>
 ATestCharacter::ATestCharacter()
 {
 	Instantiate();
-
-	// Set size for collision capsule
-	//GetCapsuleComponent()->InitCapsuleSize(14.f, 30.0f);
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
@@ -89,16 +89,13 @@ void ATestCharacter::BeginPlay()
 	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &ATestCharacter::OverlapEnd);
 	GetMesh()->PlayAnimation(CurrentAnim, true);
 
-
-	
-	//SetActorLocation(FVector(-4040.f, -90.f, 232.f));
 }
 
 void ATestCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	GetCapsuleComponent()->OnComponentBeginOverlap.RemoveDynamic(this, &ATestCharacter::OverlapBegin);
 	GetCapsuleComponent()->OnComponentEndOverlap.RemoveDynamic(this, &ATestCharacter::OverlapEnd);
-	if (Struwwel) Struwwel->OnPlayerCaught.RemoveDynamic(this, &ATestCharacter::Caught);
+	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 	GetMesh()->Stop();
 }
 
@@ -118,14 +115,10 @@ void ATestCharacter::OverlapEnd(UPrimitiveComponent* Overlap, AActor* Other, UPr
 {
 }
 
-void ATestCharacter::SetEnemy(AStruwwel* struwwel)
-{
-	Struwwel = struwwel;
-
-	Struwwel->OnPlayerCaught.AddUniqueDynamic(this, &ATestCharacter::Caught);
-}
-
-
+/// <summary>
+/// Instantiation of all needed objects. Animationsequences, InputActions, InputMappingContext
+/// </summary>
+/// <param name=""></param>
 void ATestCharacter::Instantiate(void)
 {
 	MoveAction = FindObject<UInputAction>(MoveActionPath);
@@ -137,15 +130,23 @@ void ATestCharacter::Instantiate(void)
 	Walk = FindObject<UAnimSequence>(WalkAnimPath);
 }
 
+/// <summary>
+/// Function called when Player is in attack range of enemy,
+/// prevents Player from moving. Results in Death!
+/// </summary>
 void ATestCharacter::Caught()
 {
 	bIsWalking = false;
 	CurrentAnim = Crouch;
 	GetMesh()->PlayAnimation(CurrentAnim, false);
 	bCanMove = false;
-	OnGotCaught.Broadcast();
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]() {OnGotCaught.Broadcast(); }, 2.f, false);
 }
 
+/// <summary>
+/// Input setup according to Unreal
+/// </summary>
+/// <param name="PlayerInputComponent"></param>
 void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	// Set up action bindings
@@ -169,6 +170,10 @@ void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	}
 }
 
+/// <summary>
+/// Function for the player movement
+/// </summary>
+/// <param name="Value">Input value from keyboard or gamepad</param>
 void ATestCharacter::Move(const FInputActionValue& Value)
 {
 	if (bCanMove)
@@ -177,10 +182,6 @@ void ATestCharacter::Move(const FInputActionValue& Value)
 		// input is a Vector2D
 		FVector2D MovementVector = Value.Get<FVector2D>();
 
-		/*if (MovementVector >= MinThreshold && MovementVector <= MaxThreshold)
-		{
-			CurrentAnim = Idle;
-		}*/
 		if (MovementVector >= MinThreshold && MovementVector <= MaxThreshold)
 		{
 			CurrentAnim = Idle;
@@ -214,6 +215,10 @@ void ATestCharacter::Move(const FInputActionValue& Value)
 
 }
 
+/// <summary>
+/// Function to stop the movement of the player and change the animation
+/// </summary>
+/// <param name="Value">Input value from keyboard or gamepad</param>
 void ATestCharacter::StopMoving(const FInputActionValue& Value)
 {
 	bIsWalking = false;
@@ -221,19 +226,10 @@ void ATestCharacter::StopMoving(const FInputActionValue& Value)
 	GetMesh()->PlayAnimation(CurrentAnim, true);
 }
 
-void ATestCharacter::Look(const FInputActionValue& Value)
-{
-	// input is a Vector2D
-	FVector2D LookAxisVector = Value.Get<FVector2D>();
-
-	if (Controller != nullptr)
-	{
-		// add yaw and pitch input to controller
-		AddControllerYawInput(LookAxisVector.X);
-		AddControllerPitchInput(LookAxisVector.Y);
-	}
-}
-
+/// <summary>
+/// Pause function to pause the game and open the pause screen
+/// </summary>
+/// <param name="Value">Input value from keyboard or gamepad</param>
 void ATestCharacter::Pause(const FInputActionValue& Value)
 {
 	OnPause.Broadcast();

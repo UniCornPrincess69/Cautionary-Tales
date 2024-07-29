@@ -36,8 +36,6 @@ protected:
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
 
-	/** Called for looking input */
-	void Look(const FInputActionValue& Value);
 
 	void Pause(const FInputActionValue& Value);
 
@@ -59,14 +57,13 @@ public:
 	void OverlapEnd(UPrimitiveComponent* Overlap, AActor* Other, UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex);
 
-	void SetEnemy(AStruwwel* struwwel);
+	inline void SetEnemy(AStruwwel* struwwel) { Struwwel = struwwel; }
 
+	void Caught(void);
 private:
 	void StopMoving(const FInputActionValue& Value);
 	void Instantiate(void);
 
-	UFUNCTION()
-	void Caught();
 
 #pragma region Delegates
 public:
@@ -74,7 +71,9 @@ public:
 	FOnPause OnPause;
 	FOnTriggerOverlap OnTriggerOverlap;
 	FOnGotCaught OnGotCaught;
+	FTimerHandle TimerHandle;
 #pragma endregion
+
 #pragma region Pointer
 private:
 	UAnimSequence* Crouch = nullptr;

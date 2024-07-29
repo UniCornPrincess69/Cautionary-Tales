@@ -105,7 +105,7 @@ void AStruwwelController::BeginPlay()
 void AStruwwelController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	UpdateState(DeltaTime);
+	if(IsActive) UpdateState(DeltaTime);
 }
 
 void AStruwwelController::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -129,6 +129,7 @@ void AStruwwelController::OnPlayerDetected(AActor* other, FAIStimulus stimulus)
 	{
 		Player = Cast<ATestCharacter>(other);
 		SetState(EStates::ST_CHASE);
+		Struwwel->SetPlayer(Player);
 	}
 }
 
@@ -148,6 +149,7 @@ void AStruwwelController::OnPossess(APawn* pawn)
 
 	Attack = NewObject<UAttackState>();
 	Attack->SetFSM(this);
+	Attack->SetWorld(GetWorld());
 	Chase = NewObject<UChaseState>();
 	Chase->SetFSM(this);
 	Search = NewObject<USearchState>();

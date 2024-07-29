@@ -7,7 +7,7 @@
 #include "Enemy/Struwwel.h"
 
 
-
+//TODO: Speed adjustment: Struwwel gets faster if further away to keep players on their toes!
 void UChaseState::UpdateState(float deltaTime)
 {
 	auto playerLoc = Player->GetActorLocation();

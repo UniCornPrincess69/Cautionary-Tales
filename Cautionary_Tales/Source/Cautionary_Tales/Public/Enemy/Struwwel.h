@@ -10,6 +10,7 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerDetection);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerCaught);
 
+class ATestCharacter;
 UCLASS()
 class CAUTIONARY_TALES_API AStruwwel : public ACharacter
 {
@@ -22,6 +23,7 @@ public:
 	void Instantiate(void);
 
 	inline void SetCurrentState(EStates state) { CurrentState = state; }
+	inline void SetPlayer(ATestCharacter* player) { Player = player; }
 	inline EStates GetCurrentState(void) { return CurrentState; }
 
 	void PlayerCaught(void);
@@ -43,10 +45,11 @@ private:
 	UFUNCTION()
 	void StateChanged(EStates newState);
 
-
+	FTimerHandle TimerHandle;
 	class UAIPerceptionComponent* PerceptionComponent = nullptr;
 	class AStruwwelController* Controller = nullptr;
 	class UGameManager* GM = nullptr;
+	ATestCharacter* Player = nullptr;
 	bool IsActive = false;
 	EStates CurrentState = EStates::ST_NONE;
 

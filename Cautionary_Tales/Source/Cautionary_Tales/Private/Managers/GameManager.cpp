@@ -40,7 +40,6 @@ void UGameManager::SetEnemy(AStruwwel* struwwel)
 {
 	IsEnemyActive = true;
 	Struwwel = struwwel;
-	Struwwel->Instantiate();
 	Player->SetEnemy(Struwwel);
 }
 
