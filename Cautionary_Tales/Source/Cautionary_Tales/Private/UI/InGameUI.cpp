@@ -16,7 +16,6 @@ AInGameUI::AInGameUI()
 	if (GetWorld())
 	{
 		Player = GetWorld()->GetFirstPlayerController();
-
 	}
 	else return;
 

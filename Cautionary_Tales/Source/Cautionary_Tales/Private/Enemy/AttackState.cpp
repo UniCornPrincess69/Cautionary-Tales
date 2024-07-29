@@ -10,6 +10,7 @@ void UAttackState::EnterState(void)
 {
 	FSM->PlayAnimation();
 	FSM->GetEnemy()->PlayerCaught();
+
 }
 
 void UAttackState::UpdateState(float deltaTime)
@@ -19,3 +20,4 @@ void UAttackState::UpdateState(float deltaTime)
 void UAttackState::ExitState(void)
 {
 }
+

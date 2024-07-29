@@ -89,7 +89,9 @@ void ATestCharacter::BeginPlay()
 	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &ATestCharacter::OverlapEnd);
 	GetMesh()->PlayAnimation(CurrentAnim, true);
 
-	SetActorLocation(FVector(-4040.f, -90.f, 232.f));
+
+	
+	//SetActorLocation(FVector(-4040.f, -90.f, 232.f));
 }
 
 void ATestCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
