@@ -20,7 +20,6 @@ ACautionary_Tales_GameMode::ACautionary_Tales_GameMode()
 		DefaultPawnClass = PlayerCharacter.Class;
 		HUDClass = AInGameUI::StaticClass();
 		GameStateClass = ACautionaryTalesGameState::StaticClass();
-
 	}
 	else
 	{
