@@ -30,4 +30,8 @@ private:
 	AStruwwelController* FSM = nullptr;
 	class ATestCharacter* Player = nullptr;
 	class AStruwwel* Struwwel = nullptr;
+
+	const float NORMALDISTANCE = 350.f;
+	const float NORMALSPEED = 300.f;
+	const float FASTWALKSPEED = 600.f;
 };

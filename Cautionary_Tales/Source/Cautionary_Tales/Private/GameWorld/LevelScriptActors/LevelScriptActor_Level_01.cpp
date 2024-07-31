@@ -16,7 +16,7 @@ ALevelScriptActor_Level_01::ALevelScriptActor_Level_01()
 	if (world)
 	{
 		auto gm = UGameManager::Instantiate(*this);
-		LevelManager = gm->GetLevelManager();
+		if (gm) LevelManager = gm->GetLevelManager();
 		
 		/*LevelManager = GetWorld()->GetSubsystem<ULevelManager>();
 		if (LevelManager) LevelManager->SetLevelOne(this);*/

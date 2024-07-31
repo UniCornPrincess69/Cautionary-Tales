@@ -18,19 +18,27 @@ AStruwwel::AStruwwel()
 
 }
 
-void AStruwwel::Instantiate(void)
+void AStruwwel::Instantiate(ATestCharacter* player)
 {
 	AIControllerClass = AStruwwelController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	Controller = Cast<AStruwwelController>(GetController());
 	bUseControllerRotationYaw = true;
-	GetCharacterMovement()->MaxWalkSpeed = 300.f;
+	GetCharacterMovement()->MaxWalkSpeed = Speed;
+
+	Player = player;
 
 	if (Controller)
 	{
-		Controller->SetState(EStates::ST_CHASE);
+		Controller->SetPlayer(Player);
 		Controller->SetActive(true);
+		Controller->SetState(EStates::ST_CHASE);
 	}
+}
+
+void AStruwwel::SetWalkSpeed(float speed)
+{
+	GetCharacterMovement()->MaxWalkSpeed = speed;
 }
 
 void AStruwwel::PlayerCaught(void)

@@ -17,11 +17,6 @@ void ULevelManager::LoadGame(const bool& IsNewGame)
 	if (world)
 	{
 		UGameplayStatics::OpenLevel(world, FIRSTLEVEL);
-		/*if(!IsNewGame)
-		{
-			auto data = world->GetSubsystem<USaveManager>()->LoadGame();
-			UGameplayStatics::LoadStreamLevel(world, FName(data->StreamingLevelName), true, true, FLatentActionInfo());
-		}*/
 	}
 }
 
@@ -64,7 +59,7 @@ void ULevelManager::LoadLevel(void)
 				auto idx = streamingLevels.IndexOfByKey(streamingLevel);
 				auto nextLevelName = streamingLevels[idx + 1];
 				UGameplayStatics::LoadStreamLevel(world, nextLevelName->GetWorldAssetPackageFName(), true, true, FLatentActionInfo());
-				world->GetTimerManager().SetTimer(Handle, [&]() { this->DelayUnload(FName(CurrentLevel)); }, 1.f, false);
+				world->GetTimerManager().SetTimer(Handle, [&]() { this->DelayUnload(FName(CurrentLevel)); }, .5f, false);
 			}
 		}
 

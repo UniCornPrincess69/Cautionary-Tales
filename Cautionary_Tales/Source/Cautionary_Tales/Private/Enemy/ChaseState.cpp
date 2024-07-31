@@ -12,12 +12,18 @@ void UChaseState::UpdateState(float deltaTime)
 {
 	auto playerLoc = Player->GetActorLocation();
 	auto enemyLoc = Struwwel->GetActorLocation();
-	
-	if (FVector::Distance(enemyLoc, playerLoc) <= 215.f)
+	auto distance = FVector::Distance(enemyLoc, playerLoc);
+	if (distance <= 215.f)
 	{
 		FSM->StopMovement();
 		FSM->SetState(EStates::ST_ATTACK);
 	}
+	else if (distance >= NORMALDISTANCE)
+	{
+		Struwwel->SetWalkSpeed(FASTWALKSPEED);
+	}
+	else Struwwel->SetWalkSpeed(NORMALSPEED);
+
 }
 
 void UChaseState::ExitState(void)

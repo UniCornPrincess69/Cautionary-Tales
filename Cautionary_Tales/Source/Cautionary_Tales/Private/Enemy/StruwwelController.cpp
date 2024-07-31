@@ -23,15 +23,15 @@ AStruwwelController::AStruwwelController()
 
 	PerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AI Perception"));
 	UAISenseConfig_Sight* SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Sight"));
-	SightConfig->SightRadius = 1000.f;
-	SightConfig->LoseSightRadius = 500.f;
-	SightConfig->PeripheralVisionAngleDegrees = 35.f;
+	SightConfig->SightRadius = SIGHTRADIUSDEFAULT;
+	SightConfig->LoseSightRadius = LOSESIGHTRADIUSDEFAULT;
+	SightConfig->PeripheralVisionAngleDegrees = PERVISIONANGLEDEFAULT;
 	SightConfig->DetectionByAffiliation.bDetectEnemies = true;
 	SightConfig->DetectionByAffiliation.bDetectFriendlies = true;
 	SightConfig->DetectionByAffiliation.bDetectNeutrals = true;
 	PerceptionComponent->ConfigureSense(*SightConfig);
 	PerceptionComponent->SetDominantSense(SightConfig->GetSenseImplementation());
-	PerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &AStruwwelController::OnPlayerDetected);
+	//PerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &AStruwwelController::OnPlayerDetected);
 	PerceptionComponent->OnTargetPerceptionForgotten.AddDynamic(this, &AStruwwelController::OnPlayerLost);
 	NavSys = UNavigationSystemV1::GetCurrent(GetWorld());
 	
@@ -97,9 +97,6 @@ void AStruwwelController::PlayAnimation(void)
 void AStruwwelController::BeginPlay()
 {
 	Super::BeginPlay();
-	/*auto controlledActor = GetPawn();
-	Struwwel = Cast<AStruwwel>(controlledActor);*/
-	//if (controlledActor) UE_LOG(LogTemp, Warning, TEXT("Controller is possessing: %s"), *controlledActor->GetName());
 }
 
 void AStruwwelController::Tick(float DeltaTime)
@@ -120,7 +117,7 @@ void AStruwwelController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	Search = nullptr;
 
 	PerceptionComponent->OnTargetPerceptionForgotten.RemoveDynamic(this, &AStruwwelController::OnPlayerLost);
-	PerceptionComponent->OnTargetPerceptionUpdated.RemoveDynamic(this, &AStruwwelController::OnPlayerDetected);
+	//PerceptionComponent->OnTargetPerceptionUpdated.RemoveDynamic(this, &AStruwwelController::OnPlayerDetected);
 }
 
 void AStruwwelController::OnPlayerDetected(AActor* other, FAIStimulus stimulus)

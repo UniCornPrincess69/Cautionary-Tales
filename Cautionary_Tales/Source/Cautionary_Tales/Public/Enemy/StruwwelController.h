@@ -37,6 +37,7 @@ public:
 
 	inline void SetNavSystem(UNavigationSystemV1* navSys) { NavSys = navSys; }
 	inline void SetActive(bool isActive) { IsActive = isActive; }
+	inline void SetPlayer(ATestCharacter* player) { Player = player; }
 
 	inline ATestCharacter* GetPlayer(void) { return Player; }
 	inline class AStruwwel* GetEnemy(void) { return Struwwel; }
@@ -66,10 +67,15 @@ private:
 	UAnimSequence* ChaseAnim = nullptr;
 	UAnimSequence* AttackAnim = nullptr;
 
+#pragma region Constants
 	FString WalkAnimPath = FString(TEXT("/Game/Assets/Animation/Struwelpeter/Walk/Struwelpeter_walk_Anim"));
 	FString ChaseAnimPath = FString(TEXT("/Game/Assets/Animation/Struwelpeter/Chase/Struwelpeter_chase_Anim"));
 	FString AttackAnimPath = FString(TEXT("/Game/Assets/Animation/Struwelpeter/Attack/Struwelpeter_attack_Anim"));
 
+	const float SIGHTRADIUSDEFAULT = 1000.f;
+	const float LOSESIGHTRADIUSDEFAULT = 500.f;
+	const float PERVISIONANGLEDEFAULT = 35.f;
+#pragma endregion
 	bool IsActive = false;
 
 #pragma region States
@@ -93,6 +99,4 @@ private:
 
 	FVector LastPlayerLocation;
 
-	/*UPROPERTY(EditAnywhere, meta = (DisplayName = "Perception", Category = "FSM"))
-		UAIPerceptionComponent* PerceptionComponent = nullptr;*/
 };

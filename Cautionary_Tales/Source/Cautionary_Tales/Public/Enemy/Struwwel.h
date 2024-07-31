@@ -20,10 +20,12 @@ public:
 	// Sets default values for this actor's properties
 	AStruwwel();
 
-	void Instantiate(void);
+	void Instantiate(ATestCharacter* player);
 
 	inline void SetCurrentState(EStates state) { CurrentState = state; }
 	inline void SetPlayer(ATestCharacter* player) { Player = player; }
+	void SetWalkSpeed(float speed);
+
 	inline EStates GetCurrentState(void) { return CurrentState; }
 
 	void PlayerCaught(void);
@@ -53,5 +55,5 @@ private:
 	bool IsActive = false;
 	EStates CurrentState = EStates::ST_NONE;
 
-
+	float Speed = 300.f;
 };
