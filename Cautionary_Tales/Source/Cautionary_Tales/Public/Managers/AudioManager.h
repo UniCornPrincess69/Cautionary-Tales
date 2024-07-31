@@ -18,6 +18,8 @@ class CAUTIONARY_TALES_API UAudioManager : public UWorldSubsystem
 public:
 	inline void SetCurrentAmbient(AAmbientSound* sound) { CurrentAmbient = sound; }
 
+	void StopCurrentAmbient(void);
+
 private:
 	virtual void Initialize(FSubsystemCollectionBase& collection) override;
 	virtual void Deinitialize() override;

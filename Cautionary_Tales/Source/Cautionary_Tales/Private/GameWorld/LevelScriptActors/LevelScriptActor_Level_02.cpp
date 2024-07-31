@@ -5,6 +5,9 @@
 #include "GameWorld/TeleporterZone.h"
 #include "GameWorld/LevelScriptActors/Game.h"
 #include "Kismet/GameplayStatics.h"
+#include "Managers/GameManager.h"
+#include "Managers/AudioManager.h"
+#include "Sound/AmbientSound.h"
 
 
 void ALevelScriptActor_Level_02::BeginPlay()
@@ -12,6 +15,13 @@ void ALevelScriptActor_Level_02::BeginPlay()
 	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, TEXT("Level 2 loaded"));
 	
 	auto world = GetWorld();
+	auto audio = UGameplayStatics::GetActorOfClass(world, AAmbientSound::StaticClass());
+	if (world)
+	{
+		GM = UGameManager::Instantiate(*this);
+		GM->GetAudioManager()->StopCurrentAmbient();
+		GM->GetAudioManager()->SetCurrentAmbient(Cast<AAmbientSound>(audio));
+	}
 	auto actor = UGameplayStatics::GetActorOfClass(world, ATeleporterZone::StaticClass());
 	TPZone = Cast<ATeleporterZone>(actor);
 

@@ -22,6 +22,7 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type endPlayReason) override;
 	
 private:
+	class UGameManager* Manager = nullptr;
 	class ULevelManager* LevelManager = nullptr;
 	FName LevelName = FName(TEXT("Level_01"));
 	class ATeleporterZone* TPZone = nullptr;

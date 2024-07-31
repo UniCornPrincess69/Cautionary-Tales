@@ -9,14 +9,16 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameWorld/TeleporterZone.h"
 #include "GameWorld/LevelScriptActors/Game.h"
+#include "Sound/AmbientSound.h"
+#include "Managers/AudioManager.h"
 
 ALevelScriptActor_Level_01::ALevelScriptActor_Level_01()
 {
 	auto world = GetWorld();
 	if (world)
 	{
-		auto gm = UGameManager::Instantiate(*this);
-		if (gm) LevelManager = gm->GetLevelManager();
+		Manager = UGameManager::Instantiate(*this);
+		if (Manager) LevelManager = Manager->GetLevelManager();
 		
 		/*LevelManager = GetWorld()->GetSubsystem<ULevelManager>();
 		if (LevelManager) LevelManager->SetLevelOne(this);*/
@@ -25,16 +27,19 @@ ALevelScriptActor_Level_01::ALevelScriptActor_Level_01()
 
 void ALevelScriptActor_Level_01::BeginPlay()
 {
-	/*auto world = GetWorld();
-	auto actor = UGameplayStatics::GetActorOfClass(world, ATeleporterZone::StaticClass());
-	TPZone = Cast<ATeleporterZone>(actor);
-	
-	auto game = Cast<AGame>(world);
-	game->UpdateTeleporter(TPZone);*/
-	
-	
-	//LevelManager->SetCurrentLevel(LevelName);
-
+	auto world = GetWorld();
+	if (world)
+	{
+		Manager = UGameManager::Instantiate(*this);
+		if (Manager)
+		{
+			LevelManager = Manager->GetLevelManager();
+			auto sound = UGameplayStatics::GetActorOfClass(GetWorld(), AAmbientSound::StaticClass());
+			Manager->GetAudioManager()->SetCurrentAmbient(Cast<AAmbientSound>(sound));
+		}
+	}
+	/*auto sound = UGameplayStatics::GetActorOfClass(GetWorld(), AAmbientSound::StaticClass());
+	Manager->GetAudioManager()->SetCurrentAmbient(Cast<AAmbientSound>(sound));*/
 }
 
 void ALevelScriptActor_Level_01::EndPlay(const EEndPlayReason::Type endPlayReason)

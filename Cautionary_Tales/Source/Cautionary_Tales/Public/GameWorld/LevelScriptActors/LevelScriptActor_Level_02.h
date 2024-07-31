@@ -22,4 +22,5 @@ private:
 	class ULevelManager* LevelManager = nullptr;
 	class ATeleporterZone* TPZone = nullptr;
 	class AGame* Game = nullptr;
+	class UGameManager* GM = nullptr;
 };
