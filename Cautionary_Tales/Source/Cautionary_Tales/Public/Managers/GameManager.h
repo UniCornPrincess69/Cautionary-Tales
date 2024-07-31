@@ -18,6 +18,7 @@ class ATestCharacter;
 class AStruwwelController;
 class ULevelManager;
 class USaveManager;
+class UAudioManager;
 UCLASS()
 class CAUTIONARY_TALES_API UGameManager : public UGameInstanceSubsystem
 {
@@ -35,6 +36,7 @@ public:
 	inline void SetNewGameBool(bool isNewGame) { IsNewGame = isNewGame; }
 	inline void SetSaveManager(USaveManager* saveManager) { SaveManager = saveManager; }
 	inline void SetEnemyActive(bool isEnemyActive) { IsEnemyActive = isEnemyActive; }
+	inline void SetAudioManager(UAudioManager* audio) { AudioManager = audio; }
 
 	inline AInGameUI* GetInGameUI(void) { return InGameUI; }
 	inline ATestCharacter* GetPlayer(void) { return Player; }
@@ -44,6 +46,7 @@ public:
 	inline USaveManager* GetSaveManager(void) { return SaveManager; }
 	class UUIManager* GetUIManager(void);
 	inline bool GetEnemyActive(void) { return IsEnemyActive; }
+	inline UAudioManager* GetAudioManager(void) { return AudioManager; }
 
 	UPROPERTY(BlueprintAssignable)
 	FOnPlayerReady OnPlayerReady;
@@ -63,6 +66,7 @@ private:
 	AStruwwelController* AIController = nullptr;
 	ULevelManager* LevelManager = nullptr;
 	USaveManager* SaveManager = nullptr;
+	UAudioManager* AudioManager = nullptr;
 
 	bool IsNewGame = false;
 	bool IsEnemyActive = false;

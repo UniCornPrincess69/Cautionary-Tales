@@ -36,8 +36,8 @@ void AEnemyTrigger::OverlapBegin(UPrimitiveComponent* Overlap, AActor* Other, UP
 {
 	if (Other->IsA(ATestCharacter::StaticClass()))
 	{
-		//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, TEXT("Enemy spawned"));
-		Struwwel->Instantiate();
+		auto player = Cast<ATestCharacter>(Other);
+		Struwwel->Instantiate(player);
 	}
 }
 

@@ -9,13 +9,20 @@
 /**
  * 
  */
+class AAmbientSound;
 UCLASS()
 class CAUTIONARY_TALES_API UAudioManager : public UWorldSubsystem
 {
 	GENERATED_BODY()
 	
+public:
+	inline void SetCurrentAmbient(AAmbientSound* sound) { CurrentAmbient = sound; }
 
 private:
 	virtual void Initialize(FSubsystemCollectionBase& collection) override;
 	virtual void Deinitialize() override;
+
+	class UGameManager* Manager = nullptr;
+	AAmbientSound* CurrentAmbient = nullptr;
+	
 };

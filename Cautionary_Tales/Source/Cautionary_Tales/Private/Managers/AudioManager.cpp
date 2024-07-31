@@ -2,9 +2,14 @@
 
 
 #include "Managers/AudioManager.h"
+#include "Sound/AmbientSound.h"
+#include "Managers/GameManager.h"
 
 void UAudioManager::Initialize(FSubsystemCollectionBase& collection)
 {
+	Super::Initialize(collection);
+	Manager = UGameManager::Instantiate(*this);
+	if (Manager) Manager->SetAudioManager(this);
 }
 
 void UAudioManager::Deinitialize()
