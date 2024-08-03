@@ -46,3 +46,18 @@ void UUIFunctionLibrary::ResumeGame(const UObject* GameTarget, bool IsClicked)
 {
 	GetUIManager(GameTarget)->PauseGame(GameTarget, IsClicked);
 }
+
+void UUIFunctionLibrary::SetMasterVolume(const UObject* gameTarget, float volume)
+{
+	GetUIManager(gameTarget)->SetMasterVolume(gameTarget, volume);
+}
+
+void UUIFunctionLibrary::SetSFXVolume(const UObject* gameTarget, float volume)
+{
+	GetUIManager(gameTarget)->SetSFXVolume(gameTarget, volume);
+}
+
+void UUIFunctionLibrary::SetMusicVolume(const UObject* gameTarget, float volume)
+{
+	GetUIManager(gameTarget)->SetMusicVolume(gameTarget, volume);
+}

@@ -18,6 +18,10 @@ class CAUTIONARY_TALES_API UAudioManager : public UWorldSubsystem
 public:
 	inline void SetCurrentAmbient(AAmbientSound* sound) { CurrentAmbient = sound; }
 
+	inline void SetMastervolume(float volume) { MasterVolume = volume; }
+	inline void SetSFXvolume(float volume) { SFXVolume = volume; }
+	inline void SetMusicvolume(float volume) { MusicVolume = volume; }
+
 	void StopCurrentAmbient(void);
 
 private:
@@ -26,5 +30,9 @@ private:
 
 	class UGameManager* Manager = nullptr;
 	AAmbientSound* CurrentAmbient = nullptr;
+
+	float MasterVolume = 1.f;
+	float SFXVolume = 1.f;
+	float MusicVolume = 1.f;
 	
 };

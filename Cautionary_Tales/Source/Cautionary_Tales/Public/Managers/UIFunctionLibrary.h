@@ -35,4 +35,13 @@ public:
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Resume Game", Category = "UI Function"))
 		static void ResumeGame(const UObject * GameTarget, bool IsClicked);
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Update Mastervolume", Category = "UI Function"))
+		static void SetMasterVolume(const UObject* gameTarget, float volume);
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Update SFXvolume", Category = "UI Function"))
+		static void SetSFXVolume(const UObject* gameTarget, float volume);
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Update Musicvolume", Category = "UI Function"))
+		static void SetMusicVolume(const UObject* gameTarget, float volume);
 };

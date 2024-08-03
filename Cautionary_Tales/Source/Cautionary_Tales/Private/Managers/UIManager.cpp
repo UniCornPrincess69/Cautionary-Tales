@@ -6,6 +6,8 @@
 #include "UI/InGameUI.h"
 #include "Managers/SaveManager.h"
 #include "Managers/LevelManager.h"
+#include "Managers/GameManager.h"
+#include "Managers/AudioManager.h"
 
 
 void UUIManager::StartGame(const UObject* target, const bool& IsNewGame)
@@ -62,9 +64,41 @@ void UUIManager::ToMainMenu(const UObject* target)
 	if (world) UGameplayStatics::OpenLevel(world, MAIN_MENU, true);
 }
 
+void UUIManager::SetMasterVolume(const UObject* target, float volume)
+{
+	if (!GM) GM = UGameManager::Instantiate(*this);
+	if (GM)
+	{
+		auto audio = GM->GetAudioManager();
+		audio->SetMastervolume(volume);
+		UE_LOG(LogTemp, Warning, TEXT("Volume: %f"), volume);
+	}
+}
+
+void UUIManager::SetSFXVolume(const UObject* target, float volume)
+{
+	if (!GM) GM = UGameManager::Instantiate(*this);
+	if (GM)
+	{
+		auto audio = GM->GetAudioManager();
+		audio->SetSFXvolume(volume);
+	}
+}
+
+void UUIManager::SetMusicVolume(const UObject* target, float volume)
+{
+	if (!GM) GM = UGameManager::Instantiate(*this);
+	if (GM)
+	{
+		auto audio = GM->GetAudioManager();
+		audio->SetMusicvolume(volume);
+	}
+}
+
 void UUIManager::Initialize(FSubsystemCollectionBase& collection)
 {
 	Super::Initialize(collection); 
+	GM = UGameManager::Instantiate(*this);
 }
 
 void UUIManager::Deinitialize()
