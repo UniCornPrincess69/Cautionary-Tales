@@ -21,15 +21,20 @@ public:
 	inline void SetMastervolume(float volume) { MasterVolume = volume; }
 	inline void SetSFXvolume(float volume) { SFXVolume = volume; }
 	inline void SetMusicvolume(float volume) { MusicVolume = volume; }
+	void SaveVolume(void);
 
 	void StopCurrentAmbient(void);
 
 private:
 	virtual void Initialize(FSubsystemCollectionBase& collection) override;
-	virtual void Deinitialize() override;
+	virtual void Deinitialize(void) override;
 
 	class UGameManager* Manager = nullptr;
+	class USaveManager* Save = nullptr;
 	AAmbientSound* CurrentAmbient = nullptr;
+	struct FVolumeData* VolumeData = nullptr;
+
+	FTimerHandle Handle;
 
 	float MasterVolume = 1.f;
 	float SFXVolume = 1.f;

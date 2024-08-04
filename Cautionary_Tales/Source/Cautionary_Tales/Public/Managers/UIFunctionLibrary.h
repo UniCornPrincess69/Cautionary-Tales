@@ -44,4 +44,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Update Musicvolume", Category = "UI Function"))
 		static void SetMusicVolume(const UObject* gameTarget, float volume);
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Save Volumesettings", Category = "UI Function"))
+		static void SaveVolumeData(const UObject* gameTarget);
 };

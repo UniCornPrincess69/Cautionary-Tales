@@ -25,6 +25,7 @@ public:
 	void SetMasterVolume(const UObject* target, float volume);
 	void SetSFXVolume(const UObject* target, float volume);
 	void SetMusicVolume(const UObject* target, float volume);
+	void SaveVolumeData(const UObject*);
 	
 
 private:
@@ -32,6 +33,7 @@ private:
 	virtual void Deinitialize() override;
 
 	class UGameManager* GM = nullptr;
+	class UAudioManager* Audio = nullptr;
 
 	const FName SAVE = FName(TEXT("Save"));
 	const FName MAIN_MENU = FName(TEXT("MainMenu")); 

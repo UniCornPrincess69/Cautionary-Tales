@@ -61,3 +61,8 @@ void UUIFunctionLibrary::SetMusicVolume(const UObject* gameTarget, float volume)
 {
 	GetUIManager(gameTarget)->SetMusicVolume(gameTarget, volume);
 }
+
+void UUIFunctionLibrary::SaveVolumeData(const UObject* gameTarget)
+{
+	GetUIManager(gameTarget)->SaveVolumeData(gameTarget);
+}

@@ -17,10 +17,6 @@ struct CAUTIONARY_TALES_API FSaveData : public FTableRowBase
 	GENERATED_BODY()
 
 
-	/*FORCEINLINE FSaveData(const FVector& PlayerPosition = FVector{0.f, 0.f, 0.f},
-		const FName& LevelName = FName{TEXT("MainMenu")},
-		const FVector& EnemyPosition = FVector{0.f, 0.f, 0.f});*/
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector PlayerPosition = FVector(0.f, 0.f, 0.f);
 

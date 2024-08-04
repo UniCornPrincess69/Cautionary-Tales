@@ -32,33 +32,32 @@ void USaveManager::CreateSaveData(void)
 			CurrentSaveData.EnemyState = EStates::ST_NONE;
 			CurrentSaveData.IsEnemyActive = false;
 		}
-		//TODO: Get Enemy location, probably some more info. Adjust SaveData accordingly
 	}
 
 }
 
 void USaveManager::SaveGame()
 {
-	if (!DataTable) UE_LOG(LogTemp, Error, TEXT("DataTable is not initialized"));
+	if (!SaveDataTable) UE_LOG(LogTemp, Error, TEXT("DataTable is not initialized"));
 	
-	DataTable = LoadObject<UDataTable>(nullptr, (TCHAR*)(*DATATABLEPATH));
+	SaveDataTable = LoadObject<UDataTable>(nullptr, (TCHAR*)(*SAVETABLEPATH));
 
-	if (DataTable)
+	if (SaveDataTable)
 	{
 		CreateSaveData();
 
-		if (!CheckSave(DataTable, SAVENAME))
+		if (!CheckSave(SaveDataTable, SAVENAME))
 		{
-			DataTable->AddRow(SAVENAME, CurrentSaveData);
+			SaveDataTable->AddRow(SAVENAME, CurrentSaveData);
 			UE_LOG(LogTemp, Log, TEXT("Adding new save data row"));
 		}
 		else
 		{
 			UE_LOG(LogTemp, Log, TEXT("Updating save data row"));
-			DataTable->RemoveRow(SAVENAME);
-			DataTable->AddRow(SAVENAME, CurrentSaveData);
-			DataTable->Modify();
-			DataTable->MarkPackageDirty();
+			SaveDataTable->RemoveRow(SAVENAME);
+			SaveDataTable->AddRow(SAVENAME, CurrentSaveData);
+			SaveDataTable->Modify();
+			SaveDataTable->MarkPackageDirty();
 
 			if (!SaveData) UE_LOG(LogTemp, Log, TEXT("SaveData not initialized"));
 
@@ -67,7 +66,7 @@ void USaveManager::SaveGame()
 				FString jsonString;
 				FJsonObjectConverter::UStructToJsonObjectString(CurrentSaveData, jsonString);
 
-				FString FilePath = SAVEPATH;
+				FString FilePath = SavePath;
 
 				if (FFileHelper::SaveStringToFile(jsonString, *FilePath))
 				{
@@ -81,7 +80,7 @@ void USaveManager::SaveGame()
 
 FSaveData* USaveManager::LoadGame()
 {
-	if (!CheckSave(DataTable, SAVENAME))
+	if (!CheckSave(SaveDataTable, SAVENAME))
 	{
 		return nullptr;
 	}
@@ -91,37 +90,65 @@ FSaveData* USaveManager::LoadGame()
 	}
 }
 
+void USaveManager::SaveVolumes(float master, float sfx, float music)
+{
+	if (GM && GetWorld())
+	{
+		CurrentVolumeData.MasterVolume = master;
+		CurrentVolumeData.SFXVolume = sfx;
+		CurrentVolumeData.MusicVolume = music;
+		if (!CheckVolume(VolumeDataTable, VOLUMENAME))
+		{
+			VolumeDataTable->AddRow(VOLUMENAME, CurrentVolumeData);
+			UE_LOG(LogTemp, Log, TEXT("Adding new save data row"));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Log, TEXT("Updating save data row"));
+			VolumeDataTable->RemoveRow(VOLUMENAME);
+			VolumeDataTable->AddRow(VOLUMENAME, CurrentVolumeData);
+			VolumeDataTable->Modify();
+			VolumeDataTable->MarkPackageDirty();
+
+			if (!VolumeData) UE_LOG(LogTemp, Log, TEXT("SaveData not initialized"));
+
+			if (VolumeData)
+			{
+				FString jsonString;
+				FJsonObjectConverter::UStructToJsonObjectString(CurrentVolumeData, jsonString);
+
+				FString FilePath = VolumePath;
+
+				if (FFileHelper::SaveStringToFile(jsonString, *FilePath))
+				{
+					UE_LOG(LogTemp, Warning, TEXT("Success"));
+				}
+				else UE_LOG(LogTemp, Warning, TEXT("Failed"));
+			}
+		}
+	}
+
+}
+
+FVolumeData* USaveManager::LoadVolume()
+{
+	if (!CheckVolume(VolumeDataTable, VOLUMENAME))
+	{
+		return nullptr;
+	}
+	else return VolumeData;
+}
+
 
 void USaveManager::Initialize(FSubsystemCollectionBase& collection)
 {
 	Super::Initialize(collection);
-	DataTable = LoadObject<UDataTable>(nullptr, (TCHAR*)(*DATATABLEPATH));
+	SaveDataTable = LoadObject<UDataTable>(nullptr, (TCHAR*)(*SAVETABLEPATH));
+	VolumeDataTable = LoadObject<UDataTable>(nullptr, (TCHAR*)(*VOLUMEDATAPATH));
 	CheckDirectory();
-	SAVEPATH = GetSaveFilePath();
-	if (DataTable)
-	{
-		if (DataExists(SAVEPATH))
-		{
-			if (CheckSave(DataTable, SAVENAME)) DataTable->RemoveRow(SAVENAME);
 
-			FString dataString;
-			if (FFileHelper::LoadFileToString(dataString, *SAVEPATH))
-			{
-				FSaveData deserializedData;
-				FJsonObjectConverter::JsonObjectStringToUStruct(dataString, &deserializedData);
-				DataTable->AddRow(SAVENAME, deserializedData);
-			}
-		}
-		else UE_LOG(LogTemp, Warning, TEXT("File doesn't exist"));
-	}
-	if (DataTable && CheckSave(DataTable, SAVENAME))
-	{
-		SaveData = DataTable->FindRow<FSaveData>(SAVENAME, TEXT(""));
-	}
-	else
-	{
-		DataTable->AddRow(SAVENAME, FSaveData());
-	}
+	InitSaveData();
+	InitVolumeDate();
 
 	GM = UGameManager::Instantiate(*this);
 	if (GM) GM->SetSaveManager(this);
@@ -138,6 +165,12 @@ bool USaveManager::CheckSave(const UDataTable* Data, const FName& SaveName)
 	return Data->FindRow<FSaveData>(SaveName, TEXT("")) ? true : false;
 }
 
+bool USaveManager::CheckVolume(const UDataTable* Data, const FName& SaveName)
+{
+	if (!Data) return false;
+	return Data->FindRow<FVolumeData>(SaveName, TEXT("")) ? true : false;
+}
+
 bool USaveManager::DataExists(const FString& Path)
 {
 	return FPlatformFileManager::Get().GetPlatformFile().FileExists(*Path);
@@ -146,7 +179,14 @@ bool USaveManager::DataExists(const FString& Path)
 FString USaveManager::GetSaveFilePath(void)
 {
 	FString saveDir = FPaths::ProjectSavedDir();
-	FString fileName = TEXT("SaveGame.json");
+	FString fileName = DEFAULTSAVENAME;
+	return saveDir / fileName;
+}
+
+FString USaveManager::GetVolumeFilePath(void)
+{
+	FString saveDir = FPaths::ProjectSavedDir();
+	FString fileName = DEFAULTVOLUMENAME;
 	return saveDir / fileName;
 }
 
@@ -172,4 +212,63 @@ FString USaveManager::GetStreamLevelName(void)
 		}
 	}
 	return levelName;
+}
+
+void USaveManager::InitSaveData(void)
+{
+	SavePath = GetSaveFilePath();
+	if (SaveDataTable)
+	{
+		if (DataExists(SavePath))
+		{
+			if (CheckSave(SaveDataTable, SAVENAME)) SaveDataTable->RemoveRow(SAVENAME);
+
+			FString dataString;
+			if (FFileHelper::LoadFileToString(dataString, *SavePath))
+			{
+				FSaveData deserializedData;
+				FJsonObjectConverter::JsonObjectStringToUStruct(dataString, &deserializedData);
+				SaveDataTable->AddRow(SAVENAME, deserializedData);
+			}
+		}
+		else UE_LOG(LogTemp, Warning, TEXT("File doesn't exist"));
+	}
+	if (SaveDataTable && CheckSave(SaveDataTable, SAVENAME))
+	{
+		SaveData = SaveDataTable->FindRow<FSaveData>(SAVENAME, TEXT(""));
+	}
+	else
+	{
+		SaveDataTable->AddRow(SAVENAME, FSaveData());
+	}
+
+}
+
+void USaveManager::InitVolumeDate(void)
+{
+	VolumePath = GetVolumeFilePath();
+	if (VolumeDataTable)
+	{
+		if (DataExists(VolumePath))
+		{
+			if (CheckSave(VolumeDataTable, VOLUMENAME)) VolumeDataTable->RemoveRow(VOLUMENAME);
+
+			FString dataString;
+			if (FFileHelper::LoadFileToString(dataString, *VolumePath))
+			{
+				FSaveData deserializedData;
+				FJsonObjectConverter::JsonObjectStringToUStruct(dataString, &deserializedData);
+				VolumeDataTable->AddRow(VOLUMENAME, deserializedData);
+			}
+		}
+		else UE_LOG(LogTemp, Warning, TEXT("File doesn't exist"));
+	}
+	if (VolumeDataTable && CheckVolume(VolumeDataTable, VOLUMENAME))
+	{
+		VolumeData = VolumeDataTable->FindRow<FVolumeData>(VOLUMENAME, TEXT(""));
+	}
+	else
+	{
+		VolumeDataTable->AddRow(VOLUMENAME, FVolumeData());
+	}
 }

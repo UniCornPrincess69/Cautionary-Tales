@@ -69,9 +69,8 @@ void UUIManager::SetMasterVolume(const UObject* target, float volume)
 	if (!GM) GM = UGameManager::Instantiate(*this);
 	if (GM)
 	{
-		auto audio = GM->GetAudioManager();
-		audio->SetMastervolume(volume);
-		UE_LOG(LogTemp, Warning, TEXT("Volume: %f"), volume);
+		Audio = GM->GetAudioManager();
+		Audio->SetMastervolume(volume);
 	}
 }
 
@@ -92,6 +91,16 @@ void UUIManager::SetMusicVolume(const UObject* target, float volume)
 	{
 		auto audio = GM->GetAudioManager();
 		audio->SetMusicvolume(volume);
+	}
+}
+
+void UUIManager::SaveVolumeData(const UObject*)
+{
+	if (!GM) GM = UGameManager::Instantiate(*this);
+	if (GM)
+	{
+		Audio = GM->GetAudioManager();
+		Audio->SaveVolume();
 	}
 }
 
