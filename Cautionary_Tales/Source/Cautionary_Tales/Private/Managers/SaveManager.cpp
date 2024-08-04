@@ -251,12 +251,12 @@ void USaveManager::InitVolumeDate(void)
 	{
 		if (DataExists(VolumePath))
 		{
-			if (CheckSave(VolumeDataTable, VOLUMENAME)) VolumeDataTable->RemoveRow(VOLUMENAME);
+			if (CheckVolume(VolumeDataTable, VOLUMENAME)) VolumeDataTable->RemoveRow(VOLUMENAME);
 
 			FString dataString;
 			if (FFileHelper::LoadFileToString(dataString, *VolumePath))
 			{
-				FSaveData deserializedData;
+				FVolumeData deserializedData;
 				FJsonObjectConverter::JsonObjectStringToUStruct(dataString, &deserializedData);
 				VolumeDataTable->AddRow(VOLUMENAME, deserializedData);
 			}
