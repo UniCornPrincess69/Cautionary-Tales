@@ -17,6 +17,7 @@ class AStruwwel;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPause);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTriggerOverlap);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGotCaught);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEndReached);
 
 //TODO: Rename this character, save player character just in case. Implement threshold again for controllers
 UCLASS(BlueprintType)
@@ -71,6 +72,7 @@ public:
 	FOnPause OnPause;
 	FOnTriggerOverlap OnTriggerOverlap;
 	FOnGotCaught OnGotCaught;
+	FOnEndReached OnEndReached;
 	FTimerHandle TimerHandle;
 #pragma endregion
 

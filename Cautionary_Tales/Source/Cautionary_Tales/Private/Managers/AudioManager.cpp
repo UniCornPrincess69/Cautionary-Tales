@@ -20,22 +20,23 @@ void UAudioManager::Initialize(FSubsystemCollectionBase& collection)
 	if (Manager)
 	{
 		Manager->SetAudioManager(this);
-		Save = Manager->GetSaveManager();
-		//TODO: Delegate for the save manager and subsequent loading of the volumes
-		if (!Save) GetWorld()->GetTimerManager().SetTimer(Handle, [this]() {Save = Manager->GetSaveManager(); }, 3.f, false);
-		if (Save) VolumeData = Save->LoadVolume();
+		Manager->OnSaveManagerInit.AddUniqueDynamic(this, &UAudioManager::SaveManagerCallback);
 	}
-	
 }
 
 void UAudioManager::Deinitialize()
 {
 	Super::Deinitialize();
-	GetWorld()->GetTimerManager().ClearTimer(Handle);
+	if (Manager) Manager->OnSaveManagerInit.RemoveDynamic(this, &UAudioManager::SaveManagerCallback);
+}
+
+void UAudioManager::SaveManagerCallback()
+{
+	Save = Manager->GetSaveManager();
+	Save->LoadVolume();
 }
 
 void UAudioManager::SaveVolume(void)
 {
-	if (!Save) Manager->GetSaveManager();
 	if (Save) Save->SaveVolumes(MasterVolume, SFXVolume, MusicVolume);
 }

@@ -12,6 +12,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "Engine/TriggerBox.h"
+#include "Engine/TriggerSphere.h"
 #include "Utility/ActorUtility.h"
 #include "Managers/GameManager.h"
 #include "Managers/UIManager.h"
@@ -101,13 +102,10 @@ void ATestCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void ATestCharacter::OverlapBegin(UPrimitiveComponent* Overlap, AActor* Other, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::Emerald, TEXT("Overlap"));
-
-
-	if (Other->IsA(ATriggerBox::StaticClass()))
+	if (Other->IsA(ATriggerBox::StaticClass())) OnTriggerOverlap.Broadcast();
+	if (Other->IsA(ATriggerSphere::StaticClass()))
 	{
-		OnTriggerOverlap.Broadcast();
-		GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::Emerald, TEXT("Transition"));
+		OnEndReached.Broadcast();
 	}
 }
 

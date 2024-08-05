@@ -43,6 +43,12 @@ void UGameManager::SetEnemy(AStruwwel* struwwel)
 	Player->SetEnemy(Struwwel);
 }
 
+void UGameManager::SetSaveManager(USaveManager* saveManager)
+{
+	SaveManager = saveManager;
+	OnSaveManagerInit.Broadcast();
+}
+
 
 UUIManager* UGameManager::GetUIManager(void)
 {

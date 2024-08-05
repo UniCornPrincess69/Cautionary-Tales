@@ -29,6 +29,9 @@ private:
 	virtual void Initialize(FSubsystemCollectionBase& collection) override;
 	virtual void Deinitialize(void) override;
 
+	UFUNCTION()
+		void SaveManagerCallback();
+
 	class UGameManager* Manager = nullptr;
 	class USaveManager* Save = nullptr;
 	AAmbientSound* CurrentAmbient = nullptr;

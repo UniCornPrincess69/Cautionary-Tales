@@ -10,6 +10,7 @@
  * 
  */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerReady, ATestCharacter*, Player);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSaveManagerInit);
 
 class AStruwwel;
 class APlayerCharacter;
@@ -34,7 +35,7 @@ public:
 	inline void SetInGameUI(AInGameUI* UI) { InGameUI = UI; }
 	inline void SetLevelManager(ULevelManager* levelManager) { LevelManager = levelManager; }
 	inline void SetNewGameBool(bool isNewGame) { IsNewGame = isNewGame; }
-	inline void SetSaveManager(USaveManager* saveManager) { SaveManager = saveManager; }
+	void SetSaveManager(USaveManager* saveManager);
 	inline void SetEnemyActive(bool isEnemyActive) { IsEnemyActive = isEnemyActive; }
 	inline void SetAudioManager(UAudioManager* audio) { AudioManager = audio; }
 
@@ -51,6 +52,7 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnPlayerReady OnPlayerReady;
 
+	FOnSaveManagerInit OnSaveManagerInit;
 
 private:
 	virtual void Initialize(FSubsystemCollectionBase& collection) override;

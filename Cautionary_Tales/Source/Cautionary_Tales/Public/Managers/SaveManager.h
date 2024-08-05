@@ -43,7 +43,7 @@ private:
 	UDataTable* VolumeDataTable = nullptr;
 	UGameManager* GM = nullptr;
 
-	struct FVolumeData CurrentVolumeData;
+	FVolumeData CurrentVolumeData;
 	FSaveData CurrentSaveData;
 
 	FString SavePath = FString(TEXT(""));

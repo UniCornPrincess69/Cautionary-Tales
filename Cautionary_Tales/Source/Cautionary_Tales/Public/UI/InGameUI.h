@@ -19,7 +19,9 @@ class CAUTIONARY_TALES_API AInGameUI : public AHUD
 public:
 	void InitWidgets(void);
 	void SetPauseWidget(void);
-	void SetEndWidget(void);
+
+	UFUNCTION()
+	void SetEndWidget();
 
 	UFUNCTION()
 	void SetDeathScreen();

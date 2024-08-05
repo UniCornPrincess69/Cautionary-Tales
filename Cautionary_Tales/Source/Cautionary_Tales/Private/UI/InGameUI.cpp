@@ -89,10 +89,15 @@ void AInGameUI::SetupCallback(ATestCharacter* character)
 {
 	Character = character;
 	Character->OnGotCaught.AddUniqueDynamic(this, &AInGameUI::SetDeathScreen);
+	Character->OnEndReached.AddUniqueDynamic(this, &AInGameUI::SetEndWidget);
 }
 
 void AInGameUI::EndPlay(const EEndPlayReason::Type endPlayReason)
 {
 	if (GM) GM->OnPlayerReady.RemoveDynamic(this, &AInGameUI::SetupCallback);
-	if (Character) Character->OnGotCaught.RemoveDynamic(this, &AInGameUI::SetDeathScreen);
+	if (Character)
+	{
+		Character->OnGotCaught.RemoveDynamic(this, &AInGameUI::SetDeathScreen);
+		Character->OnEndReached.RemoveDynamic(this, &AInGameUI::SetEndWidget);
+	}
 }
