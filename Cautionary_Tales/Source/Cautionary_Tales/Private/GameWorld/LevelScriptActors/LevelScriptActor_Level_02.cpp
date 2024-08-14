@@ -8,6 +8,7 @@
 #include "Managers/GameManager.h"
 #include "Managers/AudioManager.h"
 #include "Sound/AmbientSound.h"
+#include "GameWorld/LevelObjects/ProgressionTrigger.h"
 
 
 void ALevelScriptActor_Level_02::BeginPlay()
@@ -26,6 +27,11 @@ void ALevelScriptActor_Level_02::BeginPlay()
 
 	auto level = world->GetLevelScriptActor();
 	Game = Cast<AGame>(level);
+
+	auto trigger = UGameplayStatics::GetActorOfClass(world, AProgressionTrigger::StaticClass());
+	Trigger = Cast<AProgressionTrigger>(trigger);
+	Trigger->Instantiate(ELevels::L_TWO);
+
 	if (Game) Game->UpdateTeleporter(TPZone);
 	
 	TPZone->Destroy();

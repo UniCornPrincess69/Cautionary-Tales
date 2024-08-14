@@ -11,7 +11,6 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
-#include "Engine/TriggerBox.h"
 #include "Engine/TriggerSphere.h"
 #include "Utility/ActorUtility.h"
 #include "Managers/GameManager.h"
@@ -20,6 +19,8 @@
 #include "GameWorld/States/CautionaryTalesGameState.h"
 #include "Kismet/GameplayStatics.h"
 #include "Enemy/Struwwel.h"
+#include "GameWorld/LevelObjects/ProgressionTrigger.h"
+#include "GameWorld/LevelObjects/PuzzleTrigger.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -102,11 +103,9 @@ void ATestCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void ATestCharacter::OverlapBegin(UPrimitiveComponent* Overlap, AActor* Other, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (Other->IsA(ATriggerBox::StaticClass())) OnTriggerOverlap.Broadcast();
-	if (Other->IsA(ATriggerSphere::StaticClass()))
-	{
-		OnEndReached.Broadcast();
-	}
+	if (Other->IsA(AProgressionTrigger::StaticClass())) OnTriggerOverlap.Broadcast();
+	if (Other->IsA(ATriggerSphere::StaticClass())) OnEndReached.Broadcast();
+	if (Other->IsA(APuzzleTrigger::StaticClass())) OnLightTrigger.Broadcast();
 }
 
 void ATestCharacter::OverlapEnd(UPrimitiveComponent* Overlap, AActor* Other, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)

@@ -23,4 +23,5 @@ private:
 	class ATeleporterZone* TPZone = nullptr;
 	class AGame* Game = nullptr;
 	class UGameManager* GM = nullptr;
+	class AProgressionTrigger* Trigger = nullptr;
 };

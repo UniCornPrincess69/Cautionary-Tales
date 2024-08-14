@@ -11,6 +11,7 @@
 #include "GameWorld/LevelScriptActors/Game.h"
 #include "Sound/AmbientSound.h"
 #include "Managers/AudioManager.h"
+#include "GameWorld/LevelObjects/ProgressionTrigger.h"
 
 ALevelScriptActor_Level_01::ALevelScriptActor_Level_01()
 {
@@ -19,6 +20,7 @@ ALevelScriptActor_Level_01::ALevelScriptActor_Level_01()
 	{
 		Manager = UGameManager::Instantiate(*this);
 		if (Manager) LevelManager = Manager->GetLevelManager();
+		
 		
 		/*LevelManager = GetWorld()->GetSubsystem<ULevelManager>();
 		if (LevelManager) LevelManager->SetLevelOne(this);*/
@@ -37,6 +39,9 @@ void ALevelScriptActor_Level_01::BeginPlay()
 			auto sound = UGameplayStatics::GetActorOfClass(GetWorld(), AAmbientSound::StaticClass());
 			Manager->GetAudioManager()->SetCurrentAmbient(Cast<AAmbientSound>(sound));
 		}
+		auto trigger = UGameplayStatics::GetActorOfClass(world, AProgressionTrigger::StaticClass());
+		Trigger = Cast<AProgressionTrigger>(trigger);
+		Trigger->Instantiate(ELevels::L_ONE);
 	}
 	/*auto sound = UGameplayStatics::GetActorOfClass(GetWorld(), AAmbientSound::StaticClass());
 	Manager->GetAudioManager()->SetCurrentAmbient(Cast<AAmbientSound>(sound));*/

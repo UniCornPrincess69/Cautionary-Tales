@@ -18,6 +18,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPause);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTriggerOverlap);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGotCaught);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEndReached);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLightTrigger);
 
 //TODO: Rename this character, save player character just in case. Implement threshold again for controllers
 UCLASS(BlueprintType)
@@ -73,6 +74,7 @@ public:
 	FOnTriggerOverlap OnTriggerOverlap;
 	FOnGotCaught OnGotCaught;
 	FOnEndReached OnEndReached;
+	FOnLightTrigger OnLightTrigger;
 	FTimerHandle TimerHandle;
 #pragma endregion
 
