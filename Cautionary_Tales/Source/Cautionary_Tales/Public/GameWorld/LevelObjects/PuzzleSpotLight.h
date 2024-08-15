@@ -28,8 +28,13 @@ private:
 	UFUNCTION()
 		void LightTriggerCallback();
 
+	UFUNCTION()
+		void TriggerActivated();
+
 	UPROPERTY(EditAnywhere)
 	class USpotLightComponent* SpotLight = nullptr;
 	class UGameManager* GM = nullptr;
+	class AGame* Game = nullptr;
 	ATestCharacter* Player = nullptr;
+	class AInteractableBox* Box = nullptr;
 };

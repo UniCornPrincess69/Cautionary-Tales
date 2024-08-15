@@ -15,6 +15,10 @@ public:
 	// Sets default values for this actor's properties
 	APuzzleTrigger();
 
+protected:
+	virtual void BeginPlay() override;
+
 private:
+	class AGame* Game = nullptr;
 	class UBoxComponent* TriggerBox = nullptr;
 };

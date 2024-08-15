@@ -4,25 +4,28 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "ProgressSpotLight.generated.h"
+#include "InteractableBox.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTriggerActivated);
 UCLASS()
-class CAUTIONARY_TALES_API AProgressSpotLight : public AActor
+class CAUTIONARY_TALES_API AInteractableBox : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AProgressSpotLight();
+	AInteractableBox();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+public:	
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+	FOnTriggerActivated OnTriggerActivated;
 private:
-	UPROPERTY(EditAnywhere)
-	class USpotLightComponent* SpotLight = nullptr;
-
 	class AGame* Game = nullptr;
-
+	class UBoxComponent* Box = nullptr;
 };

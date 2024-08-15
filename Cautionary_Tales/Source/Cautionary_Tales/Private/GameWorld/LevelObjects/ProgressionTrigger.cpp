@@ -3,6 +3,7 @@
 
 #include "GameWorld/LevelObjects/ProgressionTrigger.h"
 #include "Components/BoxComponent.h"
+#include "GameWorld/LevelScriptActors/Game.h"
 
 // Sets default values
 AProgressionTrigger::AProgressionTrigger()
@@ -33,7 +34,12 @@ void AProgressionTrigger::Instantiate(ELevels level)
 void AProgressionTrigger::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	auto world = GetWorld();
+	if (world)
+	{
+		Game = Cast<AGame>(world->GetLevelScriptActor());
+		Game->SetProgressionTrigger(this);
+	}
 }
 
 void AProgressionTrigger::LevelOneSetup(void)

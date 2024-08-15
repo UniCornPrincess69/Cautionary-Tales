@@ -5,6 +5,8 @@
 #include "Components/SpotLightComponent.h"
 #include "Managers/GameManager.h"
 #include "Player/TestCharacter.h"
+#include "GameWorld/LevelScriptActors/Game.h"
+#include "GameWorld/LevelObjects/InteractableBox.h"
 
 // Sets default values
 APuzzleSpotLight::APuzzleSpotLight()
@@ -16,6 +18,16 @@ APuzzleSpotLight::APuzzleSpotLight()
 void APuzzleSpotLight::BeginPlay()
 {
 	Super::BeginPlay();
+
+	auto world = GetWorld();
+	if (world)
+	{
+		Game = Cast<AGame>(world->GetLevelScriptActor());
+		Game->SetPuzzleSpotLight(this);
+		Box = Game->GetInteractableBox();
+		Box->OnTriggerActivated.AddUniqueDynamic(this, &APuzzleSpotLight::TriggerActivated);
+	}
+
 	SpotLight->SetVisibility(false);
 
 	GM = UGameManager::Instantiate(*this);
@@ -29,6 +41,7 @@ void APuzzleSpotLight::EndPlay(const EEndPlayReason::Type endPlayReason)
 {
 	if (Player) Player->OnLightTrigger.RemoveDynamic(this, &APuzzleSpotLight::LightTriggerCallback);
 	if (GM) GM->OnPlayerReady.RemoveDynamic(this, &APuzzleSpotLight::PlayerReadyCallback);
+	if (Box) Box->OnTriggerActivated.RemoveDynamic(this, &APuzzleSpotLight::TriggerActivated);
 }
 
 void APuzzleSpotLight::PlayerReadyCallback(ATestCharacter* player)
@@ -40,6 +53,11 @@ void APuzzleSpotLight::PlayerReadyCallback(ATestCharacter* player)
 void APuzzleSpotLight::LightTriggerCallback()
 {
 	SpotLight->SetVisibility(true);
+}
+
+void APuzzleSpotLight::TriggerActivated()
+{
+	SpotLight->SetVisibility(false);
 }
 
 

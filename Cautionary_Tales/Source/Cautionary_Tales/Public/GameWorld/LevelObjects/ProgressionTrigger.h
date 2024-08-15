@@ -35,6 +35,7 @@ private:
 	void LevelOneSetup(void);
 	void LevelTwoSetup(void);
 
+	class AGame* Game = nullptr;
 	class UBoxComponent* TriggerBox = nullptr;
 
 };

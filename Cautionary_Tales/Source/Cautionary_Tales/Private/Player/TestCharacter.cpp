@@ -21,10 +21,10 @@
 #include "Enemy/Struwwel.h"
 #include "GameWorld/LevelObjects/ProgressionTrigger.h"
 #include "GameWorld/LevelObjects/PuzzleTrigger.h"
+#include "Engine/StaticMeshActor.h"
+#include "GameWorld/LevelObjects/InteractableBox.h"
 
 
-//////////////////////////////////////////////////////////////////////////
-// AMyProjectCharacter
 
 /// <summary>
 /// Player constructor mostly according to Unreal Character of the Third Person Template
@@ -37,6 +37,9 @@ ATestCharacter::ATestCharacter()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
+
+	CapsuleCollider = GetComponentByClass<UCapsuleComponent>();
+	SetRootComponent(CapsuleCollider);
 
 	// Configure character movement
 	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...	
@@ -89,6 +92,7 @@ void ATestCharacter::BeginPlay()
 
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ATestCharacter::OverlapBegin);
 	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &ATestCharacter::OverlapEnd);
+	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &ATestCharacter::OnHitCallback);
 	GetMesh()->PlayAnimation(CurrentAnim, true);
 
 }
@@ -97,6 +101,7 @@ void ATestCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	GetCapsuleComponent()->OnComponentBeginOverlap.RemoveDynamic(this, &ATestCharacter::OverlapBegin);
 	GetCapsuleComponent()->OnComponentEndOverlap.RemoveDynamic(this, &ATestCharacter::OverlapEnd);
+	GetCapsuleComponent()->OnComponentHit.RemoveDynamic(this, &ATestCharacter::OnHitCallback);
 	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 	GetMesh()->Stop();
 }
@@ -111,6 +116,17 @@ void ATestCharacter::OverlapBegin(UPrimitiveComponent* Overlap, AActor* Other, U
 void ATestCharacter::OverlapEnd(UPrimitiveComponent* Overlap, AActor* Other, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 }
+
+//TODO: Box movement only via physics
+void ATestCharacter::OnHitCallback(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	if (OtherActor->IsA(AInteractableBox::StaticClass()))
+	{
+		FAttachmentTransformRules rules = FAttachmentTransformRules(EAttachmentRule::KeepWorld, EAttachmentRule::KeepWorld, EAttachmentRule::KeepWorld, true);
+		OtherActor->AttachToActor(this, rules, TEXT(""));
+	}
+}
+
 
 /// <summary>
 /// Instantiation of all needed objects. Animationsequences, InputActions, InputMappingContext

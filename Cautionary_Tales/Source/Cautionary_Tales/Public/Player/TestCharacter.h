@@ -59,6 +59,10 @@ public:
 	void OverlapEnd(UPrimitiveComponent* Overlap, AActor* Other, UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex);
 
+	UFUNCTION()
+		void OnHitCallback(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+			FVector NormalImpulse, const FHitResult& Hit);
+
 	inline void SetEnemy(AStruwwel* struwwel) { Struwwel = struwwel; }
 
 	void Caught(void);
@@ -85,7 +89,7 @@ private:
 	UAnimSequence* Idle = nullptr;
 	UAnimSequence* CurrentAnim = nullptr;
 
-
+	UCapsuleComponent* CapsuleCollider = nullptr;
 	USpringArmComponent* CameraBoom = nullptr;
 	UCameraComponent* FollowCamera = nullptr;
 	UInputMappingContext* DefaultMappingContext = nullptr;

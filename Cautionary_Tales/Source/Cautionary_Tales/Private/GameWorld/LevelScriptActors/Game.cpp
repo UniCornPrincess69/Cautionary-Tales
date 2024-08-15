@@ -8,6 +8,12 @@
 #include "Managers/GameManager.h"
 #include "Managers/SaveManager.h"
 #include "GameWorld/SaveData/SaveData.h"
+#include "GameWorld/LevelObjects/InteractableBox.h"
+#include "GameWorld/LevelObjects/ProgressionTrigger.h"
+#include "GameWorld/LevelObjects/ProgressSpotLight.h"
+#include "GameWorld/LevelObjects/PuzzleSpotLight.h"
+#include "GameWorld/LevelObjects/PuzzleTrigger.h"
+
 
 void AGame::UpdateTeleporter(ATeleporterZone* newZone)
 {
