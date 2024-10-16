@@ -18,12 +18,11 @@ void UChaseState::UpdateState(float deltaTime)
 		FSM->StopMovement();
 		FSM->SetState(EStates::ST_ATTACK);
 	}
-	else if (distance >= NORMALDISTANCE)
+	else if (distance >= FARDISTANCE)
 	{
 		Struwwel->SetWalkSpeed(FASTWALKSPEED);
 	}
-	else Struwwel->SetWalkSpeed(NORMALSPEED);
-
+	else if (NORMALDISTANCE <= distance && distance <= FARDISTANCE) Struwwel->SetWalkSpeed(distance + 50.f);
 }
 
 void UChaseState::ExitState(void)

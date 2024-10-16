@@ -9,8 +9,12 @@
 
 void UAudioManager::StopCurrentAmbient(void)
 {
-	CurrentAmbient->Stop();
-	CurrentAmbient->Destroy();
+	if (CurrentAmbient)
+	{
+		CurrentAmbient->Stop();
+		CurrentAmbient->Destroy();
+
+	}
 }
 
 void UAudioManager::Initialize(FSubsystemCollectionBase& collection)
@@ -33,10 +37,31 @@ void UAudioManager::Deinitialize()
 void UAudioManager::SaveManagerCallback()
 {
 	Save = Manager->GetSaveManager();
-	Save->LoadVolume();
+	VolumeData = Save->LoadVolume();
 }
 
 void UAudioManager::SaveVolume(void)
 {
 	if (Save) Save->SaveVolumes(MasterVolume, SFXVolume, MusicVolume);
+}
+
+void UAudioManager::GetAudioValues(float& masterVolumeOUT, float& musicVolumeOUT, float& sfxVolumeOUT)
+{
+	if (!VolumeData)
+	{
+		VolumeData = Save->LoadVolume();
+		if (!VolumeData)
+		{
+			masterVolumeOUT = 1.f;
+			musicVolumeOUT = 1.f;
+			sfxVolumeOUT = 1.f;
+		}
+	}
+
+	if (VolumeData)
+	{
+		masterVolumeOUT = VolumeData->MasterVolume;
+		musicVolumeOUT = VolumeData->MusicVolume;
+		sfxVolumeOUT = VolumeData->SFXVolume;
+	}
 }

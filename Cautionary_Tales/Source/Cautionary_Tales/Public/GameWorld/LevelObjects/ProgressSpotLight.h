@@ -18,11 +18,18 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	virtual void EndPlay(const EEndPlayReason::Type endPlayReason) override;
 private:
+	UFUNCTION()
+		void ActivateSpotLight();
+
+	UFUNCTION()
+		void GetBoxCallback();
+
+
 	UPROPERTY(EditAnywhere)
 	class USpotLightComponent* SpotLight = nullptr;
 
 	class AGame* Game = nullptr;
-
+	class AInteractableBox* Box = nullptr;
 };

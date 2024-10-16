@@ -23,6 +23,8 @@
 #include "GameWorld/LevelObjects/PuzzleTrigger.h"
 #include "Engine/StaticMeshActor.h"
 #include "GameWorld/LevelObjects/InteractableBox.h"
+#include "Components/WidgetComponent.h"
+
 
 
 
@@ -60,14 +62,11 @@ ATestCharacter::ATestCharacter()
 	CameraBoom->TargetArmLength = 500.0f; // The camera follows at this distance behind the character	
 	CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
 
-
 	// Create a follow camera
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
-	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
-	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 }
 
 void ATestCharacter::BeginPlay()
@@ -92,7 +91,6 @@ void ATestCharacter::BeginPlay()
 
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ATestCharacter::OverlapBegin);
 	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &ATestCharacter::OverlapEnd);
-	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &ATestCharacter::OnHitCallback);
 	GetMesh()->PlayAnimation(CurrentAnim, true);
 
 }
@@ -101,30 +99,23 @@ void ATestCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	GetCapsuleComponent()->OnComponentBeginOverlap.RemoveDynamic(this, &ATestCharacter::OverlapBegin);
 	GetCapsuleComponent()->OnComponentEndOverlap.RemoveDynamic(this, &ATestCharacter::OverlapEnd);
-	GetCapsuleComponent()->OnComponentHit.RemoveDynamic(this, &ATestCharacter::OnHitCallback);
 	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 	GetMesh()->Stop();
 }
 
 void ATestCharacter::OverlapBegin(UPrimitiveComponent* Overlap, AActor* Other, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (Other->IsA(AProgressionTrigger::StaticClass())) OnTriggerOverlap.Broadcast();
+	if (Other->IsA(AProgressionTrigger::StaticClass()))
+	{
+		Other->Destroy();
+		OnTriggerOverlap.Broadcast();
+	}
 	if (Other->IsA(ATriggerSphere::StaticClass())) OnEndReached.Broadcast();
-	if (Other->IsA(APuzzleTrigger::StaticClass())) OnLightTrigger.Broadcast();
+	if (Other->IsA(APuzzleTrigger::StaticClass())) OnPuzzleTrigger.Broadcast();
 }
 
 void ATestCharacter::OverlapEnd(UPrimitiveComponent* Overlap, AActor* Other, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-}
-
-//TODO: Box movement only via physics
-void ATestCharacter::OnHitCallback(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
-{
-	if (OtherActor->IsA(AInteractableBox::StaticClass()))
-	{
-		FAttachmentTransformRules rules = FAttachmentTransformRules(EAttachmentRule::KeepWorld, EAttachmentRule::KeepWorld, EAttachmentRule::KeepWorld, true);
-		OtherActor->AttachToActor(this, rules, TEXT(""));
-	}
 }
 
 
@@ -227,6 +218,7 @@ void ATestCharacter::Move(const FInputActionValue& Value)
 	}
 
 }
+
 
 /// <summary>
 /// Function to stop the movement of the player and change the animation

@@ -23,6 +23,7 @@ void AGame::UpdateTeleporter(ATeleporterZone* newZone)
 
 void AGame::BeginPlay()
 {
+	Super::BeginPlay();
 	Manager = UGameManager::Instantiate(*this);
 	if (Manager) Manager->OnPlayerReady.AddUniqueDynamic(this, &AGame::PlayerReady);
 
@@ -36,12 +37,12 @@ void AGame::BeginPlay()
 		auto saveData = *GetWorld()->GetSubsystem<USaveManager>()->LoadGame();
 		UGameplayStatics::LoadStreamLevel(this, FName(saveData.StreamingLevelName), true, true, FLatentActionInfo());
 	}
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, FTimerDelegate::CreateUObject(this, &AGame::LevelLoaded), 1.f, false, 2.5f);
 }
 
 void AGame::EndPlay(const EEndPlayReason::Type endPlayReason)
 {
 	Super::EndPlay(endPlayReason);
-	//Player->OnTriggerOverlap.RemoveDynamic(this, &AGame::TeleportPlayer);
 	Manager->OnPlayerReady.RemoveDynamic(this, &AGame::PlayerReady);
 }
 
@@ -59,5 +60,10 @@ void AGame::TeleportPlayer(void)
 void AGame::PlayerReady(ATestCharacter* player)
 {
 	Player = player;
-	//Player->OnTriggerOverlap.AddUniqueDynamic(this, &AGame::TeleportPlayer);
+}
+
+void AGame::LevelLoaded()
+{
+	OnLevelLoaded.Broadcast();
+	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 }

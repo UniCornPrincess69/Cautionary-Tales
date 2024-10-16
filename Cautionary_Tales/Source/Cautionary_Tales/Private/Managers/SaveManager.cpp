@@ -139,6 +139,12 @@ FVolumeData* USaveManager::LoadVolume()
 	else return VolumeData;
 }
 
+bool USaveManager::CheckSaveUI(void)
+{
+	if (DataExists(SavePath)) return true;
+	else return false;
+}
+
 
 void USaveManager::Initialize(FSubsystemCollectionBase& collection)
 {

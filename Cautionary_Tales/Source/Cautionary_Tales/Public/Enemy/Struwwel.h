@@ -56,4 +56,5 @@ private:
 	EStates CurrentState = EStates::ST_NONE;
 
 	float Speed = 300.f;
+	float Fast = 700.f;
 };

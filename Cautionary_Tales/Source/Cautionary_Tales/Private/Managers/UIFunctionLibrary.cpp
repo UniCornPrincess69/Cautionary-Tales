@@ -66,3 +66,14 @@ void UUIFunctionLibrary::SaveVolumeData(const UObject* gameTarget)
 {
 	GetUIManager(gameTarget)->SaveVolumeData(gameTarget);
 }
+
+void UUIFunctionLibrary::GetVolumeValues(const UObject* gameTarget, float& masterVolumeOUT, float& musicVolumeOUT, float& sfxVolumeOUT)
+{
+	GetUIManager(gameTarget)->GetVolumeValues(gameTarget, masterVolumeOUT, musicVolumeOUT, sfxVolumeOUT);
+}
+
+void UUIFunctionLibrary::CheckSave(const UObject* gameTarget, bool& saveExistsOUT)
+{
+	GetUIManager(gameTarget)->CheckSave(gameTarget, saveExistsOUT);
+}
+

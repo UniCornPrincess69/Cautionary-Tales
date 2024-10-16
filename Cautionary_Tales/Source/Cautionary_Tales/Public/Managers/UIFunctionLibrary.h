@@ -47,4 +47,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Save Volumesettings", Category = "UI Function"))
 		static void SaveVolumeData(const UObject* gameTarget);
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Get VolumeValues", Category = "UI Function"))
+		static void GetVolumeValues(const UObject* gameTarget, float& masterVolumeOUT, float& musicVolumeOUT, float& sfxVolumeOUT);
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Check for SaveGame", Category = "UI Function"))
+		static void CheckSave(const UObject* gameTarget, bool& saveExistsOUT);
 };

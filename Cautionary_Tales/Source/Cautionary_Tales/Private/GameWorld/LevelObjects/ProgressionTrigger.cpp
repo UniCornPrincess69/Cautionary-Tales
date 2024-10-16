@@ -4,6 +4,7 @@
 #include "GameWorld/LevelObjects/ProgressionTrigger.h"
 #include "Components/BoxComponent.h"
 #include "GameWorld/LevelScriptActors/Game.h"
+#include "GameWorld/LevelObjects/InteractableBox.h"
 
 // Sets default values
 AProgressionTrigger::AProgressionTrigger()
@@ -42,15 +43,26 @@ void AProgressionTrigger::BeginPlay()
 	}
 }
 
+void AProgressionTrigger::EndPlay(EEndPlayReason::Type endPlayReason)
+{
+	if (InteractableBox) InteractableBox->OnTriggerActivated.RemoveDynamic(this, &AProgressionTrigger::SetTriggerActive);
+}
+
+void AProgressionTrigger::SetTriggerActive()
+{
+	TriggerBox->SetGenerateOverlapEvents(true);
+}
+
 void AProgressionTrigger::LevelOneSetup(void)
 {
-	//TriggerBox->SetGenerateOverlapEvents(false);
+	TriggerBox->SetGenerateOverlapEvents(false);
+	InteractableBox = Game->GetInteractableBox();
+	InteractableBox->OnTriggerActivated.AddUniqueDynamic(this, &AProgressionTrigger::SetTriggerActive);
 }
 
 void AProgressionTrigger::LevelTwoSetup(void)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, TEXT("Level Two setup"));
-
+	TriggerBox->SetGenerateOverlapEvents(true);
 }
 
 

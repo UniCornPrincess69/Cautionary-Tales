@@ -31,7 +31,7 @@ private:
 	class ATestCharacter* Player = nullptr;
 	class AStruwwel* Struwwel = nullptr;
 
-	const float NORMALDISTANCE = 350.f;
-	const float NORMALSPEED = 300.f;
-	const float FASTWALKSPEED = 600.f;
+	const float NORMALDISTANCE = 250.f;
+	const float FARDISTANCE = 700.f;
+	const float FASTWALKSPEED = 700.f;
 };

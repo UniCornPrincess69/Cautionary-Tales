@@ -8,6 +8,8 @@
 #include "Managers/GameManager.h"
 #include "Enemy/StruwwelController.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/SphereComponent.h"
+#include "GameWorld/LevelObjects/Obstacle.h"
 
 
 
@@ -15,7 +17,7 @@
 AStruwwel::AStruwwel()
 {
 	PrimaryActorTick.bCanEverTick = false;
-
+	
 }
 
 void AStruwwel::Instantiate(ATestCharacter* player)
@@ -45,6 +47,7 @@ void AStruwwel::PlayerCaught(void)
 {
 	Player->Caught();
 }
+
 
 // Called when the game starts or when spawned
 void AStruwwel::BeginPlay()

@@ -30,12 +30,15 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	virtual void EndPlay(EEndPlayReason::Type endPlayReason) override;
 private:
+	UFUNCTION()
+		void SetTriggerActive();
 	void LevelOneSetup(void);
 	void LevelTwoSetup(void);
 
 	class AGame* Game = nullptr;
+	class AInteractableBox* InteractableBox = nullptr;
 	class UBoxComponent* TriggerBox = nullptr;
 
 };

@@ -3,10 +3,9 @@
 
 #include "GameWorld/LevelObjects/PuzzleSpotLight.h"
 #include "Components/SpotLightComponent.h"
-#include "Managers/GameManager.h"
-#include "Player/TestCharacter.h"
 #include "GameWorld/LevelScriptActors/Game.h"
 #include "GameWorld/LevelObjects/InteractableBox.h"
+#include "GameWorld/LevelObjects/PuzzleTrigger.h"
 
 // Sets default values
 APuzzleSpotLight::APuzzleSpotLight()
@@ -24,30 +23,18 @@ void APuzzleSpotLight::BeginPlay()
 	{
 		Game = Cast<AGame>(world->GetLevelScriptActor());
 		Game->SetPuzzleSpotLight(this);
-		Box = Game->GetInteractableBox();
-		Box->OnTriggerActivated.AddUniqueDynamic(this, &APuzzleSpotLight::TriggerActivated);
+		Game->OnLevelLoaded.AddUniqueDynamic(this, &APuzzleSpotLight::LevelLoadedCallback);
 	}
 
 	SpotLight->SetVisibility(false);
 
-	GM = UGameManager::Instantiate(*this);
-	if (GM)
-	{
-		GM->OnPlayerReady.AddUniqueDynamic(this, &APuzzleSpotLight::PlayerReadyCallback);
-	}
 }
 
 void APuzzleSpotLight::EndPlay(const EEndPlayReason::Type endPlayReason)
 {
-	if (Player) Player->OnLightTrigger.RemoveDynamic(this, &APuzzleSpotLight::LightTriggerCallback);
-	if (GM) GM->OnPlayerReady.RemoveDynamic(this, &APuzzleSpotLight::PlayerReadyCallback);
 	if (Box) Box->OnTriggerActivated.RemoveDynamic(this, &APuzzleSpotLight::TriggerActivated);
-}
-
-void APuzzleSpotLight::PlayerReadyCallback(ATestCharacter* player)
-{
-	Player = player;
-	Player->OnLightTrigger.AddUniqueDynamic(this, &APuzzleSpotLight::LightTriggerCallback);
+	if (PuzzleTrigger) PuzzleTrigger->OnLightTriggered.RemoveDynamic(this, &APuzzleSpotLight::LightTriggerCallback);
+	if (Game) Game->OnLevelLoaded.RemoveDynamic(this, &APuzzleSpotLight::LevelLoadedCallback);
 }
 
 void APuzzleSpotLight::LightTriggerCallback()
@@ -58,6 +45,14 @@ void APuzzleSpotLight::LightTriggerCallback()
 void APuzzleSpotLight::TriggerActivated()
 {
 	SpotLight->SetVisibility(false);
+}
+
+void APuzzleSpotLight::LevelLoadedCallback()
+{
+	Box = Game->GetInteractableBox();
+	Box->OnTriggerActivated.AddUniqueDynamic(this, &APuzzleSpotLight::TriggerActivated);
+	PuzzleTrigger = Game->GetPuzzleTrigger();
+	PuzzleTrigger->OnLightTriggered.AddUniqueDynamic(this, &APuzzleSpotLight::LightTriggerCallback);
 }
 
 

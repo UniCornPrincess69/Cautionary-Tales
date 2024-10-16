@@ -23,7 +23,8 @@ public:
 	FSaveData* LoadGame();
 	void SaveVolumes(float master, float sfx, float music);
 	FVolumeData* LoadVolume();
-	
+	bool CheckSaveUI(void);
+
 private:
 	virtual void Initialize(FSubsystemCollectionBase& collection) override;
 	virtual void Deinitialize() override;

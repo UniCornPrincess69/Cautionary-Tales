@@ -25,7 +25,9 @@ public:
 	void SetMasterVolume(const UObject* target, float volume);
 	void SetSFXVolume(const UObject* target, float volume);
 	void SetMusicVolume(const UObject* target, float volume);
-	void SaveVolumeData(const UObject*);
+	void SaveVolumeData(const UObject* target);
+	void GetVolumeValues(const UObject* target, float& masterVolumeOUT, float& musicVolumeOUT, float& sfxVolumeOUT);
+	void CheckSave(const UObject* target, bool& saveExistsOUT);
 	
 
 private:

@@ -22,7 +22,7 @@ public:
 	inline void SetSFXvolume(float volume) { SFXVolume = volume; }
 	inline void SetMusicvolume(float volume) { MusicVolume = volume; }
 	void SaveVolume(void);
-
+	void GetAudioValues(float& masterVolumeOUT, float& musicVolumeOUT, float& sfxVolumeOUT);
 	void StopCurrentAmbient(void);
 
 private:

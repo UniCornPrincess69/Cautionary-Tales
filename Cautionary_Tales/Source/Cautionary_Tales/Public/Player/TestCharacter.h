@@ -13,12 +13,13 @@ class UInputAction;
 struct FInputActionValue;
 class UAnimSequence;
 class AStruwwel;
+class UWidgetComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPause);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTriggerOverlap);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGotCaught);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEndReached);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLightTrigger);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPuzzleTrigger);
 
 //TODO: Rename this character, save player character just in case. Implement threshold again for controllers
 UCLASS(BlueprintType)
@@ -42,11 +43,11 @@ protected:
 	void Pause(const FInputActionValue& Value);
 
 protected:
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* playerInputComponent) override;
 
-	virtual void BeginPlay();
+	virtual void BeginPlay() override;
 
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason);
+	virtual void EndPlay(const EEndPlayReason::Type endPlayReason) override;
 
 public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
@@ -58,10 +59,6 @@ public:
 	UFUNCTION()
 	void OverlapEnd(UPrimitiveComponent* Overlap, AActor* Other, UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex);
-
-	UFUNCTION()
-		void OnHitCallback(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-			FVector NormalImpulse, const FHitResult& Hit);
 
 	inline void SetEnemy(AStruwwel* struwwel) { Struwwel = struwwel; }
 
@@ -75,10 +72,11 @@ private:
 public:
 	UPROPERTY(BlueprintAssignable)
 	FOnPause OnPause;
+	UPROPERTY(BlueprintAssignable)
+		FOnPuzzleTrigger OnPuzzleTrigger;
 	FOnTriggerOverlap OnTriggerOverlap;
 	FOnGotCaught OnGotCaught;
 	FOnEndReached OnEndReached;
-	FOnLightTrigger OnLightTrigger;
 	FTimerHandle TimerHandle;
 #pragma endregion
 
@@ -89,6 +87,8 @@ private:
 	UAnimSequence* Idle = nullptr;
 	UAnimSequence* CurrentAnim = nullptr;
 
+	UPROPERTY(EditAnywhere, Category = "UI")
+	UWidgetComponent* ThoughtBubble = nullptr;
 	UCapsuleComponent* CapsuleCollider = nullptr;
 	USpringArmComponent* CameraBoom = nullptr;
 	UCameraComponent* FollowCamera = nullptr;

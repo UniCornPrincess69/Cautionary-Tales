@@ -23,6 +23,9 @@ public:
 
 	//inline void SetCurrentLevel(FName currentLevel) { CurrentLevel = currentLevel; }
 	void PlayerReady(ATestCharacter* player);
+
+	UFUNCTION(BlueprintCallable)
+		inline FString GetCurrentLevelName() { return CurrentLevel; };
 private:
 	void Instantiate();
 	UFUNCTION()

@@ -21,7 +21,6 @@ class CAUTIONARY_TALES_API AGame : public ALevelScriptActor
 	GENERATED_BODY()
 
 public:
-	FOnLevelLoaded OnLevelLoaded;
 
 	void UpdateTeleporter(ATeleporterZone* newZone);
 
@@ -49,6 +48,13 @@ private:
 	UFUNCTION()
 	void PlayerReady(ATestCharacter* player);
 
+	UFUNCTION()
+		void LevelLoaded();
+
+public:
+	FOnLevelLoaded OnLevelLoaded;
+	FTimerHandle TimerHandle;
+private:
 	ATeleporterZone* TeleportZone = nullptr;
 	class UGameManager* Manager = nullptr;
 	class ATestCharacter* Player = nullptr;

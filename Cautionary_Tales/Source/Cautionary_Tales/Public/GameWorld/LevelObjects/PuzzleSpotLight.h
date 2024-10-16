@@ -19,11 +19,9 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type endPlayReason);
+	virtual void EndPlay(const EEndPlayReason::Type endPlayReason) override;
 
 private:
-	UFUNCTION()
-		void PlayerReadyCallback(ATestCharacter* player);
 
 	UFUNCTION()
 		void LightTriggerCallback();
@@ -31,10 +29,12 @@ private:
 	UFUNCTION()
 		void TriggerActivated();
 
+	UFUNCTION()
+		void LevelLoadedCallback();
+
 	UPROPERTY(EditAnywhere)
 	class USpotLightComponent* SpotLight = nullptr;
-	class UGameManager* GM = nullptr;
 	class AGame* Game = nullptr;
-	ATestCharacter* Player = nullptr;
+	class APuzzleTrigger* PuzzleTrigger = nullptr;
 	class AInteractableBox* Box = nullptr;
 };

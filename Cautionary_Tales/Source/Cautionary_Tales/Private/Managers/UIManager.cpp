@@ -13,7 +13,10 @@
 void UUIManager::StartGame(const UObject* target, const bool& IsNewGame)
 {
 	auto world = target->GetWorld();
+
+
 	if (world) world->GetSubsystem<ULevelManager>()->LoadGame(IsNewGame);
+	
 }
 
 
@@ -102,6 +105,21 @@ void UUIManager::SaveVolumeData(const UObject*)
 		Audio = GM->GetAudioManager();
 		Audio->SaveVolume();
 	}
+}
+
+void UUIManager::GetVolumeValues(const UObject* target, float& masterVolumeOUT, float& musicVolumeOUT, float& sfxVolumeOUT)
+{
+	if (!GM) GM = UGameManager::Instantiate(*this);
+	if (GM)
+	{
+		GM->GetAudioManager()->GetAudioValues(masterVolumeOUT, musicVolumeOUT, sfxVolumeOUT);
+	}
+}
+
+void UUIManager::CheckSave(const UObject* target, bool& saveExistsOUT)
+{
+	auto save = GetWorld()->GetSubsystem<USaveManager>();
+	if (save) saveExistsOUT = save->CheckSaveUI();
 }
 
 void UUIManager::Initialize(FSubsystemCollectionBase& collection)

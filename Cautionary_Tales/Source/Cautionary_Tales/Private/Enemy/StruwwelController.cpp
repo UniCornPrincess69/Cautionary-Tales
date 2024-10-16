@@ -14,6 +14,7 @@
 #include "Animation/AnimSequence.h"
 #include "Player/TestCharacter.h"
 #include "Utility/ActorUtility.h"
+#include "Managers/GameManager.h"
 
 AStruwwelController::AStruwwelController()
 {
@@ -143,7 +144,8 @@ void AStruwwelController::OnPossess(APawn* pawn)
 
 	auto controlledActor = GetPawn();
 	Struwwel = Cast<AStruwwel>(controlledActor);
-
+	auto gm = UGameManager::Instantiate(*this);
+	gm->SetEnemy(Struwwel);
 	Attack = NewObject<UAttackState>();
 	Attack->SetFSM(this);
 	Attack->SetWorld(GetWorld());
